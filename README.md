@@ -4,12 +4,12 @@ This repository contains experimental [coding agent skills](https://agentskills.
 
 ## Agent Skills Resources
 
-## For Users
+### For Users
 
 - [Using Agent Skills in VS Code](https://code.visualstudio.com/docs/copilot/customization/agent-skills)
 - [Extend Claude with Agent Skills](https://code.claude.com/docs/en/skills)
 
-## For Skills Authors
+### For Skills Authors
 
 - [The Agent Skills Standard](https://agentskills.io)
 - [Claude Developer Guide Agent Skills Overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
