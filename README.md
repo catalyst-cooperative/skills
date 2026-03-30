@@ -1,6 +1,6 @@
 # Catalyst Cooperative Agent Skills
 
-This repository contains experimental [coding agent skills](https://agentskills.io) for working with data published by [Catalyst Cooperative](http://github.com/catalyst-cooperative)'s [Public Utility Data Liberation (PUDL) project](https://github.com/catalyst-cooperative/pudl), and for contributing to the PUDL open source project.
+This repository contains experimental [agent skills](https://agentskills.io) for working with data published by [Catalyst Cooperative](http://github.com/catalyst-cooperative)'s [Public Utility Data Liberation (PUDL) project](https://github.com/catalyst-cooperative/pudl), and for contributing to the PUDL open source project.
 
 ## Agent Skills Resources
 
