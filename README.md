@@ -1,6 +1,9 @@
-# Catalyst Cooperative Agent Skills
+# [Catalyst Cooperative](http://github.com/catalyst-cooperative) Agent Skills
 
-This repository contains experimental [agent skills](https://agentskills.io) for working with data published by [Catalyst Cooperative](http://github.com/catalyst-cooperative)'s [Public Utility Data Liberation (PUDL) project](https://github.com/catalyst-cooperative/pudl), and for contributing to the PUDL open source project.
+This repository contains experimental [agent skills](https://agentskills.io) related to PUDL (the Public Utility Data Liberation Project).
+
+- `pudl` is for exploring and working with [PUDL open energy data and metadata](https://data.catalyst.coop)
+- `pudl-dev` is for maintaining and contributing to the [PUDL open source project](https://github.com/catalyst-cooperative/pudl)
 
 ## Agent Skills Resources
 
@@ -9,7 +12,7 @@ This repository contains experimental [agent skills](https://agentskills.io) for
 - [Using Agent Skills in VS Code](https://code.visualstudio.com/docs/copilot/customization/agent-skills)
 - [Extend Claude with Agent Skills](https://code.claude.com/docs/en/skills)
 - [npx skills](https://github.com/vercel-labs/skills) (CLI for installing skills)
-- [The Agent Skills Directory](https://skills.sh/) (⚠️ Buyer Beware!)
+- ⚠️ [The Agent Skills Directory](https://skills.sh/) ⚠️
 
 ### For Skills Authors
 
