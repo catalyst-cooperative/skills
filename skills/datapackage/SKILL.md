@@ -93,11 +93,11 @@ These skills must be installed. See `skills-lock.json` in the project root.
 
 ## Key constraints
 
-- **Never load the full datapackage.json into context.** It may be megabytes with
-  hundreds of resources. Always query selectively.
-- **Always surface usage warnings** from the `description` field before presenting a
-  resource. Many well-maintained datapackages embed explicit warnings about known
-  limitations, unstable identifiers, or data quality issues.
+- **Golden rule: never load the full datapackage.json into context.** It may be
+  megabytes with hundreds of resources. Always query selectively.
+- **Read the full description before presenting a resource.** Descriptions often
+  contain important context: processing notes, primary key conventions, data
+  provenance, or caveats about known limitations. Don't skip them.
 - **Do not use Python to query descriptor metadata.** Python is not the right tool here
   — it loads the full JSON into memory (violating the golden rule above), adds
   unnecessary dependencies, and can't easily handle remote descriptors. Use jq for
@@ -105,9 +105,29 @@ These skills must be installed. See `skills-lock.json` in the project root.
   queries. Python is only appropriate for loading data (via pandas or polars) after you
   already know which table and columns you need.
 
-## Schema reference
+## Schema reference and examples
 
-The Frictionless Data Package JSON Schema (draft-07) describing the standard itself is
-at [`assets/datapackage.schema.json`](./assets/datapackage.schema.json). Read it when
-you need to understand what fields are valid in a descriptor, or to validate a
-descriptor programmatically.
+The Frictionless Data Package v2.0 JSON Schema is bundled at
+[`assets/datapackage.schema.json`](./assets/datapackage.schema.json). The canonical
+up-to-date version is always available at:
+<https://datapackage.org/profiles/2.0/datapackage.json>
+
+Read it when you need to understand which fields are valid in a descriptor or validate
+one programmatically.
+
+Bundled examples live under `assets/examples/`. All four use the same weather-station
+dataset (5 stations, 150 daily readings) so you can test the same queries against
+each storage backend:
+
+| Directory | Format | Data files |
+| --- | --- | --- |
+| `csv/` | CSV | `stations.csv`, `daily-readings.csv` |
+| `parquet/` | Parquet | `stations.parquet`, `daily-readings.parquet` |
+| `duckdb/` | DuckDB | `weather.duckdb` (both tables inside) |
+| `sqlite/` | SQLite | `weather.sqlite` (both tables inside) |
+
+Each directory contains a `datapackage.json` descriptor. The DuckDB and SQLite
+descriptors include a non-standard `duckdb_table` / `sqlite_table` key pointing to the
+table name inside the database file.
+
+Run `python scripts/generate_examples.py` to regenerate the data files from scratch.

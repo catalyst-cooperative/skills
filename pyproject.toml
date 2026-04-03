@@ -11,7 +11,7 @@ requires = ["hatchling"]
 
 [tool.pixi.workspace]
 channels = ["conda-forge"]
-platforms = ["osx-arm64", "osx-64", "win-64", "linux-64"]
+platforms = ["osx-arm64", "osx-64", "linux-64"]
 
 [tool.pixi.pypi-dependencies]
 agent_skills = { path = ".", editable = true }
@@ -24,3 +24,7 @@ jq = ">=1.8.1,<2"
 prek = ">=0.3.8,<0.4"
 mdformat = ">=1.0.0,<2"
 mdformat-frontmatter = ">=2.0.10,<3"
+pandas = ">=3.0.2,<4"
+pyarrow = ">=23.0.1,<24"
+polars = ">=1.39.3,<2"
+awscli = ">=2.34.23,<3"

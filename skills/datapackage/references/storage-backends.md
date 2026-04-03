@@ -33,10 +33,13 @@ access without downloading. SQLite files **must be local** (see below).
 
 ## DuckDB (preferred)
 
-DuckDB is the preferred tool for data querying. It handles Parquet, CSV, and DuckDB
-files with a unified SQL interface, reads remote files over HTTPS or S3 without
-downloading them, and can combine descriptor metadata queries with data queries in a
-single session. Use `/duckdb-skills:query` to run SQL or natural language queries, and
+DuckDB is the preferred tool for data querying. It is a standalone CLI tool — no
+Python environment required. Install with `brew install duckdb`, `conda install duckdb`,
+or download from <https://duckdb.org/>. It handles Parquet, CSV, and DuckDB files with
+a unified SQL interface, reads remote files over HTTPS or S3 without downloading them,
+and can combine descriptor metadata queries with data queries in a single session.
+
+Use `/duckdb-skills:query` to run SQL or natural language queries through it, and
 `/duckdb-skills:attach-db` to register database files.
 
 You are not limited to `read_parquet` — DuckDB can query any supported format
@@ -62,11 +65,47 @@ SELECT * FROM read_parquet('/data/part-*.parquet') LIMIT 100;
 SELECT * FROM my_db.my_table LIMIT 100;
 ```
 
-### Interrupting a long or large query
+### Finding the correct table name in a database file
 
-Always use `LIMIT` when exploring an unfamiliar table. The `/duckdb-skills:query`
-skill warns before executing queries that would return more than 1M rows. To interrupt
-a running query, press `Ctrl+C` in the terminal.
+The Frictionless spec has no standard field for specifying which table inside a
+`.duckdb` or `.sqlite` file a resource refers to — the `path` field only points to the
+database file itself. Table names are indicated by non-standard extension fields, and
+practice varies by publisher. Work through these in order:
+
+**1. Check the resource for a table-name extension field.** Common field names:
+
+```bash
+jq '.resources[] | select(.name == "my_resource") | {table, duckdb_table, sqlite_table}' datapackage.json
+```
+
+If any of those is non-null, that is the table name to use.
+
+**2. Try the resource `name` or `title`.** Publishers often name the table to match
+the resource identifier. Try both as-is and with hyphens replaced by underscores
+(SQL identifiers cannot contain hyphens).
+
+**3. List all tables in the database** and match by inspection:
+
+```sql
+-- After attaching the file as `db`:
+
+-- DuckDB file
+SHOW TABLES;
+
+-- SQLite file
+SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name;
+```
+
+Compare the table names against the resource `name`, `title`, and `description` to
+find the right one.
+
+### Exploring unfamiliar tables
+
+Always start with a small `LIMIT` — **10 to 100 rows** is enough to understand
+structure, spot nulls, and get a feel for the data. Only increase the limit once you
+know what you're working with. The `/duckdb-skills:query` skill warns before executing
+queries that would return more than 1M rows, but that is a safety ceiling, not a
+target. To interrupt a running query, press `Ctrl+C` in the terminal.
 
 ### Combining descriptor metadata with data queries
 
@@ -90,7 +129,7 @@ LIMIT 10;
 ```python
 import duckdb
 
-df = duckdb.sql("SELECT * FROM read_parquet('my_table.parquet') LIMIT 1000").df()
+df = duckdb.sql("SELECT * FROM read_parquet('my_table.parquet') LIMIT 100").df()
 ```
 
 ---
@@ -163,6 +202,9 @@ Via DuckDB (preferred — use `/duckdb-skills:attach-db`):
 ATTACH '/path/to/my_database.sqlite' AS db (TYPE sqlite, READ_ONLY);
 SELECT * FROM db.my_table LIMIT 100;
 ```
+
+To find the correct table name, follow the same process as for DuckDB files — see
+**Finding the correct table name in a database file** above.
 
 Via Python stdlib (when DuckDB is unavailable):
 

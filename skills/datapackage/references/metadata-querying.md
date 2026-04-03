@@ -4,8 +4,44 @@
 
 - Discovering which resources (tables) a dataset contains.
 - Looking up what a resource or field means before loading data.
-- Surfacing usage warnings to help users avoid known data pitfalls.
+- Reading descriptions to understand data provenance, processing notes, and caveats.
 - Searching for a column by name or topic across all resources.
+
+---
+
+## Spec reference
+
+The Frictionless Data Package v2.0 specification and its JSON Schema are at
+<https://datapackage.org/>. The JSON Schema itself (useful for validation) is at:
+<https://datapackage.org/profiles/2.0/datapackage.json>
+
+The spec is intentionally permissive: it defines a set of standard fields but allows
+implementors to add non-standard keys anywhere — at the package, resource, or field
+level. When you encounter unrecognized keys (like `unit`, `warning`, `bytes`, `hash`,
+or source-specific metadata), treat them as informative extensions, not errors.
+
+**Non-tabular resources**: not all resources have a `schema`. A resource may describe
+an opaque file (PDF, ZIP, CSV without column metadata) and omit `schema.fields`
+entirely. When `schema` is absent, the resource is still valid — just treat it as a
+file reference rather than a queryable table.
+
+**Integrity fields**: real-world descriptors often include `bytes` (file size in bytes)
+and `hash` (checksum) on each resource. The `hash` value is usually in
+`algorithm:hex` format (e.g. `"md5:abc123..."` or `"sha256:def456..."`); if no prefix
+is present, assume MD5. For small files, use these to verify a download. For large
+files (hundreds of MB or more), hashing is slow — check `bytes` first as a quick
+sanity check, and only verify the hash if you suspect corruption.
+
+```bash
+# Find which resources have hashes
+jq '.resources[] | select(.hash != null) | {name, bytes, hash}' "$PKG"
+
+# Check hash of a downloaded file (macOS — strip any "md5:" prefix before comparing)
+md5 stations.csv
+
+# Check hash (Linux)
+md5sum stations.csv
+```
 
 ---
 
@@ -17,12 +53,27 @@ fields. Always query it selectively — extract only the slice you need.
 **Do not use Python for metadata queries.** A Python one-liner like
 `json.load(open('datapackage.json'))` loads the entire file into memory, violates the
 golden rule, and can't handle remote descriptors at all. Use jq or DuckDB instead —
-they are purpose-built for selective extraction and work on local and remote files
-without loading everything into context.
+they are purpose-built for selective extraction. jq works on local files; DuckDB can
+query both local files and remote URLs directly.
 
 ---
 
-## Step 0: Locate the descriptor
+## Workflow
+
+1. **Locate the descriptor** — find or download `datapackage.json` and note its base
+   URL if remote (needed to resolve relative resource paths).
+2. **Identify candidate resources** — search by name or description keyword.
+3. **Read the resource description** — it contains source notes, primary key
+   conventions, caveats, and processing history. Read it fully before presenting.
+4. **Read column descriptions** for the specific columns the user needs.
+5. **Confirm the data file path** — the `path` field is either a relative path
+   (resolve against the descriptor's base directory or base URL) or an absolute URL.
+6. **Load the data** *(only if the user asks)* — see
+   [`storage-backends.md`](storage-backends.md).
+
+---
+
+## Step 1: Locate the descriptor
 
 Check in this order:
 
@@ -67,12 +118,22 @@ Store the local path in `PKG` for reuse in queries below.
 
 ---
 
-## Primary tool: jq
+## Steps 2–5: Query the descriptor
+
+Use **jq** for local files (see below) or **DuckDB** for local or remote files (see
+the DuckDB section). Both tools work on the same descriptor — pick the one that fits
+your setup.
+
+---
+
+## Steps 2–5: jq (local files only)
 
 jq is the best tool for selective querying of a local JSON file. It reads only what
-you ask for and requires no additional setup.
+you ask for and requires no additional setup. **jq cannot fetch over HTTPS** — if the
+descriptor is remote, download it first with `curl -O <URL>`, then point jq at the
+local file. (To query a remote descriptor without downloading, use DuckDB instead.)
 
-### Discovery
+### Step 2: Identify candidate resources
 
 ```bash
 # Count total number of resources
@@ -84,34 +145,21 @@ jq -r '.resources[].name' "$PKG"
 # List resource names and their file formats
 jq -r '.resources[] | "\(.name)\t\(.format // "unknown")"' "$PKG"
 
-# List resource names and their paths
-jq -r '.resources[] | "\(.name)\t\(.path)"' "$PKG"
-```
-
-### Search
-
-```bash
 # Find resources whose name contains a keyword
 jq -r '.resources[] | select(.name | test("generation"; "i")) | .name' "$PKG"
 
 # Find resources whose description contains a keyword
 jq '.resources[] | select(.description | test("capacity factor"; "i")) | {name, description: .description[:300]}' "$PKG"
-
-# Find resources that have usage warnings
-jq -r '.resources[] | select(.description | test("Usage Warning"; "i")) | .name' "$PKG"
 ```
 
-### Resource metadata
+### Step 3: Read resource and field descriptions
 
 The spec is permissive — resources often carry extra non-spec fields beyond `name`,
 `path`, `description`, and `schema`. Explore openly:
 
 ```bash
-# Full description for one resource (includes processing notes, primary key, warnings)
+# Full description for one resource (includes processing notes, primary key, caveats)
 jq -r '.resources[] | select(.name == "my_table") | .description' "$PKG"
-
-# Data file path for a resource (may be a relative path or a URL)
-jq -r '.resources[] | select(.name == "my_table") | .path' "$PKG"
 
 # See all keys present on a resource (not just spec-defined ones)
 jq '.resources[] | select(.name == "my_table") | keys' "$PKG"
@@ -120,12 +168,9 @@ jq '.resources[] | select(.name == "my_table") | keys' "$PKG"
 jq '.resources[] | select(.name == "my_table") | del(.schema)' "$PKG"
 ```
 
-### Column (field) queries
-
 Fields are also permissive — in addition to `name`, `description`, and `type`, a
-field may carry extra metadata such as `unit` (units of measure), `constraints`,
-`warnings`, or dataset-specific annotations. Always explore the full field object
-rather than assuming only spec-defined keys are present:
+field may carry extra metadata such as `unit`, `constraints`, `warning`, or
+dataset-specific annotations. Always explore the full field object:
 
 ```bash
 # Column names for a resource
@@ -140,8 +185,8 @@ jq '.resources[] | select(.name == "my_table") | .schema.fields[] | {name, descr
 # Find fields that have a unit defined
 jq '.resources[] | select(.name == "my_table") | .schema.fields[] | select(.unit != null) | {name, unit}' "$PKG"
 
-# Find fields that have an inline warning
-jq '.resources[] | select(.name == "my_table") | .schema.fields[] | select(.warning != null or (.description | test("WARNING"; "i"))) | {name, warning, description}' "$PKG"
+# Find fields that carry a non-standard warning annotation
+jq '.resources[] | select(.name == "my_table") | .schema.fields[] | select(.warning != null) | {name, warning}' "$PKG"
 
 # See all keys used across all fields in a resource (reveals non-spec extensions)
 jq '[.resources[] | select(.name == "my_table") | .schema.fields[] | keys[]] | unique' "$PKG"
@@ -150,11 +195,7 @@ jq '[.resources[] | select(.name == "my_table") | .schema.fields[] | keys[]] | u
 jq '.resources[] | {table: .name, fields: [.schema.fields[] | select(.name == "plant_id_eia")]} | select(.fields | length > 0)' "$PKG"
 ```
 
-### Package-level metadata
-
-The spec defines a core set of fields (`name`, `title`, `description`, `version`,
-`licenses`, etc.) but descriptors often contain extra non-spec fields with useful
-context. Explore openly rather than querying only known fields:
+Package-level metadata follows the same pattern:
 
 ```bash
 # See all top-level fields (excluding the potentially huge resources array)
@@ -164,28 +205,45 @@ jq 'del(.resources)' "$PKG"
 jq 'keys' "$PKG"
 ```
 
+### Steps 4–5: Confirm the path, then load
+
+```bash
+# Data file path for a resource (may be a relative path or a URL)
+jq -r '.resources[] | select(.name == "my_table") | .path' "$PKG"
+
+# List resource names and their paths
+jq -r '.resources[] | "\(.name)\t\(.path)"' "$PKG"
+```
+
+If the path is relative, prepend `$BASE_URL/` (recorded in Step 1). Then load —
+see [`storage-backends.md`](storage-backends.md).
+
 ---
 
-## Alternative: DuckDB via `/duckdb-skills:query`
+## Steps 2–5: DuckDB (local and remote)
 
-DuckDB can query the descriptor as a JSON file using SQL. Use `/duckdb-skills:query`
-to run these — it handles session state, natural language, and large result warnings.
+DuckDB is a standalone CLI tool — no Python environment required. Install it with
+`brew install duckdb`, `conda install duckdb`, or download from <https://duckdb.org/>.
+Use `/duckdb-skills:query` to run queries through it — that skill handles CLI
+invocation, session state, natural language, and large result warnings.
+
+DuckDB can query the descriptor as a JSON file using SQL:
 
 ```sql
--- Count resources
+-- Count resources (Step 2)
 SELECT count(*)
 FROM (SELECT unnest(resources) AS r FROM read_json('datapackage.json', format='auto'));
 
--- List all resource names and paths
+-- List all resource names and paths (Steps 2 and 4)
 SELECT r->>'$.name' AS name, r->>'$.path' AS path
 FROM (SELECT unnest(resources) AS r FROM read_json('datapackage.json', format='auto'));
 
--- Get description for a specific resource
+-- Get description for a specific resource (Step 3)
 SELECT r->>'$.description' AS description
 FROM (SELECT unnest(resources) AS r FROM read_json('datapackage.json', format='auto'))
 WHERE r->>'$.name' = 'my_table';
 
--- List all metadata for every field in a resource (fields may have non-spec keys)
+-- List all metadata for every field in a resource (Step 3)
 SELECT f AS field_metadata
 FROM (
     SELECT unnest(r->'$.schema.fields') AS f
@@ -193,7 +251,7 @@ FROM (
     WHERE r->>'$.name' = 'my_table'
 );
 
--- Or select specific known fields plus any extras you discover
+-- Select specific known fields plus any extras you discover (Step 3)
 SELECT
     f->>'$.name' AS name,
     f->>'$.description' AS description,
@@ -205,11 +263,11 @@ FROM (
     WHERE r->>'$.name' = 'my_table'
 );
 
--- Explore all top-level package fields (excluding resources)
+-- Explore all top-level package fields, excluding resources (Step 3)
 SELECT * EXCLUDE (resources) FROM read_json('datapackage.json', format='auto');
 ```
 
-DuckDB can also read a remote descriptor directly without downloading:
+DuckDB can also read a remote descriptor directly without downloading (Step 1 optional):
 
 ```sql
 SELECT r->>'$.name' AS name
@@ -220,11 +278,11 @@ FROM (
 ```
 
 DuckDB is especially useful when you want to **query descriptor metadata and data
-files in the same session**. Once you have found a resource's path from the descriptor,
-you can query it immediately using any DuckDB-supported format — not just Parquet:
+files in the same session** (Steps 3–5). Once you have found a resource's path from
+the descriptor, you can query it immediately:
 
 ```sql
--- After finding a resource path from the descriptor, query it directly
+-- After finding a resource path from the descriptor, query it directly (Step 5)
 SELECT * FROM read_parquet('https://example.com/data/my_table.parquet') LIMIT 10;
 SELECT * FROM read_csv('https://example.com/data/my_table.csv') LIMIT 10;
 -- For attached DuckDB or SQLite files, use the alias set up by attach-db
@@ -241,38 +299,3 @@ exploring unfamiliar tables:
 ```sql
 SELECT * FROM read_parquet('large_table.parquet') LIMIT 1000;
 ```
-
----
-
-## Mandatory: surface usage warnings
-
-Before presenting any resource to the user, **always check for and display usage
-warnings**. Well-maintained datapackages embed explicit warnings about known
-limitations directly in the `description` field.
-
-```bash
-# Extract the Usage Warnings section from a resource description
-jq -r '.resources[] | select(.name == "my_table") | .description' "$PKG" \
-  | awk '/Usage Warning/,0'
-```
-
-Also scan individual field descriptions for inline warnings:
-
-```bash
-jq '.resources[] | select(.name == "my_table") | .schema.fields[] | select(.description | test("WARNING|caution"; "i"))' "$PKG"
-```
-
-**Always present warnings prominently and verbatim.** Don't paraphrase — quote the
-original text, then explain the practical implication in plain language.
-
----
-
-## Recommended workflow
-
-1. **Identify candidates** — search by name keyword or description keyword.
-2. **Read the resource description** — source, processing notes, primary key, warnings.
-3. **Read column descriptions** for the columns the user actually needs.
-4. **Surface all warnings** before providing loading code.
-5. **Confirm the data file path** — the `path` field is either a relative path
-   (resolve against the descriptor's base directory or base URL) or an absolute URL.
-6. **Load the data** *(only if the user asks)* — see [`storage-backends.md`](storage-backends.md).

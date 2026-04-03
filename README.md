@@ -35,3 +35,9 @@ This repository contains experimental [agent skills](https://agentskills.io) rel
 ## Agentic (Meta)Data Exploration
 
 - [Coding agents for data analysis](https://simonw.github.io/nicar-2026-coding-agents/) (Simon Willison)
+
+## Other related skills
+
+- [duckdb-skills](https://github.com/duckdb/duckdb-skills)
+- [marimo-pair](https://github.com/marimo-team/marimo-pair)
+- [skill-creator](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/skill-creator)
