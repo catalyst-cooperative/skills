@@ -1,0 +1,2139 @@
+{
+  "profile": "tabular-data-package",
+  "name": "ferc714-extracted-xbrl",
+  "title": "Ferc1 data extracted from XBRL filings",
+  "resources": [
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "list_of_schedules_01_0_duration",
+      "dialect": {
+        "table": "list_of_schedules_01_0_duration"
+      },
+      "title": "01.0 - Schedule - List of Schedules - duration",
+      "description": "ferc:Form714Abstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "start_date",
+            "title": "Start Date",
+            "type": "date",
+            "format": "default",
+            "description": "Start date of report period"
+          },
+          {
+            "name": "end_date",
+            "title": "End Date",
+            "type": "date",
+            "format": "default",
+            "description": "End date of report period"
+          },
+          {
+            "name": "schedule_generating_plants_included_in_reporting_balancing_authority_area_abstract",
+            "title": "Schedule Generating Plants Included in Reporting Balancing Authority Area [Abstract]",
+            "type": "string",
+            "format": "default",
+            "description": "ferc:ScheduleGeneratingPlantsIncludedInReportingBalancingAuthorityAreaAbstract"
+          },
+          {
+            "name": "schedule_balancing_authority_area_scheduled_and_actual_interchange_abstract",
+            "title": "Schedule Balancing Authority Area Scheduled and Actual Interchange [Abstract]",
+            "type": "string",
+            "format": "default",
+            "description": "ferc:ScheduleBalancingAuthorityAreaScheduledAndActualInterchangeAbstract"
+          },
+          {
+            "name": "schedule_balancing_authority_area_system_lambda_data_and_description_of_economic_dispatch_abstract",
+            "title": "Schedule Balancing Authority Area System Lambda Data and Description of Economic Dispatch [Abstract]",
+            "type": "string",
+            "format": "default",
+            "description": "ferc:ScheduleBalancingAuthorityAreaSystemLambdaDataAndDescriptionOfEconomicDispatchAbstract"
+          },
+          {
+            "name": "schedule_balancing_authority_area_monthly_capabilities_at_time_of_monthly_peak_demand_abstract",
+            "title": "Schedule Balancing Authority Area Monthly Capabilities at Time of Monthly Peak Demand [Abstract]",
+            "type": "string",
+            "format": "default",
+            "description": "ferc:ScheduleBalancingAuthorityAreaMonthlyCapabilitiesAtTimeOfMonthlyPeakDemandAbstract"
+          },
+          {
+            "name": "schedule_electric_utilities_that_compose_the_planning_area_abstract",
+            "title": "Schedule Electric Utilities That Compose Planning Area [Abstract]",
+            "type": "string",
+            "format": "default",
+            "description": "ferc:ScheduleElectricUtilitiesThatComposeThePlanningAreaAbstract"
+          },
+          {
+            "name": "schedule_identification_and_certification_abstract",
+            "title": "Schedule Identification and Certification [Abstract]",
+            "type": "string",
+            "format": "default",
+            "description": "ferc:ScheduleIdentificationAndCertificationAbstract"
+          },
+          {
+            "name": "schedule_balancing_authority_area_net_energy_for_load_and_peak_demand_sources_by_month_abstract",
+            "title": "Schedule Balancing Authority Area Net Energy for Load and Peak Demand Sources by Month [Abstract]",
+            "type": "string",
+            "format": "default",
+            "description": "ferc:ScheduleBalancingAuthorityAreaNetEnergyForLoadAndPeakDemandSourcesByMonthAbstract"
+          },
+          {
+            "name": "schedule_planning_area_hourly_demand_and_forecast_summer_and_winter_peak_demand_and_annual_net_energy_for_load_abstract",
+            "title": "Schedule Planning Area Hourly Demand and Forecast Summer and Winter Peak Demand and Annual Net Energy for Load A [Abstract]",
+            "type": "string",
+            "format": "default",
+            "description": "ferc:SchedulePlanningAreaHourlyDemandAndForecastSummerAndWinterPeakDemandAndAnnualNetEnergyForLoadAbstract"
+          },
+          {
+            "name": "schedule_planning_area_hourly_demand_and_forecast_summer_and_winter_peak_demand_and_annual_net_energy_for_load_b_abstract",
+            "title": "Schedule Planning Area Hourly Demand and Forecast Summer and Winter Peak Demand and Annual Net Energy for Load B [Abstract]",
+            "type": "string",
+            "format": "default",
+            "description": "ferc:SchedulePlanningAreaHourlyDemandAndForecastSummerAndWinterPeakDemandAndAnnualNetEnergyForLoadBAbstract"
+          },
+          {
+            "name": "adjacent_balancing_authority_area_interconnections_abstract",
+            "title": "Adjacent Balancing Authority Area Interconnections [Abstract]",
+            "type": "string",
+            "format": "default",
+            "description": "ferc:AdjacentBalancingAuthorityAreaInterconnectionsAbstract"
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "start_date",
+          "end_date"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "list_of_schedules_01_0_instant",
+      "dialect": {
+        "table": "list_of_schedules_01_0_instant"
+      },
+      "title": "01.0 - Schedule - List of Schedules - instant",
+      "description": "ferc:Form714Abstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "date",
+            "title": "Instant Date",
+            "type": "date",
+            "format": "default",
+            "description": "Date of instant period"
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "date"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "identification_and_certification_01_1_duration",
+      "dialect": {
+        "table": "identification_and_certification_01_1_duration"
+      },
+      "title": "01.1 - Schedule - Identification and Certification - duration",
+      "description": "ferc:ScheduleIdentificationAndCertificationAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "start_date",
+            "title": "Start Date",
+            "type": "date",
+            "format": "default",
+            "description": "Start date of report period"
+          },
+          {
+            "name": "end_date",
+            "title": "End Date",
+            "type": "date",
+            "format": "default",
+            "description": "End date of report period"
+          },
+          {
+            "name": "respondent_mailing_address",
+            "title": "Respondent Mailing Address",
+            "type": "string",
+            "format": "default",
+            "description": "Mailing address of respondent."
+          },
+          {
+            "name": "form_type",
+            "title": "Form Type",
+            "type": "string",
+            "format": "default",
+            "description": "Enter proper form type from the provided values in the taxonomy."
+          },
+          {
+            "name": "certifying_official_date",
+            "title": "Certifying Official, Date",
+            "type": "date",
+            "format": "default",
+            "description": "Date of certification."
+          },
+          {
+            "name": "planning_area_flag",
+            "title": "Planning Area Flag",
+            "type": "boolean",
+            "format": "default",
+            "description": "Indicate if Planning Area."
+          },
+          {
+            "name": "submission_type",
+            "title": "Original Submission or Resubmission",
+            "type": "string",
+            "format": "default",
+            "description": "Enter a value of \"O\" for an original submission.  Enter a value of \"R\" for a resubmission."
+          },
+          {
+            "name": "balancing_authority_area_name",
+            "title": "Balancing Authority Area Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of Balancing Authority Area."
+          },
+          {
+            "name": "title_of_contact_person",
+            "title": "Title of Contact Person",
+            "type": "string",
+            "format": "default",
+            "description": "Title of contact person for the respondent."
+          },
+          {
+            "name": "respondent_identification_code",
+            "title": "Respondent Identification, Code",
+            "type": "string",
+            "format": "default",
+            "description": "Identification code of the respondent."
+          },
+          {
+            "name": "title_of_certifying_official",
+            "title": "Title of Certifying Official",
+            "type": "string",
+            "format": "default",
+            "description": "Title of certifying official."
+          },
+          {
+            "name": "planning_area_name",
+            "title": "Planning Area Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of planning area."
+          },
+          {
+            "name": "name_of_certifying_official",
+            "title": "Name of Certifying Official",
+            "type": "string",
+            "format": "default",
+            "description": "Name of certifying official."
+          },
+          {
+            "name": "legal_entity_identifier",
+            "title": "Legal Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Legal Entity Identification Number issued by Global Legal Entity Identifier Foundation (GLEIF.org). The Legal Entity Identifier (LEI) is a 20-character, alpha-numeric code based on the ISO 17442 standard developed by the International Organization for Standardization (ISO)."
+          },
+          {
+            "name": "unit_dispatch_not_based_on_economic_dispatch_of_thermal_units",
+            "title": "Unit Dispatch Not Based on Economic Dispatch of Thermal Units",
+            "type": "boolean",
+            "format": "default",
+            "description": "Enter a value of \"True\" if unit dispatch is not based on the economic dispatch of thermal units (i.e., a system lambda is not calculated).  Enter a value of \"False\" if unit dispatch is based on the economic dispatch of thermal units."
+          },
+          {
+            "name": "balancing_authority_area_flag",
+            "title": "Balancing Authority Area Flag",
+            "type": "boolean",
+            "format": "default",
+            "description": "Indicate if Balancing Authority Area."
+          },
+          {
+            "name": "report_year_period",
+            "title": "Report Year Period",
+            "type": "string",
+            "format": "default",
+            "description": "Year and period of the report in the following format 2019/1Q."
+          },
+          {
+            "name": "report_period",
+            "title": "Report Period",
+            "type": "string",
+            "format": "default",
+            "description": "Period of the report in the following format Q1, Q2, Q3, Q4."
+          },
+          {
+            "name": "phone_extension_of_contact_person",
+            "title": "Phone Extension of Contact Person",
+            "type": "string",
+            "format": "default",
+            "description": "Phone extension of contact person for the respondent."
+          },
+          {
+            "name": "telephone_of_contact_person",
+            "title": "Telephone of Contact Person, Including Area Code",
+            "type": "string",
+            "format": "default",
+            "description": "Telephone of contact person, including area code."
+          },
+          {
+            "name": "name_of_contact_person",
+            "title": "Name of Contact Person",
+            "type": "string",
+            "format": "default",
+            "description": "Name of contact person for the respondent."
+          },
+          {
+            "name": "report_year",
+            "title": "Report Year",
+            "type": "integer",
+            "format": "default",
+            "description": "Year of the report."
+          },
+          {
+            "name": "migrated_data",
+            "title": "Migrated Data",
+            "type": "boolean",
+            "format": "default",
+            "description": "This indicates the values shown in the rendering is historical data migrated from the database. If the value is true, it means that the values are migrated."
+          },
+          {
+            "name": "respondent_legal_name",
+            "title": "Respondent Identification, Name",
+            "type": "string",
+            "format": "default",
+            "description": "Exact legal name of the respondent."
+          },
+          {
+            "name": "revised_filing_explanation",
+            "title": "Revised Filing Explanation",
+            "type": "string",
+            "format": "default",
+            "description": "Explanation for revised filing."
+          },
+          {
+            "name": "email_of_contact_person",
+            "title": "Email of Contact Person",
+            "type": "string",
+            "format": "default",
+            "description": "Email of contact person for the respondent."
+          },
+          {
+            "name": "company_identifier",
+            "title": "Company Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique entity Identification Number used by FERC."
+          },
+          {
+            "name": "vendor_name",
+            "title": "Vendor Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of software company used for creating the instance file submitted. If the filer created the submission, enter \"none\" or \"NA\"."
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "start_date",
+          "end_date"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "identification_and_certification_01_1_instant",
+      "dialect": {
+        "table": "identification_and_certification_01_1_instant"
+      },
+      "title": "01.1 - Schedule - Identification and Certification - instant",
+      "description": "ferc:ScheduleIdentificationAndCertificationAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "date",
+            "title": "Instant Date",
+            "type": "date",
+            "format": "default",
+            "description": "Date of instant period"
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "date"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "generating_plants_included_in_reporting_balancing_authority_area_02_1_duration",
+      "dialect": {
+        "table": "generating_plants_included_in_reporting_balancing_authority_area_02_1_duration"
+      },
+      "title": "02.1 - Schedule - Generating Plants Included in Reporting Balancing Authority Area - duration",
+      "description": "ferc:ScheduleGeneratingPlantsIncludedInReportingBalancingAuthorityAreaAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "start_date",
+            "title": "Start Date",
+            "type": "date",
+            "format": "default",
+            "description": "Start date of report period"
+          },
+          {
+            "name": "end_date",
+            "title": "End Date",
+            "type": "date",
+            "format": "default",
+            "description": "End date of report period"
+          },
+          {
+            "name": "generating_plants_included_in_reporting_balancing_authority_area_axis",
+            "title": "Generating Plants Included in Reporting Balancing Authority Area [Axis]",
+            "type": "string",
+            "format": "default",
+            "description": "Typed dimension used to distinguish a set of related facts about generating plants included in reporting balancing authority area."
+          },
+          {
+            "name": "integrated_net_load_on_the_plant_at_the_hour_of_the_annual_peak_demand_based_on_net_energy_for_load",
+            "title": "Integrated Net Load on Plant at Hour of Annual Peak Demand Based on Net Energy for Load",
+            "type": "number",
+            "format": "default",
+            "description": "Integrated Net Load on the Plant at the Hour of the Annual Peak Demand Based on Net Energy for Load expressed in megawatts."
+          },
+          {
+            "name": "plant_name",
+            "title": "Plant Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of the generating plant (generating plants consists of steam plants of less than 25,000 Kw; internal combustion and gas turbine-plants, conventional hydro plants and pumped storage plants of less than 10,000 Kw installed capacity)"
+          },
+          {
+            "name": "plant_available_capacity_at_the_hour_of_the_annual_peak_demand_on_net_energy_for_load",
+            "title": "Plant Available Capacity at Hour of Annual Peak Demand on Net Energy for Load",
+            "type": "number",
+            "format": "default",
+            "description": "Plant Available Capacity at the Hour of the Annual Peak Demand on Net Energy for Load expressed in megawatts."
+          },
+          {
+            "name": "electric_utility_name",
+            "title": "Electric Utility Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of electric utility."
+          },
+          {
+            "name": "order_number",
+            "title": "Order Number",
+            "type": "number",
+            "format": "default",
+            "description": "This is used to order a sequenced table.  This field is added to a table to control ordering of the items on the table.  The value must always be an integer. If this is not used, instance fact values in a sequenced table are shown in a random order in rendering."
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "start_date",
+          "end_date",
+          "generating_plants_included_in_reporting_balancing_authority_area_axis"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "generating_plants_included_in_reporting_balancing_authority_area_02_1_instant",
+      "dialect": {
+        "table": "generating_plants_included_in_reporting_balancing_authority_area_02_1_instant"
+      },
+      "title": "02.1 - Schedule - Generating Plants Included in Reporting Balancing Authority Area - instant",
+      "description": "ferc:ScheduleGeneratingPlantsIncludedInReportingBalancingAuthorityAreaAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "date",
+            "title": "Instant Date",
+            "type": "date",
+            "format": "default",
+            "description": "Date of instant period"
+          },
+          {
+            "name": "generating_plants_included_in_reporting_balancing_authority_area_axis",
+            "title": "Generating Plants Included in Reporting Balancing Authority Area [Axis]",
+            "type": "string",
+            "format": "default",
+            "description": "Typed dimension used to distinguish a set of related facts about generating plants included in reporting balancing authority area."
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "date",
+          "generating_plants_included_in_reporting_balancing_authority_area_axis"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "generating_plants_included_in_reporting_balancing_authority_area_totals_02_1_duration",
+      "dialect": {
+        "table": "generating_plants_included_in_reporting_balancing_authority_area_totals_02_1_duration"
+      },
+      "title": "02.1 - Schedule - Generating Plants Included in Reporting Balancing Authority Area - Totals - duration",
+      "description": "ferc:ScheduleGeneratingPlantsIncludedInReportingBalancingAuthorityAreaAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "start_date",
+            "title": "Start Date",
+            "type": "date",
+            "format": "default",
+            "description": "Start date of report period"
+          },
+          {
+            "name": "end_date",
+            "title": "End Date",
+            "type": "date",
+            "format": "default",
+            "description": "End date of report period"
+          },
+          {
+            "name": "plant_available_capacity_at_the_hour_of_the_annual_peak_demand_on_net_energy_for_load",
+            "title": "Plant Available Capacity at Hour of Annual Peak Demand on Net Energy for Load",
+            "type": "number",
+            "format": "default",
+            "description": "Plant Available Capacity at the Hour of the Annual Peak Demand on Net Energy for Load expressed in megawatts."
+          },
+          {
+            "name": "integrated_net_load_on_the_plant_at_the_hour_of_the_annual_peak_demand_based_on_net_energy_for_load",
+            "title": "Integrated Net Load on Plant at Hour of Annual Peak Demand Based on Net Energy for Load",
+            "type": "number",
+            "format": "default",
+            "description": "Integrated Net Load on the Plant at the Hour of the Annual Peak Demand Based on Net Energy for Load expressed in megawatts."
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "start_date",
+          "end_date"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "generating_plants_included_in_reporting_balancing_authority_area_totals_02_1_instant",
+      "dialect": {
+        "table": "generating_plants_included_in_reporting_balancing_authority_area_totals_02_1_instant"
+      },
+      "title": "02.1 - Schedule - Generating Plants Included in Reporting Balancing Authority Area - Totals - instant",
+      "description": "ferc:ScheduleGeneratingPlantsIncludedInReportingBalancingAuthorityAreaAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "date",
+            "title": "Instant Date",
+            "type": "date",
+            "format": "default",
+            "description": "Date of instant period"
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "date"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "balancing_authority_area_monthly_capabilities_at_time_of_monthly_peak_demand_02_2_duration",
+      "dialect": {
+        "table": "balancing_authority_area_monthly_capabilities_at_time_of_monthly_peak_demand_02_2_duration"
+      },
+      "title": "02.2 - Schedule - Balancing Authority Area Monthly Capabilities at Time of Monthly Peak Demand - duration",
+      "description": "ferc:ScheduleBalancingAuthorityAreaMonthlyCapabilitiesAtTimeOfMonthlyPeakDemandAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "start_date",
+            "title": "Start Date",
+            "type": "date",
+            "format": "default",
+            "description": "Start date of report period"
+          },
+          {
+            "name": "end_date",
+            "title": "End Date",
+            "type": "date",
+            "format": "default",
+            "description": "End date of report period"
+          },
+          {
+            "name": "month_axis",
+            "title": "Month [Axis]",
+            "type": "string",
+            "format": "default",
+            "description": "Information categorized by month."
+          },
+          {
+            "name": "unavailable_capability_due_to_other_outage_and_derating",
+            "title": "Unavailable Capability Due To, Other Outage and Derating",
+            "type": "number",
+            "format": "default",
+            "description": "Unavailable capability from plants due to other outage and derating expressed in megawatts."
+          },
+          {
+            "name": "plants_available_capability",
+            "title": "Plants Available Capability",
+            "type": "number",
+            "format": "default",
+            "description": "Available capability from plants expressed in megawatts."
+          },
+          {
+            "name": "unavailable_capability_due_to_planned_outage_and_derating",
+            "title": "Unavailable Capability Due To, Planned Outage and Derating",
+            "type": "number",
+            "format": "default",
+            "description": "Unavailable capability from plants due to planned outage and derating expressed in megawatts."
+          },
+          {
+            "name": "net_capability_from_plants",
+            "title": "Net Capability from Plants",
+            "type": "number",
+            "format": "default",
+            "description": "Total Net Capability from Plants (MW) (Available Capability + Planned Outage and Derating + Unplanned Outage and Derating + Other Outage and Derating)."
+          },
+          {
+            "name": "unavailable_capability_due_to_unplanned_outage_and_derating",
+            "title": "Unavailable Capability Due To, Unplanned Outage and Derating",
+            "type": "number",
+            "format": "default",
+            "description": "Unavailable capability from plants due to unplanned outage and derating expressed in megawatts."
+          },
+          {
+            "name": "external_to_the_balancing_authority_area_net_unit_or_firm_capability_available",
+            "title": "External to Balancing Authority Area Net Unit or Firm Capability, Available",
+            "type": "number",
+            "format": "default",
+            "description": "External to the Balancing Authority Area Net Unit or Firm Available Capability expressed in megawatts."
+          },
+          {
+            "name": "external_to_the_balancing_authority_area_net_unit_or_firm_capability_not_available",
+            "title": "External to Balancing Authority Area Net Unit or Firm Capability, Not Available",
+            "type": "number",
+            "format": "default",
+            "description": "External to the Balancing Authority Area Net Unit or Firm Not Available Capability expressed in megawatts."
+          },
+          {
+            "name": "net_capability_at_the_time_of_the_monthly_peak_demand",
+            "title": "Net Capability at Time of Monthly Peak Demand",
+            "type": "number",
+            "format": "default",
+            "description": "Total Net Capability at the time of the monthly peak demand (MW) (Net Capability From Plants + External to the Balancing Authority Area Net Unit or Firm Available Capability expressed in megawatts + External to the Balancing Authority Area Net Unit or Firm Not Available Capability expressed in megawatts)."
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "start_date",
+          "end_date",
+          "month_axis"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "balancing_authority_area_monthly_capabilities_at_time_of_monthly_peak_demand_02_2_instant",
+      "dialect": {
+        "table": "balancing_authority_area_monthly_capabilities_at_time_of_monthly_peak_demand_02_2_instant"
+      },
+      "title": "02.2 - Schedule - Balancing Authority Area Monthly Capabilities at Time of Monthly Peak Demand - instant",
+      "description": "ferc:ScheduleBalancingAuthorityAreaMonthlyCapabilitiesAtTimeOfMonthlyPeakDemandAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "date",
+            "title": "Instant Date",
+            "type": "date",
+            "format": "default",
+            "description": "Date of instant period"
+          },
+          {
+            "name": "month_axis",
+            "title": "Month [Axis]",
+            "type": "string",
+            "format": "default",
+            "description": "Information categorized by month."
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "date",
+          "month_axis"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "balancing_authority_area_net_energy_for_load_and_peak_demand_sources_by_month_02_3_duration",
+      "dialect": {
+        "table": "balancing_authority_area_net_energy_for_load_and_peak_demand_sources_by_month_02_3_duration"
+      },
+      "title": "02.3 - Schedule - Balancing Authority Area Net Energy for Load and Peak Demand Sources by Month - duration",
+      "description": "ferc:ScheduleBalancingAuthorityAreaNetEnergyForLoadAndPeakDemandSourcesByMonthAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "start_date",
+            "title": "Start Date",
+            "type": "date",
+            "format": "default",
+            "description": "Start date of report period"
+          },
+          {
+            "name": "end_date",
+            "title": "End Date",
+            "type": "date",
+            "format": "default",
+            "description": "End date of report period"
+          },
+          {
+            "name": "month_axis",
+            "title": "Month [Axis]",
+            "type": "string",
+            "format": "default",
+            "description": "Information categorized by month."
+          },
+          {
+            "name": "net_energy_for_load_and_peak_demand_sources_by_month_net_energy_for_load",
+            "title": "Net Energy for Load and Peak Demand Sources by Month, Net Energy for Load",
+            "type": "number",
+            "format": "default",
+            "description": "Net Energy for Load (MWh) (Balancing Authority Area Net Generation + Net Actual Interchange)."
+          },
+          {
+            "name": "net_energy_for_load_and_peak_demand_sources_by_month_monthly_minimum_demand",
+            "title": "Net Energy for Load and Peak Demand Sources by Month, Monthly Minimum Demand",
+            "type": "number",
+            "format": "default",
+            "description": "Balancing authority area monthly minimum demand, in megawatts."
+          },
+          {
+            "name": "net_energy_for_load_and_peak_demand_sources_by_month_balancing_authority_area_net_generation",
+            "title": "Net Energy for Load and Peak Demand Sources by Month, Balancing Authority Area Net Generation",
+            "type": "number",
+            "format": "default",
+            "description": "Balancing authority area net generation, in megawatt hours."
+          },
+          {
+            "name": "load_sources_at_time_of_balancing_authority_area_monthly_peak_demand_output_of_generating_plants",
+            "title": "Load Sources at Time of Balancing Authority Area Monthly Peak Demand, Output of Generating Plants",
+            "type": "number",
+            "format": "default",
+            "description": "Output of generating plants, in megawatts."
+          },
+          {
+            "name": "load_sources_at_time_of_balancing_authority_area_monthly_peak_demand_unit_or_firm_sales",
+            "title": "Load Sources at Time of Balancing Authority Area Monthly Peak Demand, Unit or Firm Sales",
+            "type": "number",
+            "format": "default",
+            "description": "Balancing authority area unit or firm sales, in megawatts."
+          },
+          {
+            "name": "load_sources_at_time_of_balancing_authority_area_monthly_peak_demand_net_non_firm_and_inadvertent",
+            "title": "Load Sources at Time of Balancing Authority Area Monthly Peak Demand, Net Non Firm and Inadvertent",
+            "type": "number",
+            "format": "default",
+            "description": "Balancing authority area net non-firm & inadvertent, in megawatts."
+          },
+          {
+            "name": "load_sources_at_time_of_balancing_authority_area_monthly_peak_demand_unit_or_firm_purchases",
+            "title": "Load Sources at Time of Balancing Authority Area Monthly Peak Demand, Unit or Firm Purchases",
+            "type": "number",
+            "format": "default",
+            "description": "Unit or firm purchases, in megawatts."
+          },
+          {
+            "name": "net_energy_for_load_and_peak_demand_sources_by_month_net_actual_interchange",
+            "title": "Net Energy for Load and Peak Demand Sources by Month, Net Actual Interchange",
+            "type": "number",
+            "format": "default",
+            "description": "Net actual interchange, in megawatt hours."
+          },
+          {
+            "name": "load_sources_at_time_of_balancing_authority_area_monthly_peak_demand_monthly_peak_demand",
+            "title": "Load Sources at Time of Balancing Authority Area Monthly Peak Demand, Monthly Peak Demand",
+            "type": "number",
+            "format": "default",
+            "description": "Monthly Peak Demand (MW) (Output of Generating Plants + Unit or Firm Purchases + Unit or Firm Sales + Net Non-Firm & Inadvertent)."
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "start_date",
+          "end_date",
+          "month_axis"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "balancing_authority_area_net_energy_for_load_and_peak_demand_sources_by_month_02_3_instant",
+      "dialect": {
+        "table": "balancing_authority_area_net_energy_for_load_and_peak_demand_sources_by_month_02_3_instant"
+      },
+      "title": "02.3 - Schedule - Balancing Authority Area Net Energy for Load and Peak Demand Sources by Month - instant",
+      "description": "ferc:ScheduleBalancingAuthorityAreaNetEnergyForLoadAndPeakDemandSourcesByMonthAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "date",
+            "title": "Instant Date",
+            "type": "date",
+            "format": "default",
+            "description": "Date of instant period"
+          },
+          {
+            "name": "month_axis",
+            "title": "Month [Axis]",
+            "type": "string",
+            "format": "default",
+            "description": "Information categorized by month."
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "date",
+          "month_axis"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "adjacent_balancing_authority_area_interconnections_02_4_duration",
+      "dialect": {
+        "table": "adjacent_balancing_authority_area_interconnections_02_4_duration"
+      },
+      "title": "02.4 - Schedule - Adjacent Balancing Authority Area Interconnections - duration",
+      "description": "ferc:AdjacentBalancingAuthorityAreaInterconnectionsAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "start_date",
+            "title": "Start Date",
+            "type": "date",
+            "format": "default",
+            "description": "Start date of report period"
+          },
+          {
+            "name": "end_date",
+            "title": "End Date",
+            "type": "date",
+            "format": "default",
+            "description": "End date of report period"
+          },
+          {
+            "name": "adjacent_balancing_authority_area_interconnections_axis",
+            "title": "Adjacent Balancing Authority Area Interconnections [Axis]",
+            "type": "string",
+            "format": "default",
+            "description": "Typed dimension used to distinguish a set of related facts about adjacent balancing authority area interconnections."
+          },
+          {
+            "name": "name_of_adjacent_balancing_authority_area",
+            "title": "Name of Adjacent Balancing Authority Area",
+            "type": "string",
+            "format": "default",
+            "description": "Name of Adjacent Balancing Authority Area."
+          },
+          {
+            "name": "balancing_authority_area_interconnection_line_or_bus_names",
+            "title": "Balancing Authority Area Interconnection Line or Bus Names",
+            "type": "string",
+            "format": "default",
+            "description": "Balancing Authority Area Interconnection Line or Bus Names."
+          },
+          {
+            "name": "line_or_bus_voltage",
+            "title": "Line or Bus Voltage",
+            "type": "number",
+            "format": "default",
+            "description": "Line or Bus Voltage expressed in kilovolts."
+          },
+          {
+            "name": "order_number",
+            "title": "Order Number",
+            "type": "number",
+            "format": "default",
+            "description": "This is used to order a sequenced table.  This field is added to a table to control ordering of the items on the table.  The value must always be an integer. If this is not used, instance fact values in a sequenced table are shown in a random order in rendering."
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "start_date",
+          "end_date",
+          "adjacent_balancing_authority_area_interconnections_axis"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "adjacent_balancing_authority_area_interconnections_02_4_instant",
+      "dialect": {
+        "table": "adjacent_balancing_authority_area_interconnections_02_4_instant"
+      },
+      "title": "02.4 - Schedule - Adjacent Balancing Authority Area Interconnections - instant",
+      "description": "ferc:AdjacentBalancingAuthorityAreaInterconnectionsAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "date",
+            "title": "Instant Date",
+            "type": "date",
+            "format": "default",
+            "description": "Date of instant period"
+          },
+          {
+            "name": "adjacent_balancing_authority_area_interconnections_axis",
+            "title": "Adjacent Balancing Authority Area Interconnections [Axis]",
+            "type": "string",
+            "format": "default",
+            "description": "Typed dimension used to distinguish a set of related facts about adjacent balancing authority area interconnections."
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "date",
+          "adjacent_balancing_authority_area_interconnections_axis"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "balancing_authority_area_scheduled_and_actual_interchange_02_5_duration",
+      "dialect": {
+        "table": "balancing_authority_area_scheduled_and_actual_interchange_02_5_duration"
+      },
+      "title": "02.5 - Schedule - Balancing Authority Area Scheduled and Actual Interchange - duration",
+      "description": "ferc:ScheduleBalancingAuthorityAreaScheduledAndActualInterchangeAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "start_date",
+            "title": "Start Date",
+            "type": "date",
+            "format": "default",
+            "description": "Start date of report period"
+          },
+          {
+            "name": "end_date",
+            "title": "End Date",
+            "type": "date",
+            "format": "default",
+            "description": "End date of report period"
+          },
+          {
+            "name": "balancing_authority_area_scheduled_and_actual_interchange_axis",
+            "title": "Balancing Authority Area Scheduled and Actual Interchange [Axis]",
+            "type": "string",
+            "format": "default",
+            "description": "Typed dimension used to distinguish a set of related facts about balancing authority area scheduled and actual interchange."
+          },
+          {
+            "name": "scheduled_interchange_between_balancing_authority_areas_delivered",
+            "title": "Scheduled Interchange Between Balancing Authority Areas, Delivered",
+            "type": "number",
+            "format": "default",
+            "description": "Scheduled interchanges delivered to each balancing authority area expressed in megawatt hours."
+          },
+          {
+            "name": "scheduled_interchange_between_balancing_authority_areas_received",
+            "title": "Scheduled Interchange Between Balancing Authority Areas, Received",
+            "type": "number",
+            "format": "default",
+            "description": "Scheduled interchanges that were received by the respondent balancing authority area expressed in megawatt hours."
+          },
+          {
+            "name": "actual_interchange_between_adjacent_balancing_authority_areas_received",
+            "title": "Actual Interchange Between Adjacent Balancing Authority Areas, Received",
+            "type": "number",
+            "format": "default",
+            "description": "Annual actual interchange received within each adjacent balancing authority area expressed in megawatt hours."
+          },
+          {
+            "name": "actual_interchange_between_adjacent_balancing_authority_areas_delivered",
+            "title": "Actual Interchange Between Adjacent Balancing Authority Areas, Delivered",
+            "type": "number",
+            "format": "default",
+            "description": "Annual actual interchange delivered within each adjacent balancing authority area expressed in megawatt hours."
+          },
+          {
+            "name": "name_of_balancing_authority_area",
+            "title": "Name of Balancing Authority Area",
+            "type": "string",
+            "format": "default",
+            "description": "Name of Balancing Authority Area."
+          },
+          {
+            "name": "order_number",
+            "title": "Order Number",
+            "type": "number",
+            "format": "default",
+            "description": "This is used to order a sequenced table.  This field is added to a table to control ordering of the items on the table.  The value must always be an integer. If this is not used, instance fact values in a sequenced table are shown in a random order in rendering."
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "start_date",
+          "end_date",
+          "balancing_authority_area_scheduled_and_actual_interchange_axis"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "balancing_authority_area_scheduled_and_actual_interchange_02_5_instant",
+      "dialect": {
+        "table": "balancing_authority_area_scheduled_and_actual_interchange_02_5_instant"
+      },
+      "title": "02.5 - Schedule - Balancing Authority Area Scheduled and Actual Interchange - instant",
+      "description": "ferc:ScheduleBalancingAuthorityAreaScheduledAndActualInterchangeAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "date",
+            "title": "Instant Date",
+            "type": "date",
+            "format": "default",
+            "description": "Date of instant period"
+          },
+          {
+            "name": "balancing_authority_area_scheduled_and_actual_interchange_axis",
+            "title": "Balancing Authority Area Scheduled and Actual Interchange [Axis]",
+            "type": "string",
+            "format": "default",
+            "description": "Typed dimension used to distinguish a set of related facts about balancing authority area scheduled and actual interchange."
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "date",
+          "balancing_authority_area_scheduled_and_actual_interchange_axis"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "balancing_authority_area_scheduled_and_actual_interchange_totals_02_5_duration",
+      "dialect": {
+        "table": "balancing_authority_area_scheduled_and_actual_interchange_totals_02_5_duration"
+      },
+      "title": "02.5 - Schedule - Balancing Authority Area Scheduled and Actual Interchange - Totals - duration",
+      "description": "ferc:ScheduleBalancingAuthorityAreaScheduledAndActualInterchangeAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "start_date",
+            "title": "Start Date",
+            "type": "date",
+            "format": "default",
+            "description": "Start date of report period"
+          },
+          {
+            "name": "end_date",
+            "title": "End Date",
+            "type": "date",
+            "format": "default",
+            "description": "End date of report period"
+          },
+          {
+            "name": "actual_interchange_between_adjacent_balancing_authority_areas_received",
+            "title": "Actual Interchange Between Adjacent Balancing Authority Areas, Received",
+            "type": "number",
+            "format": "default",
+            "description": "Annual actual interchange received within each adjacent balancing authority area expressed in megawatt hours."
+          },
+          {
+            "name": "actual_interchange_between_adjacent_balancing_authority_areas_delivered",
+            "title": "Actual Interchange Between Adjacent Balancing Authority Areas, Delivered",
+            "type": "number",
+            "format": "default",
+            "description": "Annual actual interchange delivered within each adjacent balancing authority area expressed in megawatt hours."
+          },
+          {
+            "name": "scheduled_interchange_between_balancing_authority_areas_received",
+            "title": "Scheduled Interchange Between Balancing Authority Areas, Received",
+            "type": "number",
+            "format": "default",
+            "description": "Scheduled interchanges that were received by the respondent balancing authority area expressed in megawatt hours."
+          },
+          {
+            "name": "scheduled_interchange_between_balancing_authority_areas_delivered",
+            "title": "Scheduled Interchange Between Balancing Authority Areas, Delivered",
+            "type": "number",
+            "format": "default",
+            "description": "Scheduled interchanges delivered to each balancing authority area expressed in megawatt hours."
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "start_date",
+          "end_date"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "balancing_authority_area_scheduled_and_actual_interchange_totals_02_5_instant",
+      "dialect": {
+        "table": "balancing_authority_area_scheduled_and_actual_interchange_totals_02_5_instant"
+      },
+      "title": "02.5 - Schedule - Balancing Authority Area Scheduled and Actual Interchange - Totals - instant",
+      "description": "ferc:ScheduleBalancingAuthorityAreaScheduledAndActualInterchangeAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "date",
+            "title": "Instant Date",
+            "type": "date",
+            "format": "default",
+            "description": "Date of instant period"
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "date"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "balancing_authority_area_system_lambda_data_and_description_of_economic_dispatch_02_6_duration",
+      "dialect": {
+        "table": "balancing_authority_area_system_lambda_data_and_description_of_economic_dispatch_02_6_duration"
+      },
+      "title": "02.6 - Schedule - Balancing Authority Area System Lambda Data and Description of Economic Dispatch - duration",
+      "description": "ferc:ScheduleBalancingAuthorityAreaSystemLambdaDataAndDescriptionOfEconomicDispatchAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "start_date",
+            "title": "Start Date",
+            "type": "date",
+            "format": "default",
+            "description": "Start date of report period"
+          },
+          {
+            "name": "end_date",
+            "title": "End Date",
+            "type": "date",
+            "format": "default",
+            "description": "End date of report period"
+          },
+          {
+            "name": "disclosure_of_how_respondent_calculates_system_lambda_text_block",
+            "title": "Disclosure of How Respondent Calculates System Lambda [Text Block]",
+            "type": "string",
+            "format": "default",
+            "description": "Provide in writing a detailed description of how Respondent calculates system lambda. For those systems that do not use an economic dispatch algorithm and do not have a system lambda, provide in writing a detailed description of how Balancing Authority Area resources are efficiently\ndispatched."
+          },
+          {
+            "name": "time_zone",
+            "title": "Time Zone",
+            "type": "string",
+            "format": "default",
+            "description": "Used to indicate the time zone used when a value is reported for a given hour of the day."
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "start_date",
+          "end_date"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "balancing_authority_area_system_lambda_data_and_description_of_economic_dispatch_02_6_instant",
+      "dialect": {
+        "table": "balancing_authority_area_system_lambda_data_and_description_of_economic_dispatch_02_6_instant"
+      },
+      "title": "02.6 - Schedule - Balancing Authority Area System Lambda Data and Description of Economic Dispatch - instant",
+      "description": "ferc:ScheduleBalancingAuthorityAreaSystemLambdaDataAndDescriptionOfEconomicDispatchAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "date",
+            "title": "Instant Date",
+            "type": "date",
+            "format": "default",
+            "description": "Date of instant period"
+          },
+          {
+            "name": "system_lambda",
+            "title": "System Lambda",
+            "type": "number",
+            "format": "default",
+            "description": "System Lambda ($/MWh)."
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "date"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "electric_utilities_that_compose_the_planning_area_03_1_duration",
+      "dialect": {
+        "table": "electric_utilities_that_compose_the_planning_area_03_1_duration"
+      },
+      "title": "03.1 - Schedule - Electric Utilities That Compose the Planning Area - duration",
+      "description": "ferc:ScheduleElectricUtilitiesThatComposeThePlanningAreaAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "start_date",
+            "title": "Start Date",
+            "type": "date",
+            "format": "default",
+            "description": "Start date of report period"
+          },
+          {
+            "name": "end_date",
+            "title": "End Date",
+            "type": "date",
+            "format": "default",
+            "description": "End date of report period"
+          },
+          {
+            "name": "electric_utilities_that_compose_the_planning_area_axis",
+            "title": "Electric Utilities That Compose Planning Area [Axis]",
+            "type": "string",
+            "format": "default",
+            "description": "Typed dimension used to distinguish a set of related facts about electric utilities that compose the planning area."
+          },
+          {
+            "name": "electric_utility_coincident_peak_demand_winter",
+            "title": "Electric Utility Coincident Peak Demand, Winter",
+            "type": "number",
+            "format": "default",
+            "description": "Electric Utility Coincident Peak Winter Demand expressed in megawatts."
+          },
+          {
+            "name": "electric_utility_name",
+            "title": "Electric Utility Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of electric utility."
+          },
+          {
+            "name": "electric_utility_coincident_peak_demand_summer",
+            "title": "Electric Utility Coincident Peak Demand, Summer",
+            "type": "number",
+            "format": "default",
+            "description": "Electric Utility Coincident Peak Summer Demand expressed in megawatts."
+          },
+          {
+            "name": "order_number",
+            "title": "Order Number",
+            "type": "number",
+            "format": "default",
+            "description": "This is used to order a sequenced table.  This field is added to a table to control ordering of the items on the table.  The value must always be an integer. If this is not used, instance fact values in a sequenced table are shown in a random order in rendering."
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "start_date",
+          "end_date",
+          "electric_utilities_that_compose_the_planning_area_axis"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "electric_utilities_that_compose_the_planning_area_03_1_instant",
+      "dialect": {
+        "table": "electric_utilities_that_compose_the_planning_area_03_1_instant"
+      },
+      "title": "03.1 - Schedule - Electric Utilities That Compose the Planning Area - instant",
+      "description": "ferc:ScheduleElectricUtilitiesThatComposeThePlanningAreaAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "date",
+            "title": "Instant Date",
+            "type": "date",
+            "format": "default",
+            "description": "Date of instant period"
+          },
+          {
+            "name": "electric_utilities_that_compose_the_planning_area_axis",
+            "title": "Electric Utilities That Compose Planning Area [Axis]",
+            "type": "string",
+            "format": "default",
+            "description": "Typed dimension used to distinguish a set of related facts about electric utilities that compose the planning area."
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "date",
+          "electric_utilities_that_compose_the_planning_area_axis"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "planning_area_hourly_demand_and_forecast_summer_and_winter_peak_demand_and_annual_net_energy_for_load_03_2_duration",
+      "dialect": {
+        "table": "planning_area_hourly_demand_and_forecast_summer_and_winter_peak_demand_and_annual_net_energy_for_load_03_2_duration"
+      },
+      "title": "03.2 - Schedule - Planning Area Hourly Demand and Forecast Summer and Winter Peak Demand and Annual Net Energy for Load - duration",
+      "description": "ferc:SchedulePlanningAreaHourlyDemandAndForecastSummerAndWinterPeakDemandAndAnnualNetEnergyForLoadAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "start_date",
+            "title": "Start Date",
+            "type": "date",
+            "format": "default",
+            "description": "Start date of report period"
+          },
+          {
+            "name": "end_date",
+            "title": "End Date",
+            "type": "date",
+            "format": "default",
+            "description": "End date of report period"
+          },
+          {
+            "name": "time_zone",
+            "title": "Time Zone",
+            "type": "string",
+            "format": "default",
+            "description": "Used to indicate the time zone used when a value is reported for a given hour of the day."
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "start_date",
+          "end_date"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "planning_area_hourly_demand_and_forecast_summer_and_winter_peak_demand_and_annual_net_energy_for_load_03_2_instant",
+      "dialect": {
+        "table": "planning_area_hourly_demand_and_forecast_summer_and_winter_peak_demand_and_annual_net_energy_for_load_03_2_instant"
+      },
+      "title": "03.2 - Schedule - Planning Area Hourly Demand and Forecast Summer and Winter Peak Demand and Annual Net Energy for Load - instant",
+      "description": "ferc:SchedulePlanningAreaHourlyDemandAndForecastSummerAndWinterPeakDemandAndAnnualNetEnergyForLoadAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "date",
+            "title": "Instant Date",
+            "type": "date",
+            "format": "default",
+            "description": "Date of instant period"
+          },
+          {
+            "name": "planning_area_hourly_demand_megawatts",
+            "title": "Planning Area Hourly Demand in Megawatts",
+            "type": "number",
+            "format": "default",
+            "description": "Power demand, in MegaWatts, for each hour of the year."
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "date"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "planning_area_hourly_demand_and_forecast_summer_and_winter_peak_demand_and_annual_net_energy_for_load_table_03_2_duration",
+      "dialect": {
+        "table": "planning_area_hourly_demand_and_forecast_summer_and_winter_peak_demand_and_annual_net_energy_for_load_table_03_2_duration"
+      },
+      "title": "03.2 - Schedule - Planning Area Hourly Demand and Forecast Summer and Winter Peak Demand and Annual Net Energy for Load, Table - duration",
+      "description": "ferc:SchedulePlanningAreaHourlyDemandAndForecastSummerAndWinterPeakDemandAndAnnualNetEnergyForLoadBAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "start_date",
+            "title": "Start Date",
+            "type": "date",
+            "format": "default",
+            "description": "Start date of report period"
+          },
+          {
+            "name": "end_date",
+            "title": "End Date",
+            "type": "date",
+            "format": "default",
+            "description": "End date of report period"
+          },
+          {
+            "name": "planning_area_hourly_demand_and_forecast_summer_and_winter_peak_demand_and_annual_net_energy_for_load_axis",
+            "title": "Planning Area Hourly Demand and Forecast Summer and Winter Peak Demand and Annual Net Energy for Load [Axis]",
+            "type": "string",
+            "format": "default",
+            "description": "Typed dimension used to distinguish a set of related facts about planning area hourly demand and forecast summer and winter peak demand and annual net energy for load."
+          },
+          {
+            "name": "planning_area_hourly_demand_and_forecast_winter_forecast",
+            "title": "Planning Area Hourly Demand and Forecast, Winter Forecast",
+            "type": "number",
+            "format": "default",
+            "description": "Winter forecasted peak demand in megawatts."
+          },
+          {
+            "name": "planning_area_hourly_demand_and_forecast_forecast_of_annual_net_energy_for_load",
+            "title": "Planning Area Hourly Demand and Forecast, Forecast of Annual Net Energy for Load",
+            "type": "number",
+            "format": "default",
+            "description": "Forecasted annual net energy for load in megawatt hours."
+          },
+          {
+            "name": "planning_area_hourly_demand_and_forecast_year",
+            "title": "Planning Area Hourly Demand and Forecast, Year",
+            "type": "string",
+            "format": "default",
+            "description": "The year of the forecast, in CCYY format."
+          },
+          {
+            "name": "planning_area_hourly_demand_and_forecast_summer_forecast",
+            "title": "Planning Area Hourly Demand and Forecast, Summer Forecast",
+            "type": "number",
+            "format": "default",
+            "description": "Summer forecasted peak demand in megawatts."
+          },
+          {
+            "name": "order_number",
+            "title": "Order Number",
+            "type": "number",
+            "format": "default",
+            "description": "This is used to order a sequenced table.  This field is added to a table to control ordering of the items on the table.  The value must always be an integer. If this is not used, instance fact values in a sequenced table are shown in a random order in rendering."
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "start_date",
+          "end_date",
+          "planning_area_hourly_demand_and_forecast_summer_and_winter_peak_demand_and_annual_net_energy_for_load_axis"
+        ]
+      }
+    },
+    {
+      "path": "sqlite:////home/ubuntu/pudl_work/output/ferc714_xbrl.sqlite",
+      "profile": "tabular-data-resource",
+      "name": "planning_area_hourly_demand_and_forecast_summer_and_winter_peak_demand_and_annual_net_energy_for_load_table_03_2_instant",
+      "dialect": {
+        "table": "planning_area_hourly_demand_and_forecast_summer_and_winter_peak_demand_and_annual_net_energy_for_load_table_03_2_instant"
+      },
+      "title": "03.2 - Schedule - Planning Area Hourly Demand and Forecast Summer and Winter Peak Demand and Annual Net Energy for Load, Table - instant",
+      "description": "ferc:SchedulePlanningAreaHourlyDemandAndForecastSummerAndWinterPeakDemandAndAnnualNetEnergyForLoadBAbstract",
+      "format": "sqlite",
+      "mediatype": "application/vnd.sqlite3",
+      "schema": {
+        "fields": [
+          {
+            "name": "entity_id",
+            "title": "Entity Identifier",
+            "type": "string",
+            "format": "default",
+            "description": "Unique identifier of respondent"
+          },
+          {
+            "name": "filing_name",
+            "title": "Filing Name",
+            "type": "string",
+            "format": "default",
+            "description": "Name of filing"
+          },
+          {
+            "name": "publication_time",
+            "title": "Publication Time",
+            "type": "date",
+            "format": "default",
+            "description": "Time the filing was made available on the FERC RSS feed."
+          },
+          {
+            "name": "date",
+            "title": "Instant Date",
+            "type": "date",
+            "format": "default",
+            "description": "Date of instant period"
+          },
+          {
+            "name": "planning_area_hourly_demand_and_forecast_summer_and_winter_peak_demand_and_annual_net_energy_for_load_axis",
+            "title": "Planning Area Hourly Demand and Forecast Summer and Winter Peak Demand and Annual Net Energy for Load [Axis]",
+            "type": "string",
+            "format": "default",
+            "description": "Typed dimension used to distinguish a set of related facts about planning area hourly demand and forecast summer and winter peak demand and annual net energy for load."
+          }
+        ],
+        "primary_key": [
+          "entity_id",
+          "filing_name",
+          "publication_time",
+          "date",
+          "planning_area_hourly_demand_and_forecast_summer_and_winter_peak_demand_and_annual_net_energy_for_load_axis"
+        ]
+      }
+    }
+  ]
+}

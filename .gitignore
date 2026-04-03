@@ -1,0 +1,15 @@
+# pixi environments
+.pixi/*
+!.pixi/config.toml
+
+# agent specific directories
+.agents/
+.claude/
+# agent scratch workspace
+*-workspace/
+
+# caches
+.ruff_cache/
+
+# user settings
+.vscode/

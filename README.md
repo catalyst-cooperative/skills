@@ -12,6 +12,7 @@ This repository contains experimental [agent skills](https://agentskills.io) rel
 - [Using Agent Skills in VS Code](https://code.visualstudio.com/docs/copilot/customization/agent-skills)
 - [Extend Claude with Agent Skills](https://code.claude.com/docs/en/skills)
 - [npx skills](https://github.com/vercel-labs/skills) (CLI for installing skills)
+- [Agent Skill Installation CLI](https://www.npmjs.com/package/skills)
 - ⚠️ [The Agent Skills Directory](https://skills.sh/) ⚠️
 
 ### For Skills Authors

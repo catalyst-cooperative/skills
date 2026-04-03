@@ -1,0 +1,102 @@
+[[repos]]
+repo = "https://github.com/jackdewinter/pymarkdown"
+rev = "v0.9.36"
+hooks = [{ id = "pymarkdown"}]
+
+[[repos]]
+repo = "https://github.com/pre-commit/pre-commit-hooks"
+rev = "v6.0.0"
+hooks = [
+  {
+    id = "check-added-large-files",
+    args = ["--maxkb=800"]
+  },
+  { id = "check-merge-conflict" },
+  { id = "check-yaml" },
+  { id = "check-case-conflict" },
+  { id = "debug-statements" },
+  {
+    id = "mixed-line-ending",
+    args = ["--fix=lf"]
+  },
+  { id = "trailing-whitespace" },
+  { id = "end-of-file-fixer" }
+]
+
+[[repos]]
+repo = "https://github.com/astral-sh/ruff-pre-commit"
+rev = "v0.15.9"
+hooks = [
+  {
+    id = "ruff-check",
+    args = ["--fix"]
+  },
+  { id = "ruff-format" }
+]
+
+[[repos]]
+repo = "https://github.com/rbubley/mirrors-prettier"
+rev = "v3.8.1"
+hooks = [
+  {
+    id = "prettier",
+    types_or = ["yaml"]
+  }
+]
+
+[[repos]]
+repo = "https://github.com/rhysd/actionlint"
+rev = "v1.7.12"
+hooks = [{ id = "actionlint" }]
+
+[[repos]]
+repo = "https://github.com/shellcheck-py/shellcheck-py"
+rev = "v0.11.0.1"
+hooks = [{ id = "shellcheck" }]
+
+[[repos]]
+repo = "https://github.com/hukkin/mdformat"
+rev = "1.0.0"
+hooks = [{
+  id = "mdformat",
+    additional_dependencies = [
+        mdformat-gfm,
+        mdformat-ruff,
+        mdformat-shfmt,
+    ]
+}]
+
+#[[repos]]
+#repo = "https://github.com/ComPWA/taplo-pre-commit"
+#rev = "v0.9.3"
+#hooks = [
+#  {
+#    id = "taplo-format",
+#    args = [
+#    ]
+#  },
+#  {
+#    id = "taplo-lint",
+#    args = [
+#    ]
+#  }
+#]
+
+#[[repos]]
+#repo = "https://github.com/adhtruong/mirrors-typos"
+#rev = "v1.45.0"
+#hooks = [
+#  {
+#    id = "typos",
+#    exclude = '''
+#(?x)^(
+#  .*\.yml
+#  |.*\.toml
+#  |.*\.csv
+#  |.*\.html
+#)
+#''',
+#    args = [
+#    ]
+#  }
+#]
