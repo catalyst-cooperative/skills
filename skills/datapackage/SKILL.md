@@ -1,4 +1,4 @@
-___
+---
 name: datapackage
 description: >
   Explore and query any dataset annotated with a Frictionless Data Package descriptor
@@ -18,7 +18,7 @@ metadata:
 - author: Catalyst Cooperative
 - email: hello@catalyst.coop
 - last-updated: 2026-04-02
-___
+---
 
 # Frictionless Data Package Guide
 
