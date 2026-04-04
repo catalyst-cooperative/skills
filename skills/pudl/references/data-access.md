@@ -1,0 +1,334 @@
+# Data Access
+
+## Use this when
+
+- Loading PUDL tables in a script or notebook (Jupyter or Marimo).
+- Choosing between S3 and a local copy.
+- Generating reproducible data-loading code for a user.
+- Deciding how to access raw FERC form data.
+
+---
+
+## Data locations
+
+All PUDL outputs — Parquet files, FERC SQLite/DuckDB databases, and descriptors — are
+free and publicly accessible on AWS S3. No AWS credentials or account needed.
+
+### Core PUDL outputs
+
+| Location | Path pattern |
+| --- | --- |
+| S3 nightly (latest) | `s3://pudl.catalyst.coop/nightly/<table_name>.parquet` |
+| S3 versioned | `s3://pudl.catalyst.coop/v2024.11.0/<table_name>.parquet` |
+| Local download | `/path/to/download/dir/<table_name>.parquet` |
+| Local PUDL output (if pipeline was run) | `$PUDL_OUTPUT/parquet/<table_name>.parquet` |
+
+Datapackage JSON descriptors at the same base path: `pudl_parquet_datapackage.json`,
+`ferc1_xbrl_datapackage.json`, `ferc2_xbrl_datapackage.json`,
+`ferc6_xbrl_datapackage.json`, `ferc60_xbrl_datapackage.json`,
+`ferc714_xbrl_datapackage.json`
+
+**Use S3 nightly** for most exploratory work. For production pipelines or academic
+citation, use a fixed versioned path (e.g. `v2024.11.0`) so results are reproducible
+and the data never changes under you.
+
+### FERC EQR (Electric Quarterly Reports / Form 920)
+
+The FERC EQR dataset (also known as **FERC Form 920**) is distributed separately at
+`s3://pudl.catalyst.coop/ferceqr/` due to its size. **Only one version is publicly
+available at a time** — there is no versioned path.
+
+EQR data is updated **monthly**: the pipeline runs at the start of each month and new
+data typically appears by the 3rd day of the month.
+
+EQR tables are **partitioned into quarterly Parquet files** inside a per-table directory:
+
+```text
+s3://pudl.catalyst.coop/ferceqr/<table_name>/<year>q<quarter>.parquet
+```
+
+Examples:
+
+- `s3://pudl.catalyst.coop/ferceqr/core_ferceqr__transactions/2024q1.parquet`
+- `s3://pudl.catalyst.coop/ferceqr/core_ferceqr__transactions/2013q3.parquet`
+
+> **Size warning**: `core_ferceqr__transactions` is ~100 GB total; recent quarterly
+> files are ~3.5 GB each as compressed Parquet. **Never load the full table into
+> memory.** Load only the quarters you need, and push down column/row filters.
+> Other EQR tables are tens to hundreds of MB.
+
+**With DuckDB (pure SQL — no Python required):**
+
+```sql
+-- Attach the EQR descriptor (optional, for schema inspection)
+-- Then query specific quarters directly
+SELECT * FROM read_parquet(
+    's3://pudl.catalyst.coop/ferceqr/core_ferceqr__transactions/2023q*.parquet'
+)
+WHERE report_year = 2023
+LIMIT 1000;
+```
+
+Use the `/duckdb-skills` skill to run queries against EQR data — DuckDB can scan
+Parquet files from S3 without downloading them.
+
+**With polars (memory-efficient Python):**
+
+```python
+import polars as pl
+
+# Load a single quarter
+df = pl.scan_parquet(
+    "s3://pudl.catalyst.coop/ferceqr/core_ferceqr__transactions/2023q1.parquet"
+).select(["seller_name", "buyer_name", "transaction_quantity"]).collect()
+
+# Load all quarters for a year using a glob
+df = pl.scan_parquet(
+    "s3://pudl.catalyst.coop/ferceqr/core_ferceqr__transactions/2023q*.parquet"
+).collect()
+```
+
+Descriptor:
+
+- S3: `s3://pudl.catalyst.coop/ferceqr/ferceqr_parquet_datapackage.json`
+- HTTPS: `https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/ferceqr/ferceqr_parquet_datapackage.json`
+
+---
+
+## FERC historical form databases
+
+FERC Forms 1, 2, 6, 60, and 714 span two distinct filing eras with different source
+formats. PUDL converts these into databases published alongside the core Parquet
+outputs at the same S3 base path.
+
+### Reporting epochs
+
+| Form | Legacy format | Legacy years | XBRL years |
+| --- | --- | --- | --- |
+| Form 1 (Electric Utilities) | DBF | 1994–2020 | 2021–present |
+| Form 2 (Interstate Gas Transmission Companies) | DBF | 1996–2020 | 2021–present |
+| Form 6 (Oil Pipeline Companies) | DBF | 2000–2020 | 2021–present |
+| Form 60 (Centralized Service Companies) | DBF | 2006–2020 | 2021–present |
+| Form 714 (Electricity Balancing Authorities and Planning Areas) | CSV (DBF export) | 2006-2020 | 2021–present |
+
+### PUDL integration status
+
+Always check whether a PUDL integrated table exists before falling back to raw
+databases. Integrated tables are cleaned, entity-resolved, and span all years with a
+uniform schema.
+
+- **FERC Form 1**: Only some schedules have been integrated. See
+  [FERC Form 1 Schedules](./ferc1-schedules.md) for the per-schedule breakdown.
+  For unintegrated Form 1 schedules, use the raw DBF or XBRL databases below.
+  Only provide raw Form 1 data if a user **explicitly** requests it.
+- **FERC Forms 2, 6, and 60**: None of this data has been integrated into PUDL.
+  It is only available through the raw databases.
+- **FERC Form 714**: Only the integrated PUDL tables span pre-2021 years.
+  The legacy CSV files were not structured for general machine-readable extraction.
+  Integrated Form 714 tables cover all electronic reporting years (2006–present).
+
+### DBF-derived databases (pre-2021, Forms 1/2/6/60)
+
+PUDL consolidates all DBF years for each form into a single SQLite database:
+
+| Form | S3 path |
+| --- | --- |
+| Form 1 | `s3://pudl.catalyst.coop/nightly/ferc1_dbf.sqlite.zip` |
+| Form 2 | `s3://pudl.catalyst.coop/nightly/ferc2_dbf.sqlite.zip` |
+| Form 6 | `s3://pudl.catalyst.coop/nightly/ferc6_dbf.sqlite.zip` |
+| Form 60 | `s3://pudl.catalyst.coop/nightly/ferc60_dbf.sqlite.zip` |
+
+**No datapackage descriptors exist** for these databases — the original DBF files are
+almost entirely undocumented. For Form 1, the [FERC Form 1 Schedules](./ferc1-schedules.md)
+reference provides a hand-compiled schedule-to-table mapping. No equivalent mapping
+exists for Forms 2, 6, or 60.
+
+### XBRL-derived databases (2021–present, all forms)
+
+PUDL converts XBRL filings into both SQLite and DuckDB:
+
+| Form | DuckDB (preferred) | SQLite (zipped, must download) |
+| --- | --- | --- |
+| Form 1 | `s3://pudl.catalyst.coop/nightly/ferc1_xbrl.duckdb` | `s3://pudl.catalyst.coop/nightly/ferc1_xbrl.sqlite.zip` |
+| Form 2 | `s3://pudl.catalyst.coop/nightly/ferc2_xbrl.duckdb` | `s3://pudl.catalyst.coop/nightly/ferc2_xbrl.sqlite.zip` |
+| Form 6 | `s3://pudl.catalyst.coop/nightly/ferc6_xbrl.duckdb` | `s3://pudl.catalyst.coop/nightly/ferc6_xbrl.sqlite.zip` |
+| Form 60 | `s3://pudl.catalyst.coop/nightly/ferc60_xbrl.duckdb` | `s3://pudl.catalyst.coop/nightly/ferc60_xbrl.sqlite.zip` |
+| Form 714 | `s3://pudl.catalyst.coop/nightly/ferc714_xbrl.duckdb` | `s3://pudl.catalyst.coop/nightly/ferc714_xbrl.sqlite.zip` |
+
+**Prefer DuckDB**: DuckDB files can be queried remotely (see below) without
+downloading. SQLite files are published as `.zip` archives, must be downloaded and
+unzipped before use, and cannot be read remotely; some exceed 1 GB uncompressed.
+
+Datapackage descriptors with table and column metadata exist for the XBRL databases:
+`ferc1_xbrl_datapackage.json`, `ferc2_xbrl_datapackage.json`, etc., at the same S3
+base path. There are three known issues with these descriptors:
+
+1. **Absolute path bug**: the `path` field for each resource contains an absolute path
+   from the build machine (e.g. `/home/user/pudl-work/ferc1_xbrl.sqlite`). Use only
+   the final filename component to construct the actual S3 path.
+2. **Points at SQLite, not DuckDB**: the `path` field always refers to the `.sqlite`
+   file. Replace `.sqlite` with `.duckdb` to get the DuckDB path.
+3. **Table descriptions are not useful**: they contain raw XBRL entity names rather
+   than human-readable descriptions. Rely on the table name and column names instead.
+
+### Querying XBRL databases with DuckDB
+
+Use the `/duckdb-skills:attach-db` skill to attach and query an XBRL DuckDB file
+directly from S3 without downloading. Pure SQL (no Python required):
+
+```sql
+-- Attach the Form 1 XBRL database
+ATTACH 's3://pudl.catalyst.coop/nightly/ferc1_xbrl.duckdb' AS ferc1 (READ_ONLY);
+
+-- List available tables
+SHOW ALL TABLES;
+
+-- Query a specific schedule table
+SELECT * FROM ferc1.steam_electric_generating_plant_statistics_large_plants_402_duration
+LIMIT 100;
+```
+
+Or from Python if needed:
+
+```python
+import duckdb
+
+con = duckdb.connect()
+con.execute(
+    "ATTACH 's3://pudl.catalyst.coop/nightly/ferc1_xbrl.duckdb' AS ferc1 (READ_ONLY)"
+)
+df = con.execute(
+    "SELECT * FROM ferc1.steam_electric_generating_plant_statistics_large_plants_402_duration LIMIT 100"
+).df()
+```
+
+---
+
+## Loading PUDL Parquet tables
+
+### With pandas
+
+```python
+import pandas as pd
+
+table = "out_eia923__generation"
+
+# From S3 (no credentials needed)
+df = pd.read_parquet(f"s3://pudl.catalyst.coop/nightly/{table}.parquet")
+
+# From local file
+df = pd.read_parquet(f"/path/to/pudl_parquet/{table}.parquet")
+
+# Load only specific columns (much faster for large tables)
+df = pd.read_parquet(
+    f"s3://pudl.catalyst.coop/nightly/{table}.parquet",
+    columns=["plant_id_eia", "report_date", "net_generation_mwh"],
+)
+```
+
+`s3fs` must be installed for S3 access: `pip install s3fs` or `conda install s3fs`.
+
+### With DuckDB (efficient for large tables or SQL-style queries)
+
+Pure SQL (no Python required) — use `/duckdb-skills` to run these:
+
+```sql
+SELECT plant_id_eia, report_date, net_generation_mwh
+FROM read_parquet('s3://pudl.catalyst.coop/nightly/out_eia923__generation.parquet')
+WHERE report_date >= '2020-01-01'
+LIMIT 1000;
+```
+
+Or from Python:
+
+```python
+import duckdb
+
+result = duckdb.sql("""
+    SELECT plant_id_eia, report_date, net_generation_mwh
+    FROM read_parquet('s3://pudl.catalyst.coop/nightly/out_eia923__generation.parquet')
+    WHERE report_date >= '2020-01-01'
+    LIMIT 1000
+""").df()  # .df() returns a pandas DataFrame; .pl() returns polars
+```
+
+DuckDB can scan Parquet files from S3 without downloading them. Useful for large
+hourly tables (e.g., `out_ferc714__respondents_hourly`).
+
+### With polars (memory-efficient alternative to pandas)
+
+```python
+import polars as pl
+
+table = "out_eia923__generation"
+
+lf = pl.scan_parquet(f"s3://pudl.catalyst.coop/nightly/{table}.parquet")
+df = lf.select(["plant_id_eia", "report_date", "net_generation_mwh"]).collect()
+```
+
+Polars lazy evaluation (`scan_parquet`) is preferred for tables > 500 MB — it pushes
+down column selection and row filters to the Parquet reader.
+
+---
+
+## Listing all available tables
+
+```sql
+-- Pure DuckDB SQL: list all Parquet tables in the nightly build
+SELECT filename
+FROM glob('s3://pudl.catalyst.coop/nightly/*.parquet');
+```
+
+Or with the AWS CLI:
+
+```bash
+aws s3 ls --no-sign-request s3://pudl.catalyst.coop/nightly/ | grep '\.parquet'
+```
+
+Or query the descriptor with jq (see the `datapackage` skill for full querying patterns):
+
+```bash
+jq -r '.resources[].name' pudl_parquet_datapackage.json
+```
+
+---
+
+## Raw input archives (Zenodo)
+
+**Do not surface this to users unless they explicitly ask about data provenance or
+want to trace a value to its original source file.** Most users should use the
+processed PUDL outputs instead.
+
+Raw inputs are cached on S3 as a mirror of PUDL's Zenodo archives:
+
+```text
+s3://pudl.catalyst.coop/zenodo/<dataset>/<doi-path>/datapackage.json
+```
+
+Where `<dataset>` is the PUDL short code for the data source (see
+[Data Sources](./data-sources.md) for the full list) and `<doi-path>` is the Zenodo
+DOI with `/` replaced by `-`.
+
+For example, for DOI `10.5281/zenodo.17091669`, the `<doi-path>` would be
+`10.5281-zenodo.17091669`, giving:
+
+```text
+s3://pudl.catalyst.coop/zenodo/ferc1/10.5281-zenodo.17091669/datapackage.json
+```
+
+To construct a human-readable DOI URL from a Zenodo record ID (e.g. `19367768`):
+
+```text
+https://doi.org/10.5281/zenodo.<record_id>
+# Example: https://doi.org/10.5281/zenodo.19367768
+```
+
+---
+
+## Useful links
+
+- Data catalog / table browser: <https://data.catalyst.coop>
+- PUDL data access documentation: <https://docs.catalyst.coop/pudl/en/nightly/data_access.html>
+- PUDL Data Release Concept DOI (Zenodo): <https://doi.org/10.5281/zenodo.3653158>
+- PUDL Software Concept DOI (Zenodo): <https://doi.org/10.5281/zenodo.3404014>
+- AWS Open Data Registry: <https://registry.opendata.aws/catalyst-cooperative-pudl/>

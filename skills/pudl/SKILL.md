@@ -1,53 +1,187 @@
 ---
 name: pudl
 description: >
-  Access PUDL table data plus table/column/source metadata in Jupyter or Marimo
-  notebooks for debugging and visualization. Use when users ask what a table contains,
-  how to read it, or how columns are defined.
-argument-hint: "[table_name] [local|s3] [data|metadata|both]"
+  Explore and understand PUDL energy data: discover which tables exist, look up column
+  meanings and usage warnings, and load Parquet files from S3 or a local directory.
+  No PUDL Python package required. Use this skill whenever a user asks what PUDL data
+  contains, wants to understand a specific table or column, asks about data quality or
+  limitations, needs help loading data into a notebook or script, or wants to know
+  which table covers a topic like electricity generation, utility financials, fuel
+  costs, power plant locations, emissions, capacity factors, FERC financial data, or
+  EIA survey data. Also use when the user mentions PUDL, Catalyst Cooperative energy
+  data, or any of the specific data sources PUDL ingests (EIA-860, EIA-861, EIA-923,
+  FERC Form 1, FERC Form 714, FERC EQR, EPA CEMS, EPA CAMD, etc.).
+license: CC-BY-4.0
+compatibility: |
+  Required skills: datapackage (which requires jq >= 1.7 and duckdb-skills)
+  Required Python packages: pandas >= 2.0, s3fs (for S3 access)
+  Optional Python packages: polars >= 1.0, marimo (for notebook EDA)
+  Optional skills: marimo-pair, dignified-python
+metadata:
+  - author: Catalyst Cooperative
+  - email: hello@catalyst.coop
+  - last-updated: 2026-04-03
 ---
 
-# PUDL Data and Metadata Guide
+# PUDL Data Explorer Guide
 
-Use this skill for data-user workflows: reading PUDL outputs, understanding table and
-field semantics, tracing source context, and interpreting methodology.
+This skill is for **data users** who want to explore, understand, and load PUDL's
+public energy data products. It assumes no access to the PUDL Python package or source
+repository — only the publicly distributed data files and their metadata.
 
-## Trigger phrases
+PUDL's primary outputs are Apache Parquet files, described by a Frictionless Data
+Package descriptor. For generic descriptor-querying patterns (jq, DuckDB JSON), use
+the `datapackage` skill — this skill provides PUDL-specific knowledge layered on top.
 
-- "show me this PUDL table in a notebook"
-- "how do I read table X from Parquet"
-- "load this table from local PUDL output"
-- "read this PUDL table from S3"
-- "what columns are in this table"
-- "what does this column mean"
-- "show table metadata for X"
-- "which data source does this table come from"
-- "find field descriptions for this table"
-- "I need notebook code to explore this PUDL data"
+Beyond the main Parquet outputs, PUDL also distributes FERC historical form databases
+(SQLite and DuckDB, covering Forms 1/2/6/60/714) and the FERC EQR (partitioned Parquet,
+separate from the main build). These have different access patterns and are not covered
+by the main Frictionless descriptor — see [Data Access](./references/data-access.md)
+for the full picture.
 
-## Audience and scope
+## Workflow overview
 
-- Primary audience: analysts and data users, not core maintainers.
-- Focus: using outputs and metadata confidently without digging into internals.
-- Secondary audience: developers who need the same data context while coding.
+Most interactions only require steps 1–3. Steps 4 and 5 add real cost (computation,
+potentially slow S3 downloads, extra dependencies) — only proceed to them when the
+user explicitly asks to load or explore data.
 
-## Source-of-truth policy
+1. **Locate the metadata** — the primary PUDL descriptor (Parquet outputs) is at:
+   - S3: `s3://pudl.catalyst.coop/nightly/pudl_parquet_datapackage.json`
+   - HTTPS: `https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/pudl_parquet_datapackage.json`
 
-The reference files in this skill are the canonical AI-facing layer for:
+   FERC XBRL-derived tables have their own descriptors at the same base path:
+   `ferc1_xbrl_datapackage.json`, `ferc2_xbrl_datapackage.json`,
+   `ferc6_xbrl_datapackage.json`, `ferc60_xbrl_datapackage.json`,
+   `ferc714_xbrl_datapackage.json`
 
-- data access and output usage patterns,
-- table/field/source metadata retrieval,
-- source-doc and methodology interpretation.
+   The FERC EQR (Electric Quarterly Reports) is distributed separately due to its
+   size, and only one version is publicly available at a time:
+   - S3: `s3://pudl.catalyst.coop/ferceqr/ferceqr_parquet_datapackage.json`
+   - HTTPS: `https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/ferceqr/ferceqr_parquet_datapackage.json`
 
-`pudl-dev` should reuse these references instead of duplicating them.
+   For offline or development use, download all descriptors locally with:
+   ```bash
+   python scripts/fetch_descriptor.py
+   ```
+   This populates `assets/cache/` with fresh copies of all descriptors above.
+
+   Raw input archives (for provenance) live at
+   `s3://pudl.catalyst.coop/zenodo/<dataset>/<doi>/datapackage.json` — see
+   [Data Quality and Context](./references/data-quality-and-context.md) for details.
+
+2. **Query metadata selectively** — use `/datapackage` skill patterns (jq or DuckDB)
+   to find relevant tables, read descriptions, and surface warnings.
+
+3. **Check table tier** — see [Data Quality and Context](./references/data-quality-and-context.md).
+   Prefer `out_*` tables; warn users about `_core_*` tables.
+
+4. *(Only if the user explicitly asks to load data)* **Load the data** — Parquet from
+   S3 or local. See [Data Access](./references/data-access.md).
+
+5. *(Only if the user explicitly asks for interactive exploration)* **Delegate EDA to
+   a notebook agent** — hand off to `/marimo-pair` (Marimo) or appropriate Jupyter
+   agent.
 
 ## Reference index
 
-- [Data Access and Outputs](./references/data-access-and-outputs.md)
-- [Metadata and Querying](./references/metadata-and-querying.md)
-- [Data Sources, Dictionaries, and Methodology](./references/data-sources-dictionaries-and-methodology.md)
+- [Data Sources](./references/data-sources.md) — exhaustive list of all ~29 dataset
+  short codes, full names, and per-source documentation links; read when a user asks
+  about a specific source dataset (EIA-860, FERC Form 714, EPA CEMS, etc.) or needs
+  documentation links, or when constructing a Zenodo DOI path and you need the short code
+- [Data Access](./references/data-access.md) — S3 paths, loading patterns
+  (pandas/DuckDB/polars/pure SQL), FERC historical database locations, and EQR access;
+  read whenever generating data-loading code or explaining how to access any PUDL output
+- [Data Quality and Context](./references/data-quality-and-context.md) — table tier
+  naming conventions (`out_*` vs `core_*` vs raw), warning types, and what each tier
+  means for analysis reliability; read when a user asks about data quality, when choosing
+  between table tiers, or when surfacing warnings before providing loading code
+- [FERC Uniform System of Accounts](./references/ferc-uniform-system-of-accounts.md) —
+  complete hierarchical chart of FERC electric utility accounts (balance sheet, electric
+  plant, operating revenue, O&M expenses) with account numbers and descriptions; read
+  when interpreting FERC Form 1 financial data or when a user asks what a specific
+  account number means — prefer querying `ferc_accounts.json` over reading this
+  file
+- [FERC Form 1 Schedules](./references/ferc1-schedules.md) — all 75 Form 1 schedules
+  with titles, descriptions, and table mappings; read when a user references a schedule
+  by number or name (e.g. "Schedule 301", "Page 400a", "plant in service schedule") —
+  prefer querying `ferc1_schedules.json` over reading this file
+- [ferc1_schedules.json](./assets/ferc1_schedules.json) — **query this first** for any
+  FERC Form 1 schedule or table lookup; use jq or DuckDB `read_json()` to find
+  schedules by keyword, account number, or PUDL table name without loading the full
+  markdown into context
+- [ferc_accounts.json](./assets/ferc_accounts.json) — **query this first** for any
+  FERC account number lookup; use jq or DuckDB `read_json()` to resolve account
+  definitions and cross-reference with Form 1 schedules via the `ferc_accounts` array
 
-## Escalation boundary
+## PUDL-specific constraints
 
-If a task requires modifying ETL code, schema migrations, dbt tests, or CI workflow,
-hand off to `pudl-dev` and keep these references as the shared data context.
+- **License**: All PUDL data is published under the
+  [Creative Commons Attribution 4.0 International (CC-BY-4.0)](https://creativecommons.org/licenses/by/4.0/)
+  license. Users may freely use, share, and adapt the data with attribution to
+  Catalyst Cooperative.
+- **Citation**: When a user asks how to cite PUDL, provide this reference:
+
+  > Selvans, Z., Gosnell, C., Sharpe, A., Schira, Z., Lamb, K., Belfer, E., Xia, D.,
+  > & Mazaitis, K. *The Public Utility Data Liberation (PUDL) Project* [Data set].
+  > Catalyst Cooperative. <https://doi.org/10.5281/zenodo.3653158>
+
+  BibTeX:
+  ```bibtex
+  @misc{pudl,
+    author       = {Selvans, Zane and Gosnell, Christina and Sharpe, Austen and
+                    Schira, Zachary and Lamb, Katherine and Belfer, Ella and
+                    Xia, Dazhong and Mazaitis, Kathryn},
+    title        = {The Public Utility Data Liberation (PUDL) Project},
+    publisher    = {Catalyst Cooperative},
+    doi          = {10.5281/zenodo.3653158},
+    url          = {https://doi.org/10.5281/zenodo.3653158},
+  }
+  ```
+- The S3 bucket `s3://pudl.catalyst.coop` is **free and publicly accessible** — no
+  AWS credentials needed.
+- The Parquet path for any table is `s3://pudl.catalyst.coop/nightly/<table_name>.parquet`.
+- **Always surface usage warnings** from the descriptor before providing loading code.
+- **Prefer `out_*` tables** for analyst work. If a user asks about a topic without
+  specifying a table, search metadata for `out_` tables first.
+
+### Cross-referencing FERC Form 1 schedules and accounts
+
+Each `ferc1_schedules.json` record has a `ferc_accounts` array with the account numbers
+that schedule references, pre-extracted for direct lookup. Use `description` for topical
+keyword search; use `ferc_accounts` for account-number cross-referencing.
+
+**Quick lookup patterns (jq):**
+```bash
+# Find all schedules that reference a specific account number
+jq '[.[] | select(.ferc_accounts[] == "182.3")] | .[] | {schedule, title}' \
+  assets/ferc1_schedules.json
+
+# Get all account definitions for a specific schedule
+SCHED="232"
+jq --arg s "$SCHED" '.[] | select(.schedule == $s) | .ferc_accounts[]' \
+  assets/ferc1_schedules.json | \
+  xargs -I{} jq --arg a {} '.[] | select(.account == $a)' assets/ferc_accounts.json
+```
+
+**Combined DuckDB query:**
+```sql
+-- Find PUDL tables and account definitions for a topic (e.g. "regulatory assets")
+SELECT s.schedule, s.title, unnest(s.pudl_tables) AS pudl_table,
+       a.account, a.description AS account_description
+FROM read_json('assets/ferc1_schedules.json') s,
+     LATERAL unnest(s.ferc_accounts) AS t(acct)
+JOIN read_json('assets/ferc_accounts.json') a ON a.account = t.acct
+WHERE s.description ILIKE '%regulatory asset%'
+ORDER BY s.schedule, a.account;
+```
+
+## Delegation
+
+| User intent | Hand off to |
+|---|---|
+| Query datapackage.json metadata | `/datapackage` |
+| Attach a .duckdb or .sqlite file | `/duckdb-skills:attach-db` |
+| Run SQL or NL queries against data | `/duckdb-skills:query` |
+| Explore/visualize data in Marimo | `/marimo-pair` |
+| General Python/pandas help | `/dignified-python` |
+| Modify PUDL ETL code or dbt tests | `/pudl-dev` |

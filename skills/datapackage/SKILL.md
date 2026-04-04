@@ -17,7 +17,7 @@ compatibility: |
 metadata:
 - author: Catalyst Cooperative
 - email: hello@catalyst.coop
-- last-updated: 2026-04-02
+- last-updated: 2026-04-03
 ---
 
 # Frictionless Data Package Guide

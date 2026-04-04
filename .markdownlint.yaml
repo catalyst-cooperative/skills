@@ -1,0 +1,17 @@
+# MD013: line length. Allow up to 120 characters; skip code blocks (which can't
+# be wrapped without changing semantics). Tables are not excluded globally here —
+# ferc1-schedules.md disables MD013 entirely via an inline comment because its
+# generated table rows are unavoidably long.
+MD013:
+  line_length: 120
+  code_blocks: false
+
+# MD024: allow headings with the same content as long as they have different parents.
+# Needed in structured reference documents (e.g. FERC accounts) where "Operation"
+# and "Maintenance" repeat as sub-headings within many peer sections.
+MD024:
+  siblings_only: true
+
+# MD060/table-column-style: generated tables use consistent pipes but may have
+# varying column widths; disable to avoid spurious alignment warnings.
+MD060: false
