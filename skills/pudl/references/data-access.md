@@ -9,6 +9,48 @@
 
 ---
 
+## Choosing local vs. remote data
+
+**Always check for local data before defaulting to S3.** Remote queries are convenient
+but can be slow on poor connections or with heavy usage. Follow this decision tree
+every time you are about to generate data-loading code:
+
+1. **Check environment variables** — run `echo $PUDL_OUTPUT` and `echo $PUDL_DATA`
+   in the user's shell. If either is set and points to a directory that exists, it
+   likely contains a local copy of the PUDL Parquet files:
+   - `$PUDL_DATA` — the standard download location for the distributed Parquet bundle
+   - `$PUDL_OUTPUT` — the output directory of a local PUDL pipeline run; Parquet
+     files are under `$PUDL_OUTPUT/parquet/`
+
+   If a local directory is found, ask the user: *"I found a local PUDL data directory
+   at `<path>`. Would you like to read from there instead of S3?"*
+
+2. **Ask if neither is set** — if neither variable is set (or neither points to a
+   real directory), ask: *"Do you have a local copy of the PUDL data somewhere?
+   If so, reading locally will be faster than S3."*
+
+3. **Suggest downloading if queries are slow** — if you find yourself making many
+   long or slow remote queries, suggest that the user download the full Parquet bundle:
+
+   ```text
+   https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/pudl_parquet.zip
+   ```
+
+   > **Size warning**: `pudl_parquet.zip` is approximately 10 GB. Ask the user where
+   > they would like to save it before downloading.
+
+   After downloading, suggest they set `$PUDL_DATA` to point at the unzipped
+   directory so future sessions can find it automatically. Offer to add the export
+   line to their shell startup file (e.g. `~/.zshrc`, `~/.bashrc`, or
+   `~/.profile`) if you have permission to edit environment files.
+
+4. **FERC raw databases** — the FERC DuckDB and SQLite files can also be downloaded
+   for local use. Only suggest this if the user has already been querying them
+   remotely in the current session — these are much messier than the processed PUDL
+   Parquet outputs, so don't proactively recommend them.
+
+---
+
 ## Data locations
 
 All PUDL outputs — Parquet files, FERC SQLite/DuckDB databases, and descriptors — are
@@ -20,13 +62,15 @@ free and publicly accessible on AWS S3. No AWS credentials or account needed.
 | --- | --- |
 | S3 nightly (latest) | `s3://pudl.catalyst.coop/nightly/<table_name>.parquet` |
 | S3 versioned | `s3://pudl.catalyst.coop/v2024.11.0/<table_name>.parquet` |
-| Local download | `/path/to/download/dir/<table_name>.parquet` |
-| Local PUDL output (if pipeline was run) | `$PUDL_OUTPUT/parquet/<table_name>.parquet` |
+| Local download (`$PUDL_DATA`) | `$PUDL_DATA/<table_name>.parquet` |
+| Local PUDL pipeline output (`$PUDL_OUTPUT`) | `$PUDL_OUTPUT/parquet/<table_name>.parquet` |
 
 Datapackage JSON descriptors at the same base path: `pudl_parquet_datapackage.json`,
 `ferc1_xbrl_datapackage.json`, `ferc2_xbrl_datapackage.json`,
 `ferc6_xbrl_datapackage.json`, `ferc60_xbrl_datapackage.json`,
-`ferc714_xbrl_datapackage.json`
+`ferc714_xbrl_datapackage.json`. If using local PUDL pipeline output, these databases
+will be in the directory above the Parquet files: `$PUDL_OUTPUT/ferc1_xbrl_datapackage.json`,
+etc.
 
 **Use S3 nightly** for most exploratory work. For production pipelines or academic
 citation, use a fixed versioned path (e.g. `v2024.11.0`) so results are reproducible

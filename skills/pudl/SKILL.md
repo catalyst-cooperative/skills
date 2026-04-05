@@ -95,6 +95,10 @@ user explicitly asks to load or explore data.
   naming conventions (`out_*` vs `core_*` vs raw), warning types, and what each tier
   means for analysis reliability; read when a user asks about data quality, when choosing
   between table tiers, or when surfacing warnings before providing loading code
+- [Methodology](./references/methodology.md) — index of PUDL's data processing and
+  modeling methodology pages (entity resolution, timeseries imputation, ownership
+  extraction); read when a user asks *how* PUDL cleans, reconciles, or models data,
+  then fetch the specific page URL to get the full description and summarize it
 - [FERC Uniform System of Accounts](./references/ferc-uniform-system-of-accounts.md) —
   complete hierarchical chart of FERC electric utility accounts (balance sheet, electric
   plant, operating revenue, O&M expenses) with account numbers and descriptions; read
@@ -143,6 +147,15 @@ user explicitly asks to load or explore data.
 - **Always surface usage warnings** from the descriptor before providing loading code.
 - **Prefer `out_*` tables** for analyst work. If a user asks about a topic without
   specifying a table, search metadata for `out_` tables first.
+- **Descriptor descriptions are ReStructuredText (RST)**, not plain text or Markdown.
+  When reading `description` fields from the datapackage descriptor, apply these rules:
+  - Sphinx inline roles like `:py:class:`, `:py:func:`, `:py:attr:` — extract the
+    name inside the backticks (e.g. `:py:func:\`pudl.helpers.fix_eia_na\`` →
+    `fix_eia_na`).
+  - `:ref:\`label\`` cross-references do not resolve to accessible URLs; treat them
+    as internal documentation pointers only — do not attempt to construct a URL.
+  - `.. note::` and `.. warning::` directive blocks should be treated as callouts and
+    surfaced to users when relevant.
 
 ### Cross-referencing FERC Form 1 schedules and accounts
 
