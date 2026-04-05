@@ -1,0 +1,32 @@
+[project]
+authors = [{ name = "Zane Selvans", email = "zane.selvans@catalyst.coop" }]
+dependencies = ["mdformat-gfm>=1.0"]
+name = "agent-skills"
+requires-python = ">= 3.11"
+version = "0.1.0"
+
+[build-system]
+build-backend = "hatchling.build"
+requires = ["hatchling"]
+
+[tool.pixi.workspace]
+channels = ["conda-forge"]
+platforms = ["osx-arm64", "osx-64", "linux-64"]
+
+[tool.pixi.pypi-dependencies]
+agent_skills = { path = ".", editable = true }
+
+[tool.pixi.tasks]
+
+[tool.pixi.dependencies]
+duckdb = ">=1.5.1,<2"
+jq = ">=1.8.1,<2"
+prek = ">=0.3.8,<0.4"
+mdformat = ">=1.0.0,<2"
+mdformat-frontmatter = ">=2.0.10,<3"
+pandas = ">=3.0.2,<4"
+pyarrow = ">=23.0.1,<24"
+polars = ">=1.39.3,<2"
+awscli = ">=2.34.23,<3"
+s3fs = ">=2026.3.0,<2027"
+fsspec = ">=2026.3.0,<2027"
