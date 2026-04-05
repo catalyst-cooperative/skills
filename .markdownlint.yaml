@@ -5,6 +5,7 @@
 MD013:
   line_length: 120
   code_blocks: false
+  tables: false
 
 # MD024: allow headings with the same content as long as they have different parents.
 # Needed in structured reference documents (e.g. FERC accounts) where "Operation"

@@ -98,6 +98,10 @@ These skills must be installed. See `skills-lock.json` in the project root.
 - **Read the full description before presenting a resource.** Descriptions often
   contain important context: processing notes, primary key conventions, data
   provenance, or caveats about known limitations. Don't skip them.
+- **Use `uv` to install Python packages** — prefer `uv add <package>` over
+  `pip install <package>`. `uv` is faster and installs into a virtual environment
+  rather than globally. Fall back to `pip` only if `uv` is not available
+  (`command -v uv` returns nothing).
 - **Do not use Python to query descriptor metadata.** Python is not the right tool here
   — it loads the full JSON into memory (violating the golden rule above), adds
   unnecessary dependencies, and can't easily handle remote descriptors. Use jq for

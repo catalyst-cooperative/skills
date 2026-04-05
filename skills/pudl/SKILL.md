@@ -147,6 +147,10 @@ user explicitly asks to load or explore data.
 - **Always surface usage warnings** from the descriptor before providing loading code.
 - **Prefer `out_*` tables** for analyst work. If a user asks about a topic without
   specifying a table, search metadata for `out_` tables first.
+- **Use `uv` to install Python packages** — prefer `uv add <package>` over
+  `pip install <package>`. `uv` is faster and installs into a virtual environment
+  rather than globally. Fall back to `pip` only if `uv` is not available
+  (`command -v uv` returns nothing).
 - **Descriptor descriptions are ReStructuredText (RST)**, not plain text or Markdown.
   When reading `description` fields from the datapackage descriptor, apply these rules:
   - Sphinx inline roles like `:py:class:`, `:py:func:`, `:py:attr:` — extract the

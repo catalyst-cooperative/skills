@@ -270,7 +270,8 @@ df = pd.read_parquet(
 )
 ```
 
-`s3fs` must be installed for S3 access: `pip install s3fs` or `conda install s3fs`.
+`s3fs` must be installed for S3 access. Install with `uv add s3fs` (preferred) or
+`pip install s3fs` if `uv` is not available.
 
 ### With DuckDB (efficient for large tables or SQL-style queries)
 
