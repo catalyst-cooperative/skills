@@ -1,7 +1,7 @@
 ---
-description: "Use when running or updating dbt data validations, dbt schema.yml tests, or row-count expectations for PUDL tables."
-name: "PUDL dbt Data Validation Instructions"
-applyTo: "dbt/**/*.sql, dbt/**/*.yml, dbt/**/*.yaml, src/pudl/metadata/resources/**/*.py"
+description: Use when running or updating dbt data validations, dbt schema.yml tests, or row-count expectations for PUDL tables.
+name: PUDL dbt Data Validation Instructions
+applyTo: dbt/**/*.sql, dbt/**/*.yml, dbt/**/*.yaml, src/pudl/metadata/resources/**/*.py
 ---
 
 # dbt data validation instructions
@@ -37,5 +37,6 @@ pixi run dbt build --exclude "test_name:check_row_counts_per_partition"
 - Use `dbt_helper update-tables` where possible for schema and row-count updates.
 
 See also:
+
 - `docs/dev/data_validation_quickstart.rst`
 - `docs/dev/data_validation_reference.rst`

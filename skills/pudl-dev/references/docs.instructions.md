@@ -1,7 +1,7 @@
 ---
-description: "Use when editing PUDL documentation in docs/ or README.rst, including release notes and developer documentation pages."
-name: "PUDL Documentation Instructions"
-applyTo: "docs/**/*.rst, README.rst"
+description: Use when editing PUDL documentation in docs/ or README.rst, including release notes and developer documentation pages.
+name: PUDL Documentation Instructions
+applyTo: docs/**/*.rst, README.rst
 ---
 
 # Documentation instructions

@@ -16,9 +16,9 @@
 ## Required follow-through
 
 1. Update metadata definitions.
-2. Update related dbt schema tests in `dbt/models/**/schema.yml`.
-3. Run targeted dbt validations.
-4. Add an Alembic migration if database schema changed.
+1. Update related dbt schema tests in `dbt/models/**/schema.yml`.
+1. Run targeted dbt validations.
+1. Add an Alembic migration if database schema changed.
 
 ## Useful API patterns
 

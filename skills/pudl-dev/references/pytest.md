@@ -1,7 +1,7 @@
 ---
 name: pytest
 description: Run pytest unit and integration tests for PUDL. Use for test selection, debugging failures, and choosing fast vs CI-equivalent test runs.
-argument-hint: "[unit|integration|ci|targeted] [path_or_nodeid]"
+argument-hint: '[unit|integration|ci|targeted] [path_or_nodeid]'
 ---
 
 # Pytest Workflow
@@ -23,7 +23,7 @@ Use this skill when you need to run or reason about software tests in PUDL.
 ## Prerequisites
 
 - Run commands in the pixi environment (`pixi run ...`) unless already in
-	`pixi shell`.
+  `pixi shell`.
 - Integration tests can be slow and may trigger ETL work.
 
 ## Common commands

@@ -11,8 +11,8 @@
 Use these sources in order:
 
 1. In-repo metadata APIs (`Package`, `Resource`, `Field`, `DataSource`).
-2. Metadata embedded in Parquet schema.
-3. Generated docs and rendered HTML for prose context.
+1. Metadata embedded in Parquet schema.
+1. Generated docs and rendered HTML for prose context.
 
 ## Programmatic metadata APIs
 

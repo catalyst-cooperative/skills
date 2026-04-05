@@ -9,8 +9,8 @@
 ## Preferred sequence
 
 1. Run targeted pytest without coverage while iterating.
-2. Run dbt validation for affected outputs.
-3. Run code-quality hooks before finalizing.
+1. Run dbt validation for affected outputs.
+1. Run code-quality hooks before finalizing.
 
 ## Representative commands
 

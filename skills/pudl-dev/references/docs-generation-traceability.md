@@ -8,11 +8,11 @@
 
 ## Build hook to output mapping
 
-| `docs/conf.py` build hook | Primary outputs | Input metadata model(s) | Template(s) |
-| --- | --- | --- | --- |
-| `data_dictionary_metadata_to_rst()` | `docs/data_dictionaries/pudl_db.rst` | `pudl.metadata.classes.Package`, `RESOURCE_METADATA` | `docs/templates/package.rst.jinja`, `docs/templates/resource.rst.jinja` |
-| `data_sources_metadata_to_rst()` | `docs/data_sources/<source_id>.rst` for `INCLUDED_SOURCES` | `pudl.metadata.classes.DataSource`, `PUDL_PACKAGE`, `Resource` subsets | `docs/templates/data_source_parent.rst.jinja`, `docs/templates/*_child.rst.jinja` |
-| `static_dfs_to_rst()` | `docs/data_dictionaries/codes_and_labels.rst` and `docs/data_dictionaries/code_csvs/*.csv` | `pudl.metadata.classes.CodeMetadata`, `CODE_METADATA` | `docs/templates/codemetadata.rst.jinja` |
+| `docs/conf.py` build hook           | Primary outputs                                                                            | Input metadata model(s)                                                | Template(s)                                                                       |
+| ----------------------------------- | ------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------- | --------------------------------------------------------------------------------- |
+| `data_dictionary_metadata_to_rst()` | `docs/data_dictionaries/pudl_db.rst`                                                       | `pudl.metadata.classes.Package`, `RESOURCE_METADATA`                   | `docs/templates/package.rst.jinja`, `docs/templates/resource.rst.jinja`           |
+| `data_sources_metadata_to_rst()`    | `docs/data_sources/<source_id>.rst` for `INCLUDED_SOURCES`                                 | `pudl.metadata.classes.DataSource`, `PUDL_PACKAGE`, `Resource` subsets | `docs/templates/data_source_parent.rst.jinja`, `docs/templates/*_child.rst.jinja` |
+| `static_dfs_to_rst()`               | `docs/data_dictionaries/codes_and_labels.rst` and `docs/data_dictionaries/code_csvs/*.csv` | `pudl.metadata.classes.CodeMetadata`, `CODE_METADATA`                  | `docs/templates/codemetadata.rst.jinja`                                           |
 
 ## Template mapping quick reference
 
@@ -31,6 +31,7 @@ PUDL_DOCS_KEEP_GENERATED_FILES=1 pixi run docs-build
 ```
 
 - Retained generated files are written under:
+
   - `docs/data_sources/**/*.rst`
   - `docs/data_dictionaries/**/*.rst`
   - `docs/data_dictionaries/**/*.csv`

@@ -1,7 +1,7 @@
 ---
 name: dbt
 description: Run and debug PUDL dbt data validation tests, update schema.yml metadata, and maintain row-count expectations.
-argument-hint: "[validate|build|update-schema|update-row-counts] [selectors_or_tables]"
+argument-hint: '[validate|build|update-schema|update-row-counts] [selectors_or_tables]'
 ---
 
 # dbt Data Validation Workflow

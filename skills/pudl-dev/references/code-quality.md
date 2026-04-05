@@ -1,7 +1,7 @@
 ---
 name: code-quality
 description: Run PUDL linting and formatting workflows with ruff and pre-commit hooks, including docs and config validation hooks.
-argument-hint: "[ruff|pre-commit|all] [path]"
+argument-hint: '[ruff|pre-commit|all] [path]'
 ---
 
 # Code Quality Workflow
@@ -52,8 +52,8 @@ pixi run pre-commit-install
 ## Suggested order before commit
 
 1. `pixi run pre-commit run ruff-check --all-files`
-2. `pixi run pre-commit run ruff-format --all-files`
-3. `pixi run pre-commit-run`
+1. `pixi run pre-commit run ruff-format --all-files`
+1. `pixi run pre-commit-run`
 
 ## References
 

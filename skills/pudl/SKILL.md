@@ -4,7 +4,7 @@ description: >
   Access PUDL table data plus table/column/source metadata in Jupyter or Marimo
   notebooks for debugging and visualization. Use when users ask what a table contains,
   how to read it, or how columns are defined.
-argument-hint: "[table_name] [local|s3] [data|metadata|both]"
+argument-hint: '[table_name] [local|s3] [data|metadata|both]'
 ---
 
 # PUDL Data and Metadata Guide

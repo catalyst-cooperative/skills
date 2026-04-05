@@ -9,15 +9,15 @@
 ## Data-source and dictionary workflow
 
 1. Identify the source(s) behind the table (for example `eia923`, `ferc1`).
-2. Check source docs for publication/partitioning caveats.
-3. Check data dictionaries for table and field semantics.
-4. Verify metadata definitions in `src/pudl/metadata/` if needed.
+1. Check source docs for publication/partitioning caveats.
+1. Check data dictionaries for table and field semantics.
+1. Verify metadata definitions in `src/pudl/metadata/` if needed.
 
 ## Methodology workflow
 
 1. Determine whether the value is raw, normalized, or derived.
-2. Check methodology docs for assumptions and model behavior.
-3. Trace source -> core -> output when debugging anomalies.
+1. Check methodology docs for assumptions and model behavior.
+1. Trace source -> core -> output when debugging anomalies.
 
 ## High-value docs to consult
 

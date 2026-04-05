@@ -1,7 +1,7 @@
 ---
-description: "Use when adding or editing table/resource/field/source metadata under src/pudl/metadata and related dbt schema definitions."
-name: "PUDL Metadata Editing Instructions"
-applyTo: "src/pudl/metadata/**/*.py, dbt/models/**/*.yml, dbt/models/**/*.yaml"
+description: Use when adding or editing table/resource/field/source metadata under src/pudl/metadata and related dbt schema definitions.
+name: PUDL Metadata Editing Instructions
+applyTo: src/pudl/metadata/**/*.py, dbt/models/**/*.yml, dbt/models/**/*.yaml
 ---
 
 # Metadata editing instructions
@@ -31,6 +31,7 @@ applyTo: "src/pudl/metadata/**/*.py, dbt/models/**/*.yml, dbt/models/**/*.yaml"
 - Run targeted pytest checks touching metadata behavior.
 
 See also:
+
 - `docs/dev/metadata.rst`
 - `docs/dev/naming_conventions.rst`
 - `docs/dev/data_validation_quickstart.rst`

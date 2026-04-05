@@ -1,7 +1,7 @@
 ---
-description: "Use when linting, formatting, or preparing commits with pre-commit hooks (ruff, doc8, typos, actionlint, shellcheck, etc.)."
-name: "PUDL Code Quality Instructions"
-applyTo: "src/**/*.py, test/**/*.py, docs/**/*.rst, .github/**/*.yml, .github/**/*.yaml"
+description: Use when linting, formatting, or preparing commits with pre-commit hooks (ruff, doc8, typos, actionlint, shellcheck, etc.).
+name: PUDL Code Quality Instructions
+applyTo: src/**/*.py, test/**/*.py, docs/**/*.rst, .github/**/*.yml, .github/**/*.yaml
 ---
 
 # Code quality instructions
