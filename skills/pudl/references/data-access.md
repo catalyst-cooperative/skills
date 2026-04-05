@@ -7,7 +7,7 @@
 - Generating reproducible data-loading code for a user.
 - Deciding how to access raw FERC form data.
 
----
+______________________________________________________________________
 
 ## Choosing local vs. remote data
 
@@ -18,6 +18,7 @@ every time you are about to generate data-loading code:
 1. **Check environment variables** — run `echo $PUDL_OUTPUT` and `echo $PUDL_DATA`
    in the user's shell. If either is set and points to a directory that exists, it
    likely contains a local copy of the PUDL Parquet files:
+
    - `$PUDL_DATA` — the standard download location for the distributed Parquet bundle
    - `$PUDL_OUTPUT` — the output directory of a local PUDL pipeline run; Parquet
      files are under `$PUDL_OUTPUT/parquet/`
@@ -25,11 +26,11 @@ every time you are about to generate data-loading code:
    If a local directory is found, ask the user: *"I found a local PUDL data directory
    at `<path>`. Would you like to read from there instead of S3?"*
 
-2. **Ask if neither is set** — if neither variable is set (or neither points to a
+1. **Ask if neither is set** — if neither variable is set (or neither points to a
    real directory), ask: *"Do you have a local copy of the PUDL data somewhere?
    If so, reading locally will be faster than S3."*
 
-3. **Suggest downloading if queries are slow** — if you find yourself making many
+1. **Suggest downloading if queries are slow** — if you find yourself making many
    long or slow remote queries, suggest that the user download the full Parquet bundle:
 
    ```text
@@ -44,12 +45,12 @@ every time you are about to generate data-loading code:
    line to their shell startup file (e.g. `~/.zshrc`, `~/.bashrc`, or
    `~/.profile`) if you have permission to edit environment files.
 
-4. **FERC raw databases** — the FERC DuckDB and SQLite files can also be downloaded
+1. **FERC raw databases** — the FERC DuckDB and SQLite files can also be downloaded
    for local use. Only suggest this if the user has already been querying them
    remotely in the current session — these are much messier than the processed PUDL
    Parquet outputs, so don't proactively recommend them.
 
----
+______________________________________________________________________
 
 ## Data locations
 
@@ -58,12 +59,12 @@ free and publicly accessible on AWS S3. No AWS credentials or account needed.
 
 ### Core PUDL outputs
 
-| Location | Path pattern |
-| --- | --- |
-| S3 nightly (latest) | `s3://pudl.catalyst.coop/nightly/<table_name>.parquet` |
-| S3 versioned | `s3://pudl.catalyst.coop/v2024.11.0/<table_name>.parquet` |
-| Local download (`$PUDL_DATA`) | `$PUDL_DATA/<table_name>.parquet` |
-| Local PUDL pipeline output (`$PUDL_OUTPUT`) | `$PUDL_OUTPUT/parquet/<table_name>.parquet` |
+| Location                                    | Path pattern                                              |
+| ------------------------------------------- | --------------------------------------------------------- |
+| S3 nightly (latest)                         | `s3://pudl.catalyst.coop/nightly/<table_name>.parquet`    |
+| S3 versioned                                | `s3://pudl.catalyst.coop/v2024.11.0/<table_name>.parquet` |
+| Local download (`$PUDL_DATA`)               | `$PUDL_DATA/<table_name>.parquet`                         |
+| Local PUDL pipeline output (`$PUDL_OUTPUT`) | `$PUDL_OUTPUT/parquet/<table_name>.parquet`               |
 
 Datapackage JSON descriptors at the same base path: `pudl_parquet_datapackage.json`,
 `ferc1_xbrl_datapackage.json`, `ferc2_xbrl_datapackage.json`,
@@ -122,9 +123,13 @@ Parquet files from S3 without downloading them.
 import polars as pl
 
 # Load a single quarter
-df = pl.scan_parquet(
-    "s3://pudl.catalyst.coop/ferceqr/core_ferceqr__transactions/2023q1.parquet"
-).select(["seller_name", "buyer_name", "transaction_quantity"]).collect()
+df = (
+    pl.scan_parquet(
+        "s3://pudl.catalyst.coop/ferceqr/core_ferceqr__transactions/2023q1.parquet"
+    )
+    .select(["seller_name", "buyer_name", "transaction_quantity"])
+    .collect()
+)
 
 # Load all quarters for a year using a glob
 df = pl.scan_parquet(
@@ -137,7 +142,7 @@ Descriptor:
 - S3: `s3://pudl.catalyst.coop/ferceqr/ferceqr_parquet_datapackage.json`
 - HTTPS: `https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/ferceqr/ferceqr_parquet_datapackage.json`
 
----
+______________________________________________________________________
 
 ## FERC historical form databases
 
@@ -147,13 +152,13 @@ outputs at the same S3 base path.
 
 ### Reporting epochs
 
-| Form | Legacy format | Legacy years | XBRL years |
-| --- | --- | --- | --- |
-| Form 1 (Electric Utilities) | DBF | 1994–2020 | 2021–present |
-| Form 2 (Interstate Gas Transmission Companies) | DBF | 1996–2020 | 2021–present |
-| Form 6 (Oil Pipeline Companies) | DBF | 2000–2020 | 2021–present |
-| Form 60 (Centralized Service Companies) | DBF | 2006–2020 | 2021–present |
-| Form 714 (Electricity Balancing Authorities and Planning Areas) | CSV (DBF export) | 2006-2020 | 2021–present |
+| Form                                                            | Legacy format    | Legacy years | XBRL years   |
+| --------------------------------------------------------------- | ---------------- | ------------ | ------------ |
+| Form 1 (Electric Utilities)                                     | DBF              | 1994–2020    | 2021–present |
+| Form 2 (Interstate Gas Transmission Companies)                  | DBF              | 1996–2020    | 2021–present |
+| Form 6 (Oil Pipeline Companies)                                 | DBF              | 2000–2020    | 2021–present |
+| Form 60 (Centralized Service Companies)                         | DBF              | 2006–2020    | 2021–present |
+| Form 714 (Electricity Balancing Authorities and Planning Areas) | CSV (DBF export) | 2006-2020    | 2021–present |
 
 ### PUDL integration status
 
@@ -175,11 +180,11 @@ uniform schema.
 
 PUDL consolidates all DBF years for each form into a single SQLite database:
 
-| Form | S3 path |
-| --- | --- |
-| Form 1 | `s3://pudl.catalyst.coop/nightly/ferc1_dbf.sqlite.zip` |
-| Form 2 | `s3://pudl.catalyst.coop/nightly/ferc2_dbf.sqlite.zip` |
-| Form 6 | `s3://pudl.catalyst.coop/nightly/ferc6_dbf.sqlite.zip` |
+| Form    | S3 path                                                 |
+| ------- | ------------------------------------------------------- |
+| Form 1  | `s3://pudl.catalyst.coop/nightly/ferc1_dbf.sqlite.zip`  |
+| Form 2  | `s3://pudl.catalyst.coop/nightly/ferc2_dbf.sqlite.zip`  |
+| Form 6  | `s3://pudl.catalyst.coop/nightly/ferc6_dbf.sqlite.zip`  |
 | Form 60 | `s3://pudl.catalyst.coop/nightly/ferc60_dbf.sqlite.zip` |
 
 **No datapackage descriptors exist** for these databases — the original DBF files are
@@ -191,12 +196,12 @@ exists for Forms 2, 6, or 60.
 
 PUDL converts XBRL filings into both SQLite and DuckDB:
 
-| Form | DuckDB (preferred) | SQLite (zipped, must download) |
-| --- | --- | --- |
-| Form 1 | `s3://pudl.catalyst.coop/nightly/ferc1_xbrl.duckdb` | `s3://pudl.catalyst.coop/nightly/ferc1_xbrl.sqlite.zip` |
-| Form 2 | `s3://pudl.catalyst.coop/nightly/ferc2_xbrl.duckdb` | `s3://pudl.catalyst.coop/nightly/ferc2_xbrl.sqlite.zip` |
-| Form 6 | `s3://pudl.catalyst.coop/nightly/ferc6_xbrl.duckdb` | `s3://pudl.catalyst.coop/nightly/ferc6_xbrl.sqlite.zip` |
-| Form 60 | `s3://pudl.catalyst.coop/nightly/ferc60_xbrl.duckdb` | `s3://pudl.catalyst.coop/nightly/ferc60_xbrl.sqlite.zip` |
+| Form     | DuckDB (preferred)                                    | SQLite (zipped, must download)                            |
+| -------- | ----------------------------------------------------- | --------------------------------------------------------- |
+| Form 1   | `s3://pudl.catalyst.coop/nightly/ferc1_xbrl.duckdb`   | `s3://pudl.catalyst.coop/nightly/ferc1_xbrl.sqlite.zip`   |
+| Form 2   | `s3://pudl.catalyst.coop/nightly/ferc2_xbrl.duckdb`   | `s3://pudl.catalyst.coop/nightly/ferc2_xbrl.sqlite.zip`   |
+| Form 6   | `s3://pudl.catalyst.coop/nightly/ferc6_xbrl.duckdb`   | `s3://pudl.catalyst.coop/nightly/ferc6_xbrl.sqlite.zip`   |
+| Form 60  | `s3://pudl.catalyst.coop/nightly/ferc60_xbrl.duckdb`  | `s3://pudl.catalyst.coop/nightly/ferc60_xbrl.sqlite.zip`  |
 | Form 714 | `s3://pudl.catalyst.coop/nightly/ferc714_xbrl.duckdb` | `s3://pudl.catalyst.coop/nightly/ferc714_xbrl.sqlite.zip` |
 
 **Prefer DuckDB**: DuckDB files can be queried remotely (see below) without
@@ -210,9 +215,9 @@ base path. There are three known issues with these descriptors:
 1. **Absolute path bug**: the `path` field for each resource contains an absolute path
    from the build machine (e.g. `/home/user/pudl-work/ferc1_xbrl.sqlite`). Use only
    the final filename component to construct the actual S3 path.
-2. **Points at SQLite, not DuckDB**: the `path` field always refers to the `.sqlite`
+1. **Points at SQLite, not DuckDB**: the `path` field always refers to the `.sqlite`
    file. Replace `.sqlite` with `.duckdb` to get the DuckDB path.
-3. **Table descriptions are not useful**: they contain raw XBRL entity names rather
+1. **Table descriptions are not useful**: they contain raw XBRL entity names rather
    than human-readable descriptions. Rely on the table name and column names instead.
 
 ### Querying XBRL databases with DuckDB
@@ -246,7 +251,7 @@ df = con.execute(
 ).df()
 ```
 
----
+______________________________________________________________________
 
 ## Loading PUDL Parquet tables
 
@@ -314,7 +319,7 @@ df = lf.select(["plant_id_eia", "report_date", "net_generation_mwh"]).collect()
 Polars lazy evaluation (`scan_parquet`) is preferred for tables > 500 MB — it pushes
 down column selection and row filters to the Parquet reader.
 
----
+______________________________________________________________________
 
 ## Listing all available tables
 
@@ -336,7 +341,7 @@ Or query the descriptor with jq (see the `datapackage` skill for full querying p
 jq -r '.resources[].name' pudl_parquet_datapackage.json
 ```
 
----
+______________________________________________________________________
 
 ## Raw input archives (Zenodo)
 
@@ -368,7 +373,7 @@ https://doi.org/10.5281/zenodo.<record_id>
 # Example: https://doi.org/10.5281/zenodo.19367768
 ```
 
----
+______________________________________________________________________
 
 ## Useful links
 

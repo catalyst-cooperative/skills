@@ -46,6 +46,7 @@ potentially slow S3 downloads, extra dependencies) — only proceed to them when
 user explicitly asks to load or explore data.
 
 1. **Locate the metadata** — the primary PUDL descriptor (Parquet outputs) is at:
+
    - S3: `s3://pudl.catalyst.coop/nightly/pudl_parquet_datapackage.json`
    - HTTPS: `https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/pudl_parquet_datapackage.json`
 
@@ -56,29 +57,32 @@ user explicitly asks to load or explore data.
 
    The FERC EQR (Electric Quarterly Reports) is distributed separately due to its
    size, and only one version is publicly available at a time:
+
    - S3: `s3://pudl.catalyst.coop/ferceqr/ferceqr_parquet_datapackage.json`
    - HTTPS: `https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/ferceqr/ferceqr_parquet_datapackage.json`
 
    For offline or development use, download all descriptors locally with:
+
    ```bash
    python scripts/fetch_descriptor.py
    ```
+
    This populates `assets/cache/` with fresh copies of all descriptors above.
 
    Raw input archives (for provenance) live at
    `s3://pudl.catalyst.coop/zenodo/<dataset>/<doi>/datapackage.json` — see
    [Data Quality and Context](./references/data-quality-and-context.md) for details.
 
-2. **Query metadata selectively** — use `/datapackage` skill patterns (jq or DuckDB)
+1. **Query metadata selectively** — use `/datapackage` skill patterns (jq or DuckDB)
    to find relevant tables, read descriptions, and surface warnings.
 
-3. **Check table tier** — see [Data Quality and Context](./references/data-quality-and-context.md).
+1. **Check table tier** — see [Data Quality and Context](./references/data-quality-and-context.md).
    Prefer `out_*` tables; warn users about `_core_*` tables.
 
-4. *(Only if the user explicitly asks to load data)* **Load the data** — Parquet from
+1. *(Only if the user explicitly asks to load data)* **Load the data** — Parquet from
    S3 or local. See [Data Access](./references/data-access.md).
 
-5. *(Only if the user explicitly asks for interactive exploration)* **Delegate EDA to
+1. *(Only if the user explicitly asks for interactive exploration)* **Delegate EDA to
    a notebook agent** — hand off to `/marimo-pair` (Marimo) or appropriate Jupyter
    agent.
 
@@ -123,6 +127,7 @@ user explicitly asks to load or explore data.
   [Creative Commons Attribution 4.0 International (CC-BY-4.0)](https://creativecommons.org/licenses/by/4.0/)
   license. Users may freely use, share, and adapt the data with attribution to
   Catalyst Cooperative.
+
 - **Citation**: When a user asks how to cite PUDL, provide this reference:
 
   > Selvans, Z., Gosnell, C., Sharpe, A., Schira, Z., Lamb, K., Belfer, E., Xia, D.,
@@ -130,6 +135,7 @@ user explicitly asks to load or explore data.
   > Catalyst Cooperative. <https://doi.org/10.5281/zenodo.3653158>
 
   BibTeX:
+
   ```bibtex
   @misc{pudl,
     author       = {Selvans, Zane and Gosnell, Christina and Sharpe, Austen and
@@ -141,22 +147,28 @@ user explicitly asks to load or explore data.
     url          = {https://doi.org/10.5281/zenodo.3653158},
   }
   ```
+
 - The S3 bucket `s3://pudl.catalyst.coop` is **free and publicly accessible** — no
   AWS credentials needed.
+
 - The Parquet path for any table is `s3://pudl.catalyst.coop/nightly/<table_name>.parquet`.
+
 - **Always surface usage warnings** from the descriptor before providing loading code.
+
 - **Prefer `out_*` tables** for analyst work. If a user asks about a topic without
   specifying a table, search metadata for `out_` tables first.
+
 - **Use `uv` to install Python packages** — prefer `uv add <package>` over
   `pip install <package>`. `uv` is faster and installs into a virtual environment
   rather than globally. Fall back to `pip` only if `uv` is not available
   (`command -v uv` returns nothing).
+
 - **Descriptor descriptions are ReStructuredText (RST)**, not plain text or Markdown.
   When reading `description` fields from the datapackage descriptor, apply these rules:
+
   - Sphinx inline roles like `:py:class:`, `:py:func:`, `:py:attr:` — extract the
-    name inside the backticks (e.g. `:py:func:\`pudl.helpers.fix_eia_na\`` →
-    `fix_eia_na`).
-  - `:ref:\`label\`` cross-references do not resolve to accessible URLs; treat them
+    name inside the backticks (e.g. `:py:func:\`pudl.helpers.fix_eia_na\``→`fix_eia_na\`).
+  - `:ref:\`label\`\` cross-references do not resolve to accessible URLs; treat them
     as internal documentation pointers only — do not attempt to construct a URL.
   - `.. note::` and `.. warning::` directive blocks should be treated as callouts and
     surfaced to users when relevant.
@@ -168,19 +180,21 @@ that schedule references, pre-extracted for direct lookup. Use `description` for
 keyword search; use `ferc_accounts` for account-number cross-referencing.
 
 **Quick lookup patterns (jq):**
+
 ```bash
 # Find all schedules that reference a specific account number
 jq '[.[] | select(.ferc_accounts[] == "182.3")] | .[] | {schedule, title}' \
-  assets/ferc1_schedules.json
+	assets/ferc1_schedules.json
 
 # Get all account definitions for a specific schedule
 SCHED="232"
 jq --arg s "$SCHED" '.[] | select(.schedule == $s) | .ferc_accounts[]' \
-  assets/ferc1_schedules.json | \
-  xargs -I{} jq --arg a {} '.[] | select(.account == $a)' assets/ferc_accounts.json
+	assets/ferc1_schedules.json |
+	xargs -I{} jq --arg a {} '.[] | select(.account == $a)' assets/ferc_accounts.json
 ```
 
 **Combined DuckDB query:**
+
 ```sql
 -- Find PUDL tables and account definitions for a topic (e.g. "regulatory assets")
 SELECT s.schedule, s.title, unnest(s.pudl_tables) AS pudl_table,
@@ -194,11 +208,11 @@ ORDER BY s.schedule, a.account;
 
 ## Delegation
 
-| User intent | Hand off to |
-|---|---|
-| Query datapackage.json metadata | `/datapackage` |
-| Attach a .duckdb or .sqlite file | `/duckdb-skills:attach-db` |
-| Run SQL or NL queries against data | `/duckdb-skills:query` |
-| Explore/visualize data in Marimo | `/marimo-pair` |
-| General Python/pandas help | `/dignified-python` |
-| Modify PUDL ETL code or dbt tests | `/pudl-dev` |
+| User intent                        | Hand off to                |
+| ---------------------------------- | -------------------------- |
+| Query datapackage.json metadata    | `/datapackage`             |
+| Attach a .duckdb or .sqlite file   | `/duckdb-skills:attach-db` |
+| Run SQL or NL queries against data | `/duckdb-skills:query`     |
+| Explore/visualize data in Marimo   | `/marimo-pair`             |
+| General Python/pandas help         | `/dignified-python`        |
+| Modify PUDL ETL code or dbt tests  | `/pudl-dev`                |

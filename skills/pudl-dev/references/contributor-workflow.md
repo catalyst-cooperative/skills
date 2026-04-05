@@ -16,10 +16,10 @@
 ## Suggested workflow
 
 1. Confirm issue scope and expected outcome.
-2. Write a short implementation plan in the issue/PR.
-3. Implement in small commits and open a draft PR early.
-4. Run local quality checks and targeted tests.
-5. Update docs/release notes when user-visible behavior changes.
+1. Write a short implementation plan in the issue/PR.
+1. Implement in small commits and open a draft PR early.
+1. Run local quality checks and targeted tests.
+1. Update docs/release notes when user-visible behavior changes.
 
 ## Canonical sources
 

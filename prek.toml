@@ -1,7 +1,20 @@
 [[repos]]
-repo = "https://github.com/jackdewinter/pymarkdown"
-rev = "v0.9.36"
-hooks = [{ id = "pymarkdown"}]
+repo = "https://github.com/DavidAnson/markdownlint-cli2"
+rev = "v0.22.0"
+hooks = [{ id = "markdownlint-cli2", args = ["--fix"] }]
+
+[[repos]]
+repo = "https://github.com/hukkin/mdformat"
+rev = "1.0.0"
+hooks = [{
+  id = "mdformat",
+    additional_dependencies = [
+        "mdformat-frontmatter",
+        "mdformat-gfm",
+        "mdformat-ruff",
+        "mdformat-shfmt",
+    ]
+}]
 
 [[repos]]
 repo = "https://github.com/pre-commit/pre-commit-hooks"
@@ -53,18 +66,6 @@ hooks = [{ id = "actionlint" }]
 repo = "https://github.com/shellcheck-py/shellcheck-py"
 rev = "v0.11.0.1"
 hooks = [{ id = "shellcheck" }]
-
-[[repos]]
-repo = "https://github.com/hukkin/mdformat"
-rev = "1.0.0"
-hooks = [{
-  id = "mdformat",
-    additional_dependencies = [
-        mdformat-gfm,
-        mdformat-ruff,
-        mdformat-shfmt,
-    ]
-}]
 
 #[[repos]]
 #repo = "https://github.com/ComPWA/taplo-pre-commit"

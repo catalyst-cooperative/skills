@@ -15,9 +15,9 @@ compatibility: |
   Required skills: duckdb-skills (attach-db, query)
   Optional Python packages: marimo, pandas, polars, duckdb (for DataFrame work)
 metadata:
-- author: Catalyst Cooperative
-- email: hello@catalyst.coop
-- last-updated: 2026-04-03
+  - author: Catalyst Cooperative
+  - email: hello@catalyst.coop
+  - last-updated: 2026-04-03
 ---
 
 # Frictionless Data Package Guide
@@ -65,9 +65,9 @@ For data loading and SQL queries, the `attach-db` and `query` skills from
 ## Workflow overview
 
 1. **Locate the descriptor** — find or download `datapackage.json` (see below).
-2. **Query metadata selectively** — use jq or DuckDB to extract only what you need. See [Metadata Querying](./references/metadata-querying.md).
-3. **Surface warnings** — always check for usage warnings before presenting a resource.
-4. **Load the data** *(optional)* — only if the user explicitly wants to query or
+1. **Query metadata selectively** — use jq or DuckDB to extract only what you need. See [Metadata Querying](./references/metadata-querying.md).
+1. **Surface warnings** — always check for usage warnings before presenting a resource.
+1. **Load the data** *(optional)* — only if the user explicitly wants to query or
    explore the actual data. Data files can be large and remote access can be slow or
    costly. Don't initiate data loading as a follow-on to a metadata lookup without
    confirming the user wants it. See [Storage Backends](./references/storage-backends.md).
@@ -123,12 +123,12 @@ Bundled examples live under `assets/examples/`. All four use the same weather-st
 dataset (5 stations, 150 daily readings) so you can test the same queries against
 each storage backend:
 
-| Directory | Format | Data files |
-| --- | --- | --- |
-| `csv/` | CSV | `stations.csv`, `daily-readings.csv` |
+| Directory  | Format  | Data files                                   |
+| ---------- | ------- | -------------------------------------------- |
+| `csv/`     | CSV     | `stations.csv`, `daily-readings.csv`         |
 | `parquet/` | Parquet | `stations.parquet`, `daily-readings.parquet` |
-| `duckdb/` | DuckDB | `weather.duckdb` (both tables inside) |
-| `sqlite/` | SQLite | `weather.sqlite` (both tables inside) |
+| `duckdb/`  | DuckDB  | `weather.duckdb` (both tables inside)        |
+| `sqlite/`  | SQLite  | `weather.sqlite` (both tables inside)        |
 
 Each directory contains a `datapackage.json` descriptor. The DuckDB and SQLite
 descriptors include a non-standard `duckdb_table` / `sqlite_table` key pointing to the

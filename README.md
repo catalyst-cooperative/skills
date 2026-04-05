@@ -1,6 +1,7 @@
 # [Catalyst Cooperative](http://github.com/catalyst-cooperative) Agent Skills
 
-This repository contains experimental [agent skills](https://agentskills.io) related to PUDL (the Public Utility Data Liberation Project).
+This repository contains experimental [agent skills](https://agentskills.io) related to
+PUDL (the Public Utility Data Liberation Project).
 
 - `pudl` is for exploring and working with [PUDL open energy data and metadata](https://data.catalyst.coop)
 - `pudl-dev` is for maintaining and contributing to the [PUDL open source project](https://github.com/catalyst-cooperative/pudl)
@@ -19,18 +20,24 @@ This repository contains experimental [agent skills](https://agentskills.io) rel
 
 - [The Agent Skills Standard](https://agentskills.io)
 - [Skill Authoring Best Practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices) (Anthropic)
-- [Equipping Agents for the Real World With Agent Skills](https://claude.com/blog/equipping-agents-for-the-real-world-with-agent-skills)
-- [Claude Developer Guide Agent Skills Overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) (Anthropic)
+- [Equipping Agents for the Real World With Agent
+  Skills](https://claude.com/blog/equipping-agents-for-the-real-world-with-agent-skills)
+  (Anthropic)
+- [Claude Developer Guide Agent Skills
+  Overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
+  (Anthropic)
 - [Create a Claude Plugin Marketplace](https://code.claude.com/docs/en/plugin-marketplaces) (Anthropic)
 
 ## Agentic (Data) Engineering
 
 - [Agentic Engineering Patterns](https://simonwillison.net/guides/agentic-engineering-patterns/) (Simon Willison)
-- [Zero Degree-of-Freedom LLM Coding using Executable Oracles](https://john.regehr.org/writing/zero_dof_programming.html) (John Regehr)
+- [Zero Degree-of-Freedom LLM Coding using Executable
+  Oracles](https://john.regehr.org/writing/zero_dof_programming.html) (John Regehr)
 - [Dagster University AI Driven Data Engineering](https://courses.dagster.io/courses/take/ai-driven-data-engineering) (Dagster)
 - [Best practices for LLM Dagster Development](https://www.youtube.com/watch?v=nmuQPU9bzQ4) (Dagster)
 - [What Is Code Review For](https://blog.glyph.im/2026/03/what-is-code-review-for.html) (Glyph)
-- [Your job is to deliver code you have proven to work](https://simonwillison.net/2025/Dec/18/code-proven-to-work/) (Simon Willison)
+- [Your job is to deliver code you have proven to
+  work](https://simonwillison.net/2025/Dec/18/code-proven-to-work/) (Simon Willison)
 
 ## Agentic (Meta)Data Exploration
 

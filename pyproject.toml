@@ -1,6 +1,6 @@
 [project]
 authors = [{ name = "Zane Selvans", email = "zane.selvans@catalyst.coop" }]
-dependencies = ["pymarkdownlnt>=0.9.36,<0.10", "mdformat-gfm>=1.0"]
+dependencies = ["mdformat-gfm>=1.0"]
 name = "agent-skills"
 requires-python = ">= 3.11"
 version = "0.1.0"
@@ -28,3 +28,5 @@ pandas = ">=3.0.2,<4"
 pyarrow = ">=23.0.1,<24"
 polars = ">=1.39.3,<2"
 awscli = ">=2.34.23,<3"
+s3fs = ">=2026.3.0,<2027"
+fsspec = ">=2026.3.0,<2027"

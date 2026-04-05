@@ -1,7 +1,7 @@
 ---
-description: "Use when writing or updating pytest tests, debugging test failures, or deciding which PUDL test scope to run."
-name: "PUDL Testing Instructions"
-applyTo: "test/**/*.py"
+description: Use when writing or updating pytest tests, debugging test failures, or deciding which PUDL test scope to run.
+name: PUDL Testing Instructions
+applyTo: test/**/*.py
 ---
 
 # PUDL testing instructions
