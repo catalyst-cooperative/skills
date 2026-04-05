@@ -129,7 +129,11 @@ STATIONS_SCHEMA = {
             "name": "station_id",
             "type": "string",
             "description": "Unique identifier assigned by the network operator. Stable across all dataset versions.",
-            "constraints": {"required": True, "unique": True, "pattern": "^WS-[0-9]{4}$"},
+            "constraints": {
+                "required": True,
+                "unique": True,
+                "pattern": "^WS-[0-9]{4}$",
+            },
         },
         {
             "name": "station_name",
@@ -212,7 +216,10 @@ READINGS_SCHEMA = {
     ],
     "primaryKey": ["station_id", "date"],
     "foreignKeys": [
-        {"fields": ["station_id"], "reference": {"resource": "stations", "fields": ["station_id"]}}
+        {
+            "fields": ["station_id"],
+            "reference": {"resource": "stations", "fields": ["station_id"]},
+        }
     ],
 }
 
@@ -222,9 +229,15 @@ PACKAGE_META = {
     "description": "A demonstration datapackage containing two related tables: station metadata and daily temperature readings. Illustrates standard Frictionless Data Package structure including field types, constraints, foreign keys, and common non-standard extensions (unit, warning).",
     "version": "1.0.0",
     "created": "2025-01-01",
-    "licenses": [{"name": "CC-BY-4.0", "path": "https://creativecommons.org/licenses/by/4.0/"}],
-    "contributors": [{"title": "Example Organization", "email": "data@example.org", "role": "author"}],
-    "sources": [{"title": "National Weather Service", "path": "https://www.weather.gov/"}],
+    "licenses": [
+        {"name": "CC-BY-4.0", "path": "https://creativecommons.org/licenses/by/4.0/"}
+    ],
+    "contributors": [
+        {"title": "Example Organization", "email": "data@example.org", "role": "author"}
+    ],
+    "sources": [
+        {"title": "National Weather Service", "path": "https://www.weather.gov/"}
+    ],
 }
 
 STATIONS_RESOURCE_BASE = {
@@ -261,6 +274,7 @@ def write_descriptor(directory: Path, resources: list[dict]) -> None:
 # CSV
 # ---------------------------------------------------------------------------
 
+
 def generate_csv(out: Path) -> None:
     out.mkdir(parents=True, exist_ok=True)
     stations_df.to_csv(out / "stations.csv", index=False)
@@ -268,10 +282,20 @@ def generate_csv(out: Path) -> None:
     write_descriptor(
         out,
         [
-            {**STATIONS_RESOURCE_BASE, "path": "stations.csv", "format": "csv", "mediatype": "text/csv",
-             **file_stats(out / "stations.csv")},
-            {**READINGS_RESOURCE_BASE, "path": "daily-readings.csv", "format": "csv", "mediatype": "text/csv",
-             **file_stats(out / "daily-readings.csv")},
+            {
+                **STATIONS_RESOURCE_BASE,
+                "path": "stations.csv",
+                "format": "csv",
+                "mediatype": "text/csv",
+                **file_stats(out / "stations.csv"),
+            },
+            {
+                **READINGS_RESOURCE_BASE,
+                "path": "daily-readings.csv",
+                "format": "csv",
+                "mediatype": "text/csv",
+                **file_stats(out / "daily-readings.csv"),
+            },
         ],
     )
     print(f"CSV example written to {out}")
@@ -281,6 +305,7 @@ def generate_csv(out: Path) -> None:
 # Parquet
 # ---------------------------------------------------------------------------
 
+
 def generate_parquet(out: Path) -> None:
     out.mkdir(parents=True, exist_ok=True)
     stations_df.to_parquet(out / "stations.parquet", index=False)
@@ -288,10 +313,20 @@ def generate_parquet(out: Path) -> None:
     write_descriptor(
         out,
         [
-            {**STATIONS_RESOURCE_BASE, "path": "stations.parquet", "format": "parquet", "mediatype": "application/parquet",
-             **file_stats(out / "stations.parquet")},
-            {**READINGS_RESOURCE_BASE, "path": "daily-readings.parquet", "format": "parquet", "mediatype": "application/parquet",
-             **file_stats(out / "daily-readings.parquet")},
+            {
+                **STATIONS_RESOURCE_BASE,
+                "path": "stations.parquet",
+                "format": "parquet",
+                "mediatype": "application/parquet",
+                **file_stats(out / "stations.parquet"),
+            },
+            {
+                **READINGS_RESOURCE_BASE,
+                "path": "daily-readings.parquet",
+                "format": "parquet",
+                "mediatype": "application/parquet",
+                **file_stats(out / "daily-readings.parquet"),
+            },
         ],
     )
     print(f"Parquet example written to {out}")
@@ -301,19 +336,32 @@ def generate_parquet(out: Path) -> None:
 # DuckDB (single database file, one table per resource)
 # ---------------------------------------------------------------------------
 
+
 def generate_duckdb(out: Path) -> None:
     out.mkdir(parents=True, exist_ok=True)
     db_path = out / "weather.duckdb"
     db_path.unlink(missing_ok=True)
     con = duckdb.connect(str(db_path))
     con.execute("CREATE TABLE stations AS SELECT * FROM stations_df")
-    con.execute("CREATE TABLE \"daily-readings\" AS SELECT * FROM readings_df")
+    con.execute('CREATE TABLE "daily-readings" AS SELECT * FROM readings_df')
     con.close()
     write_descriptor(
         out,
         [
-            {**STATIONS_RESOURCE_BASE, "path": "weather.duckdb", "format": "duckdb", "mediatype": "application/octet-stream", "duckdb_table": "stations"},
-            {**READINGS_RESOURCE_BASE, "path": "weather.duckdb", "format": "duckdb", "mediatype": "application/octet-stream", "duckdb_table": "daily-readings"},
+            {
+                **STATIONS_RESOURCE_BASE,
+                "path": "weather.duckdb",
+                "format": "duckdb",
+                "mediatype": "application/octet-stream",
+                "duckdb_table": "stations",
+            },
+            {
+                **READINGS_RESOURCE_BASE,
+                "path": "weather.duckdb",
+                "format": "duckdb",
+                "mediatype": "application/octet-stream",
+                "duckdb_table": "daily-readings",
+            },
         ],
     )
     print(f"DuckDB example written to {out}")
@@ -322,6 +370,7 @@ def generate_duckdb(out: Path) -> None:
 # ---------------------------------------------------------------------------
 # SQLite (single database file)
 # ---------------------------------------------------------------------------
+
 
 def generate_sqlite(out: Path) -> None:
     out.mkdir(parents=True, exist_ok=True)
@@ -334,8 +383,20 @@ def generate_sqlite(out: Path) -> None:
     write_descriptor(
         out,
         [
-            {**STATIONS_RESOURCE_BASE, "path": "weather.sqlite", "format": "sqlite", "mediatype": "application/vnd.sqlite3", "sqlite_table": "stations"},
-            {**READINGS_RESOURCE_BASE, "path": "weather.sqlite", "format": "sqlite", "mediatype": "application/vnd.sqlite3", "sqlite_table": "daily-readings"},
+            {
+                **STATIONS_RESOURCE_BASE,
+                "path": "weather.sqlite",
+                "format": "sqlite",
+                "mediatype": "application/vnd.sqlite3",
+                "sqlite_table": "stations",
+            },
+            {
+                **READINGS_RESOURCE_BASE,
+                "path": "weather.sqlite",
+                "format": "sqlite",
+                "mediatype": "application/vnd.sqlite3",
+                "sqlite_table": "daily-readings",
+            },
         ],
     )
     print(f"SQLite example written to {out}")
