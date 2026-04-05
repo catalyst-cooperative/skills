@@ -7,7 +7,10 @@
             "corporate_officer_certification_001_duration",
             "identification_001_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_001_ident_attsttn",
+            "f2a_001_ident_attsttn"
+        ],
         "schedule": "1",
         "ferc_accounts": []
     },
@@ -18,7 +21,11 @@
         "xbrl_tables": [
             "list_of_schedules_002_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_002_list_schedules",
+            "f2_002_list_schedules_a",
+            "f2a_002_list_schedules"
+        ],
         "schedule": "2",
         "ferc_accounts": []
     },
@@ -29,7 +36,9 @@
         "xbrl_tables": [
             "general_information_101_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_101_general_info"
+        ],
         "schedule": "101",
         "ferc_accounts": []
     },
@@ -41,7 +50,9 @@
             "control_over_respondent_102_duration",
             "control_over_respondent_102_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_102_ctrl_over_resp"
+        ],
         "schedule": "102",
         "ferc_accounts": []
     },
@@ -53,7 +64,9 @@
             "corporations_controlled_by_respondent_103_duration",
             "corporations_controlled_by_respondent_103_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_103_co_ctrl_by_resp"
+        ],
         "schedule": "103",
         "ferc_accounts": []
     },
@@ -67,7 +80,10 @@
             "security_holders_and_voting_powers_sequence_107_duration",
             "security_holders_and_voting_powers_sequence_107_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_107_security_holder",
+            "f2_107_security_holder_a"
+        ],
         "schedule": "107",
         "ferc_accounts": []
     },
@@ -78,7 +94,9 @@
         "xbrl_tables": [
             "important_changes_during_the_quarter_year_108_1_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_108_important_changes"
+        ],
         "schedule": "108",
         "ferc_accounts": []
     },
@@ -90,7 +108,9 @@
             "comparative_balance_sheet_assets_and_other_debits_110_instant",
             "comparative_balance_sheet_liabilities_and_other_credits_110_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_110_comp_bal_debit"
+        ],
         "schedule": "110",
         "ferc_accounts": []
     },
@@ -99,7 +119,9 @@
         "description": "Comparative balance sheet showing liabilities and other credits for the current and prior year-end, organized by capital, long-term debt, current liabilities, and deferred credits.",
         "pudl_tables": [],
         "xbrl_tables": [],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_112_comp_bal_credit"
+        ],
         "schedule": "112",
         "ferc_accounts": []
     },
@@ -110,7 +132,9 @@
         "xbrl_tables": [
             "statement_of_income_114_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_114_stmt_income"
+        ],
         "schedule": "114",
         "ferc_accounts": []
     },
@@ -122,7 +146,10 @@
             "statement_of_accumulated_other_comprehensive_income_and_hedging_activities_117_duration",
             "statement_of_accumulated_other_comprehensive_income_and_hedging_activities_117_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_117_cmpinc_hedge",
+            "f2_117_cmpinc_hedge_a"
+        ],
         "schedule": "117",
         "ferc_accounts": []
     },
@@ -139,7 +166,9 @@
             "retained_earnings_preferred_stock_118_duration",
             "retained_earnings_unappropriated_undistributed_subsidiary_earnings_118_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_118_stmnt_ret_earn"
+        ],
         "schedule": "118",
         "ferc_accounts": [
             "433",
@@ -164,7 +193,9 @@
             "statement_of_cash_flows_other_cash_outflows_for_plant_120_duration",
             "statement_of_cash_flows_other_payment_for_retirement_to_financing_acitivities_120_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_120_stmnt_cash_flow"
+        ],
         "schedule": "120",
         "ferc_accounts": []
     },
@@ -175,7 +206,9 @@
         "xbrl_tables": [
             "notes_to_financial_statements_122_1_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_122_note_fin_stmnt"
+        ],
         "schedule": "122.1",
         "ferc_accounts": []
     },
@@ -186,7 +219,9 @@
         "xbrl_tables": [
             "summary_of_utility_plant_and_accumulated_provisions_for_depreciation_amortization_and_depletion_200_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_200_sum_util_plant"
+        ],
         "schedule": "200",
         "ferc_accounts": [
             "101",
@@ -205,7 +240,9 @@
             "gas_plant_in_services_204_duration",
             "gas_plant_in_services_204_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_204_gas_plant_in_srv"
+        ],
         "schedule": "204",
         "ferc_accounts": [
             "101",
@@ -215,6 +252,28 @@
         ]
     },
     {
+        "title": "Gas Plant in Service and Accumulated Provision for Depreciation by Function",
+        "description": "",
+        "pudl_tables": [],
+        "xbrl_tables": [],
+        "dbf_tables": [
+            "f2_210_plant_in_svc"
+        ],
+        "schedule": "210",
+        "ferc_accounts": []
+    },
+    {
+        "title": "",
+        "description": "",
+        "pudl_tables": [],
+        "xbrl_tables": [],
+        "dbf_tables": [
+            "f2a_211_gen_info_plant_op"
+        ],
+        "schedule": "211",
+        "ferc_accounts": []
+    },
+    {
         "title": "Gas Property and Capacity Leased from Others",
         "description": "Gas property and pipeline capacity leased from other companies for gas operations, including lease terms and annual payments.",
         "pudl_tables": [],
@@ -222,7 +281,9 @@
             "gas_property_and_capacity_leased_from_others_212_duration",
             "gas_property_and_capacity_leased_from_others_totals_212_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_212_prop_cap_lease_from"
+        ],
         "schedule": "212",
         "ferc_accounts": []
     },
@@ -234,7 +295,9 @@
             "gas_property_and_capacity_leased_to_others_213_duration",
             "gas_property_and_capacity_leased_to_others_totals_213_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_213_prop_cap_lease_to"
+        ],
         "schedule": "213",
         "ferc_accounts": []
     },
@@ -247,7 +310,9 @@
             "gas_plant_held_for_future_use_214_instant",
             "gas_plant_held_for_future_use_totals_214_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_214_gas_held_future"
+        ],
         "schedule": "214",
         "ferc_accounts": [
             "104"
@@ -262,7 +327,9 @@
             "construction_work_in_progress_gas_details_216_duration",
             "construction_work_in_progress_gas_details_216_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_216_const_work_gas"
+        ],
         "schedule": "216",
         "ferc_accounts": [
             "107"
@@ -278,7 +345,9 @@
             "non_traditional_rate_treatment_afforded_new_projects_totals_217_duration",
             "non_traditional_rate_treatment_afforded_new_projects_totals_217_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_217_nontradrate_newproj"
+        ],
         "schedule": "217",
         "ferc_accounts": []
     },
@@ -291,7 +360,11 @@
             "general_description_of_construction_overhead_procedure_table_218_duration",
             "general_description_of_construction_overhead_procedure_table_218_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_218_oh_formula_cmpnts",
+            "f2_218_oh_general",
+            "f2_218_oh_rates"
+        ],
         "schedule": "218",
         "ferc_accounts": []
     },
@@ -306,7 +379,9 @@
             "accumulated_provision_for_depreciation_of_gas_utility_plant_account_108_section_a_219_instant",
             "accumulated_provision_for_depreciation_of_gas_utility_plant_account_108_section_b_219_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_219_depr_util_plant"
+        ],
         "schedule": "219",
         "ferc_accounts": [
             "108"
@@ -320,7 +395,9 @@
             "gas_stored_220_duration",
             "gas_stored_220_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_220_gas_stored"
+        ],
         "schedule": "220",
         "ferc_accounts": [
             "117.1",
@@ -352,7 +429,9 @@
             "temporary_cash_investments_account_136_totals_222_duration",
             "temporary_cash_investments_account_136_totals_222_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_222_investments"
+        ],
         "schedule": "222",
         "ferc_accounts": [
             "123",
@@ -370,7 +449,10 @@
             "investments_in_subsidiary_companies_account_123_1_totals_224_duration",
             "investments_in_subsidiary_companies_account_123_1_totals_224_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_224_123_1_total",
+            "f2_224_subsid_invest"
+        ],
         "schedule": "224",
         "ferc_accounts": [
             "123.1"
@@ -383,7 +465,9 @@
         "xbrl_tables": [
             "prepayments_account_165_230a_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_230_prepayments"
+        ],
         "schedule": "230a",
         "ferc_accounts": [
             "165"
@@ -398,7 +482,9 @@
             "extraordinary_property_losses_account_182_1_230b_instant",
             "extraordinary_property_losses_account_182_1_totals_230b_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_230_extra_losses"
+        ],
         "schedule": "230b",
         "ferc_accounts": [
             "182.1"
@@ -414,7 +500,9 @@
             "unrecovered_plant_and_regulatory_study_costs_account_182_2_totals_230c_duration",
             "unrecovered_plant_and_regulatory_study_costs_account_182_2_totals_230c_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_230_unrec_costs"
+        ],
         "schedule": "230c",
         "ferc_accounts": [
             "182.2"
@@ -430,7 +518,9 @@
             "other_regulatory_assets_account_182_3_totals_232_duration",
             "other_regulatory_assets_account_182_3_totals_232_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_232_othr_reg_assets"
+        ],
         "schedule": "232",
         "ferc_accounts": [
             "182.3"
@@ -446,7 +536,9 @@
             "miscellaneous_deferred_debits_account_186_totals_233_duration",
             "miscellaneous_deferred_debits_account_186_totals_233_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_233_misc_dfrrd_db"
+        ],
         "schedule": "233",
         "ferc_accounts": [
             "186"
@@ -462,7 +554,9 @@
             "accumulated_deferred_income_taxes_account_190_classified_by_tax_types_234_duration",
             "accumulated_deferred_income_taxes_account_190_classified_by_tax_types_234_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_234_accum_dfrrd_tax"
+        ],
         "schedule": "234",
         "ferc_accounts": [
             "190"
@@ -483,7 +577,11 @@
             "capital_stock_preferred_stock_account_204_250_instant",
             "capital_stock_preferred_stock_account_204_totals_250_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_250_capital_stock",
+            "f2a_250_capital_stock",
+            "f2a_250_long_term_debt"
+        ],
         "schedule": "250",
         "ferc_accounts": [
             "201",
@@ -513,7 +611,9 @@
             "capital_stock_subscribed_liability_for_conversion_premium_on_and_installments_recieved_on_accts_202_203_205_206_207_and_212_252_instant",
             "capital_stock_subscribed_liability_for_conversion_premium_on_and_installments_recieved_on_accts_202_203_205_206_207_and_212_totals_252_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_252_cap_stock"
+        ],
         "schedule": "252",
         "ferc_accounts": [
             "202",
@@ -537,7 +637,9 @@
             "other_paid_in_capital_accounts_208_211_total_253_duration",
             "other_paid_in_capital_accounts_208_211_total_253_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_253_other_capital"
+        ],
         "schedule": "253",
         "ferc_accounts": [
             "208",
@@ -558,7 +660,10 @@
             "discount_on_capital_stock_account_213_254_instant",
             "discount_on_capital_stock_account_213_totals_254_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_254_cap_stk_expense",
+            "f2_254_discount_cap_stk"
+        ],
         "schedule": "254",
         "ferc_accounts": [
             "213",
@@ -572,7 +677,9 @@
         "xbrl_tables": [
             "securities_issued_or_assumed_and_securities_refunded_or_retired_during_the_year_255_1_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_255_securities"
+        ],
         "schedule": "255.1",
         "ferc_accounts": []
     },
@@ -602,7 +709,9 @@
             "long_term_debt_reacquired_bonds_222_totals_256_duration",
             "long_term_debt_reacquired_bonds_222_totals_256_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_256_long_term_debt"
+        ],
         "schedule": "256",
         "ferc_accounts": [
             "221",
@@ -625,7 +734,9 @@
             "unamortized_debt_expense_premium_and_discount_on_long_term_debt_accounts_181_225_226_258_duration",
             "unamortized_debt_expense_premium_and_discount_on_long_term_debt_accounts_181_225_226_258_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_258_unamort_debt"
+        ],
         "schedule": "258",
         "ferc_accounts": [
             "181",
@@ -645,7 +756,9 @@
             "unamortized_loss_and_gain_on_reacquired_debt_account_189_257_260_duration",
             "unamortized_loss_and_gain_on_reacquired_debt_account_189_257_260_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_260_unamort_loss_gain"
+        ],
         "schedule": "260",
         "ferc_accounts": [
             "189",
@@ -664,7 +777,9 @@
             "reconciliation_of_reported_net_income_with_taxable_income_for_federal_income_taxes_show_computation_of_tax_261_duration",
             "reconciliation_of_reported_net_income_with_taxable_income_for_federal_income_taxes_taxable_income_not_reported_on_books_261_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_261_reconcil_net_inc"
+        ],
         "schedule": "261",
         "ferc_accounts": []
     },
@@ -678,7 +793,9 @@
             "taxes_accrued_prepaid_and_charged_during_year_distribution_of_taxes_charged_total_262_duration",
             "taxes_accrued_prepaid_and_charged_during_year_distribution_of_taxes_charged_total_262_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_262_taxes_accrued"
+        ],
         "schedule": "262",
         "ferc_accounts": [
             "408",
@@ -694,7 +811,9 @@
             "miscellaneous_current_and_accrued_liabilities_account_242_268_instant",
             "miscellaneous_current_and_accrued_liabilities_account_242_totals_268_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_268_misc_curr_liab"
+        ],
         "schedule": "268",
         "ferc_accounts": [
             "242"
@@ -710,7 +829,9 @@
             "other_deferred_credits_account_253_totals_269_duration",
             "other_deferred_credits_account_253_totals_269_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_269_other_dfrrd_cr"
+        ],
         "schedule": "269",
         "ferc_accounts": [
             "253"
@@ -726,7 +847,9 @@
             "accumulated_deferred_income_taxes_other_property_account_282_classified_by_tax_types_274_duration",
             "accumulated_deferred_income_taxes_other_property_account_282_classified_by_tax_types_274_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_274_dfrrd_tax_prop"
+        ],
         "schedule": "274",
         "ferc_accounts": [
             "282"
@@ -742,7 +865,9 @@
             "accumulated_deferred_income_taxes_other_account_283_classified_by_tax_types_276_duration",
             "accumulated_deferred_income_taxes_other_account_283_classified_by_tax_types_276_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_276_dfrrd_tax_other"
+        ],
         "schedule": "276",
         "ferc_accounts": [
             "283"
@@ -758,7 +883,9 @@
             "other_regulatory_liabilities_totals_278_duration",
             "other_regulatory_liabilities_totals_278_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_278_other_reg_liab"
+        ],
         "schedule": "278",
         "ferc_accounts": [
             "254"
@@ -773,7 +900,9 @@
             "monthly_quantity_revenue_data_by_rate_schedule_storage_299_duration",
             "monthly_quantity_revenue_data_by_rate_schedule_transportation_299_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_299_mthqtr_rev_sched"
+        ],
         "schedule": "299",
         "ferc_accounts": []
     },
@@ -784,7 +913,9 @@
         "xbrl_tables": [
             "gas_operating_revenues_300_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_300_gas_op_rev"
+        ],
         "schedule": "300",
         "ferc_accounts": [
             "480",
@@ -816,7 +947,9 @@
         "xbrl_tables": [
             "revenues_from_transporation_of_gas_of_others_through_gathering_facilities_account_489_1_302_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_302_rev_gas_gather"
+        ],
         "schedule": "302",
         "ferc_accounts": [
             "489.1"
@@ -831,7 +964,9 @@
             "revenues_from_transportation_of_gas_of_others_through_transmission_facilities_account_489_2_by_rate_schedule_304_duration",
             "revenues_from_transportation_of_gas_of_others_through_transmission_facilities_account_489_2_by_zone_304_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_304_rev_gas_trans"
+        ],
         "schedule": "304",
         "ferc_accounts": [
             "489.2"
@@ -844,7 +979,9 @@
         "xbrl_tables": [
             "revenues_from_storing_gas_of_others_account_489_4_306_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_306_rev_store_gas"
+        ],
         "schedule": "306",
         "ferc_accounts": [
             "489.4"
@@ -858,11 +995,57 @@
             "other_gas_revenues_account_495_308_duration",
             "other_gas_revenues_account_495_breakdown_308_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_308_other_gas_rev"
+        ],
         "schedule": "308",
         "ferc_accounts": [
             "495"
         ]
+    },
+    {
+        "title": "Natural Gas Company Gas Revenues and Dekatherms",
+        "description": "Natural gas operating revenues and dekatherms of gas sold for each prescribed account.",
+        "pudl_tables": [],
+        "xbrl_tables": [],
+        "dbf_tables": [
+            "f2_309_gas_rev_and_deks"
+        ],
+        "schedule": "309",
+        "ferc_accounts": []
+    },
+    {
+        "title": "Gas Production and Other Gas Supply Expenses",
+        "description": "Gas production and other gas supply expenses.",
+        "pudl_tables": [],
+        "xbrl_tables": [],
+        "dbf_tables": [
+            "f2_310_gas_prod_sply_exp"
+        ],
+        "schedule": "310",
+        "ferc_accounts": []
+    },
+    {
+        "title": "Natural Gas Storage, Terminaling, Processing Services",
+        "description": "Natural gas storage, terminaling, processing, transmission and distribution expenses.",
+        "pudl_tables": [],
+        "xbrl_tables": [],
+        "dbf_tables": [
+            "f2_311_gas_stor_exp"
+        ],
+        "schedule": "311",
+        "ferc_accounts": []
+    },
+    {
+        "title": "Gas Customer Accounts, Service, Sales, Administrative and General Expenses",
+        "description": "Customer accounts, service, sales, and administrative and general expenses.",
+        "pudl_tables": [],
+        "xbrl_tables": [],
+        "dbf_tables": [
+            "f2_312_gas_admin_exp"
+        ],
+        "schedule": "312",
+        "ferc_accounts": []
     },
     {
         "title": "Discounted Rate Services And Negotiated Rate Services",
@@ -872,7 +1055,9 @@
             "discounted_rate_services_and_negotiated_rate_services_313_duration",
             "discounted_rate_services_and_negotiated_rate_services_totals_313_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_313_disc_neg_rate_serv"
+        ],
         "schedule": "313",
         "ferc_accounts": []
     },
@@ -883,7 +1068,9 @@
         "xbrl_tables": [
             "gas_operation_and_maintenance_expense_317_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_317_gas_op_maint"
+        ],
         "schedule": "317",
         "ferc_accounts": []
     },
@@ -895,7 +1082,9 @@
             "exchange_and_imbalance_transactions_328_duration",
             "exchange_and_imbalance_transactions_totals_328_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_328_exchange_imbalance"
+        ],
         "schedule": "328",
         "ferc_accounts": []
     },
@@ -907,7 +1096,9 @@
             "gas_used_in_utility_operations_331_duration",
             "gas_used_in_utility_operations_totals_331_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_331_gas_utility_op"
+        ],
         "schedule": "331",
         "ferc_accounts": [
             "810",
@@ -923,7 +1114,9 @@
             "transmission_and_compression_of_gas_by_others_account_858_332_duration",
             "transmission_and_compression_of_gas_by_others_account_858_totals_332_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_332_trans_comp_other"
+        ],
         "schedule": "332",
         "ferc_accounts": [
             "858"
@@ -937,7 +1130,9 @@
             "other_gas_supply_expenses_account_813_334_duration",
             "other_gas_supply_expenses_account_813_totals_334_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_334_oth_spply_expns"
+        ],
         "schedule": "334",
         "ferc_accounts": [
             "813"
@@ -951,7 +1146,9 @@
             "miscellaneous_general_expenses_account_930_2_335_duration",
             "miscellaneous_general_expenses_account_930_2_breakdown_335_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_335_misc_gen_expense"
+        ],
         "schedule": "335",
         "ferc_accounts": [
             "930.2"
@@ -966,7 +1163,9 @@
             "depreciation_depletion_and_amortization_of_gas_plant_section_b_336_duration",
             "depreciation_depletion_and_amortization_of_gas_plant_section_b_details_336_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_336_depr_depl_amort_a"
+        ],
         "schedule": "336",
         "ferc_accounts": [
             "403",
@@ -981,7 +1180,9 @@
         "description": "Depreciable plant balances to which depreciation rates are applied and the composite depreciation rates used for each functional group.",
         "pudl_tables": [],
         "xbrl_tables": [],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_338_depr_depl_amort_b"
+        ],
         "schedule": "338",
         "ferc_accounts": [
             "403",
@@ -989,6 +1190,24 @@
             "405",
             "406",
             "407"
+        ]
+    },
+    {
+        "title": "Depreciation, Depletion and Amortization of Gas Plant Except Amortization of Acquisition Adjustments",
+        "description": "Year to date amounts of depreciation expense, asset retirement cost depreciation, depletion and amortization, except amortization of acquisition adjustments for the accounts indicated and classified according to the plant functional groups described",
+        "pudl_tables": [],
+        "xbrl_tables": [],
+        "dbf_tables": [
+            "f2_339_depr_gas_plant"
+        ],
+        "schedule": "339",
+        "ferc_accounts": [
+            "403",
+            "403.1",
+            "404.1",
+            "404.2",
+            "404.3",
+            "405"
         ]
     },
     {
@@ -1014,7 +1233,9 @@
             "particulars_concerning_certain_income_deductions_and_interest_charges_accounts_political_and_related_activities_340_duration",
             "particulars_concerning_certain_income_deductions_and_interest_charges_accounts_political_and_related_activities_totals_340_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_340_partic_inc_int"
+        ],
         "schedule": "340",
         "ferc_accounts": [
             "425",
@@ -1040,7 +1261,9 @@
             "regulatory_commission_expenses_account_928_total_350_duration",
             "regulatory_commission_expenses_account_928_total_350_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_350_reg_comm_expense"
+        ],
         "schedule": "350",
         "ferc_accounts": [
             "928"
@@ -1054,7 +1277,9 @@
             "employee_pensions_and_benefits_account_926_352_duration",
             "employee_pensions_and_benefits_account_926_breakdown_352_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_352_emp_benefits"
+        ],
         "schedule": "352",
         "ferc_accounts": [
             "926"
@@ -1068,7 +1293,9 @@
             "distribution_of_salaries_and_wages_354_duration",
             "distribution_of_salaries_and_wages_other_account_details_354_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_354_dist_wages"
+        ],
         "schedule": "354",
         "ferc_accounts": []
     },
@@ -1080,7 +1307,9 @@
             "charges_for_outside_professional_and_other_consultative_services_357_duration",
             "charges_for_outside_professional_and_other_consultative_services_totals_357_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_357_chrgs_services"
+        ],
         "schedule": "357",
         "ferc_accounts": []
     },
@@ -1092,7 +1321,9 @@
             "transactions_with_associated_affiliated_companies_provided_by_affiliated_company_358_duration",
             "transactions_with_associated_affiliated_companies_provided_by_affiliated_company_totals_358_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_358_trans_affil"
+        ],
         "schedule": "358",
         "ferc_accounts": []
     },
@@ -1104,7 +1335,9 @@
             "compressor_stations_508_duration",
             "compressor_stations_total_508_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_508_comp_stations"
+        ],
         "schedule": "508",
         "ferc_accounts": []
     },
@@ -1116,7 +1349,9 @@
             "gas_storage_projects_by_months_gas_delivered_to_storage_512_duration",
             "gas_storage_projects_by_months_gas_withdrawn_from_storage_512_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_512_gas_storage"
+        ],
         "schedule": "512",
         "ferc_accounts": []
     },
@@ -1127,7 +1362,9 @@
         "xbrl_tables": [
             "gas_storage_projects_by_capacities_513_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_513_gas_storage_cont"
+        ],
         "schedule": "513",
         "ferc_accounts": []
     },
@@ -1141,7 +1378,9 @@
             "transmission_lines_total_514_duration",
             "transmission_lines_total_514_instant"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_514_trans_lines"
+        ],
         "schedule": "514",
         "ferc_accounts": []
     },
@@ -1159,7 +1398,9 @@
             "transmission_system_peak_deliveries_three_day_other_operational_activities_518_duration",
             "transmission_system_peak_deliveries_three_day_peak_deliveries_518_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_518_trans_peak"
+        ],
         "schedule": "518",
         "ferc_accounts": []
     },
@@ -1170,7 +1411,9 @@
         "xbrl_tables": [
             "auxiliary_peaking_facilities_519_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_519_aux_peak"
+        ],
         "schedule": "519",
         "ferc_accounts": []
     },
@@ -1183,7 +1426,9 @@
             "gas_account_natural_gas_delivered_for_other_operations_520_duration",
             "gas_account_natural_gas_received_from_other_operations_520_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_520_nat_gas"
+        ],
         "schedule": "520",
         "ferc_accounts": []
     },
@@ -1202,7 +1447,13 @@
             "shipper_supplied_gas_for_the_current_quarter_other_gas_acquired_to_meet_deficiency_521_m2_duration",
             "shipper_supplied_gas_for_the_current_quarter_other_gas_acquired_to_meet_deficiency_521_m3_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_521_fwd_bck_haul",
+            "f2_521_month_1",
+            "f2_521_month_2",
+            "f2_521_month_3",
+            "f2_521_ship_supplied_gas"
+        ],
         "schedule": "521",
         "ferc_accounts": []
     },
@@ -1213,7 +1464,10 @@
         "xbrl_tables": [
             "system_map_522_duration"
         ],
-        "dbf_tables": [],
+        "dbf_tables": [
+            "f2_522_sys_map_files",
+            "f2_522_system_maps"
+        ],
         "schedule": "522.1",
         "ferc_accounts": []
     }
