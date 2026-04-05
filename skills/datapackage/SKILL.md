@@ -65,7 +65,8 @@ For data loading and SQL queries, the `attach-db` and `query` skills from
 ## Workflow overview
 
 1. **Locate the descriptor** — find or download `datapackage.json` (see below).
-1. **Query metadata selectively** — use jq or DuckDB to extract only what you need. See [Metadata Querying](./references/metadata-querying.md).
+1. **Query metadata selectively** — use jq or DuckDB to extract only what you need.
+   See [Metadata Querying](./references/metadata-querying.md).
 1. **Surface warnings** — always check for usage warnings before presenting a resource.
 1. **Load the data** *(optional)* — only if the user explicitly wants to query or
    explore the actual data. Data files can be large and remote access can be slow or
@@ -78,6 +79,30 @@ For data loading and SQL queries, the `attach-db` and `query` skills from
   query it selectively with jq or DuckDB, surface usage warnings
 - [Storage Backends](./references/storage-backends.md) — load data from Parquet,
   DuckDB, SQLite, or CSV files referenced by the descriptor
+
+## Community patterns and recipes
+
+The datapackage standard is permissive: publishers frequently add non-standard fields.
+Two conventions are worth knowing immediately:
+
+- **Custom fields** — non-standard keys added by publishers are common and valid.
+  The `_` prefix convention marks system-generated or platform-specific keys (e.g.
+  `_cache`, `_platformVersion`). Some publishers add custom keys without the prefix
+  (e.g. PUDL adds `duckdb_table`, `sqlite_table` on database-backed resources). Treat
+  unknown fields as informational metadata, not errors.
+- **Compressed resources** — a resource with a `.gz` or `.zip` path may have an
+  explicit `"compression": "gz"` field. The `bytes` and `hash` fields apply to the
+  compressed file, not the uncompressed original.
+
+For other patterns (catalogs, versioning, external foreign keys, translation support,
+field relationships, etc.), fetch the relevant page on demand:
+
+- v1 patterns: <https://specs.frictionlessdata.io/patterns/>
+- v2 recipes: <https://datapackage.org/recipes/caching-of-resources/> (navigate via
+  sidebar or next/previous links — no index page exists)
+
+Both pages cover largely the same set of community conventions; consult whichever
+matches the descriptor version you're working with.
 
 ## Companion skills
 
