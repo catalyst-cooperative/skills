@@ -117,6 +117,15 @@ user explicitly asks to load or explore data.
   FERC Form 1 schedule or table lookup; use jq or DuckDB `read_json()` to find
   schedules by keyword, account number, or PUDL table name without loading the full
   markdown into context
+- [FERC Form 2 Schedules](./references/ferc2-schedules.md) — all 77 Form 2 schedules
+  with titles, descriptions, and XBRL table mappings (Form 2 is not yet integrated into
+  PUDL); read when a user references a Form 2 schedule or asks about natural gas
+  pipeline financial or operational data — prefer querying `ferc2_schedules.json` over
+  reading this file
+- [ferc2_schedules.json](./assets/ferc2_schedules.json) — **query this first** for any
+  FERC Form 2 schedule or table lookup; use jq or DuckDB `read_json()` to find
+  schedules by keyword, account number, or XBRL table name without loading the full
+  markdown into context
 - [ferc_accounts.json](./assets/ferc_accounts.json) — **query this first** for any
   FERC account number lookup; use jq or DuckDB `read_json()` to resolve account
   definitions and cross-reference with Form 1 schedules via the `ferc_accounts` array
@@ -173,20 +182,25 @@ user explicitly asks to load or explore data.
   - `.. note::` and `.. warning::` directive blocks should be treated as callouts and
     surfaced to users when relevant.
 
-### Cross-referencing FERC Form 1 schedules and accounts
+### Cross-referencing FERC Form 1 and Form 2 schedules and accounts
 
-Each `ferc1_schedules.json` record has a `ferc_accounts` array with the account numbers
-that schedule references, pre-extracted for direct lookup. Use `description` for topical
-keyword search; use `ferc_accounts` for account-number cross-referencing.
+Both `ferc1_schedules.json` and `ferc2_schedules.json` share the same schema. Each
+record has a `ferc_accounts` array with the account numbers that schedule references,
+pre-extracted for direct lookup. Use `description` for topical keyword search; use
+`ferc_accounts` for account-number cross-referencing.
 
 **Quick lookup patterns (jq):**
 
 ```bash
-# Find all schedules that reference a specific account number
+# Find all Form 1 schedules that reference a specific account number
 jq '[.[] | select(.ferc_accounts[] == "182.3")] | .[] | {schedule, title}' \
 	assets/ferc1_schedules.json
 
-# Get all account definitions for a specific schedule
+# Find all Form 2 schedules that reference a specific account number
+jq '[.[] | select(.ferc_accounts[] == "489.2")] | .[] | {schedule, title}' \
+	assets/ferc2_schedules.json
+
+# Get all account definitions for a specific Form 1 schedule
 SCHED="232"
 jq --arg s "$SCHED" '.[] | select(.schedule == $s) | .ferc_accounts[]' \
 	assets/ferc1_schedules.json |
@@ -196,7 +210,7 @@ jq --arg s "$SCHED" '.[] | select(.schedule == $s) | .ferc_accounts[]' \
 **Combined DuckDB query:**
 
 ```sql
--- Find PUDL tables and account definitions for a topic (e.g. "regulatory assets")
+-- Find PUDL tables and account definitions for a Form 1 topic (e.g. "regulatory assets")
 SELECT s.schedule, s.title, unnest(s.pudl_tables) AS pudl_table,
        a.account, a.description AS account_description
 FROM read_json('assets/ferc1_schedules.json') s,
@@ -204,6 +218,12 @@ FROM read_json('assets/ferc1_schedules.json') s,
 JOIN read_json('assets/ferc_accounts.json') a ON a.account = t.acct
 WHERE s.description ILIKE '%regulatory asset%'
 ORDER BY s.schedule, a.account;
+
+-- Find Form 2 XBRL tables for a topic (e.g. "storage")
+SELECT schedule, title, unnest(xbrl_tables) AS xbrl_table
+FROM read_json('assets/ferc2_schedules.json')
+WHERE description ILIKE '%storage%'
+ORDER BY schedule;
 ```
 
 ## Delegation

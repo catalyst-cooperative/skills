@@ -6,6 +6,7 @@ This script reads them and regenerates the human-readable table sections in:
 
   references/ferc-uniform-system-of-accounts.md
   references/ferc1-schedules.md
+  references/ferc2-schedules.md
 
 Edit the JSON, then run this script to update the markdown.
 
@@ -47,13 +48,25 @@ CHART_HEADINGS = {
 GROUP_PREFIXES: dict[tuple[str, str, str], str] = {
     # Balance sheet groups — numbered 1–9 globally across both sections
     ("balance_sheet", "Assets and Other Debits", "Utility Plant"): "1.",
-    ("balance_sheet", "Assets and Other Debits", "Other Property and Investments"): "2.",
+    (
+        "balance_sheet",
+        "Assets and Other Debits",
+        "Other Property and Investments",
+    ): "2.",
     ("balance_sheet", "Assets and Other Debits", "Current and Accrued Assets"): "3.",
     ("balance_sheet", "Assets and Other Debits", "Deferred Debits"): "4.",
     ("balance_sheet", "Liabilities and Other Credits", "Proprietary Capital"): "5.",
     ("balance_sheet", "Liabilities and Other Credits", "Long-Term Debt"): "6.",
-    ("balance_sheet", "Liabilities and Other Credits", "Other Noncurrent Liabilities"): "7.",
-    ("balance_sheet", "Liabilities and Other Credits", "Current and Accrued Liabilities"): "8.",
+    (
+        "balance_sheet",
+        "Liabilities and Other Credits",
+        "Other Noncurrent Liabilities",
+    ): "7.",
+    (
+        "balance_sheet",
+        "Liabilities and Other Credits",
+        "Current and Accrued Liabilities",
+    ): "8.",
     ("balance_sheet", "Liabilities and Other Credits", "Deferred Credits"): "9.",
     # Electric plant production groups
     ("electric_plant", "2. Production Plant", "Steam Production"): "A.",
@@ -62,7 +75,11 @@ GROUP_PREFIXES: dict[tuple[str, str, str], str] = {
     ("electric_plant", "2. Production Plant", "Other Production"): "D.",
     # Operating revenue sub-groups
     ("operating_revenue", "2. Other Income and Deductions", "Other Income"): "A.",
-    ("operating_revenue", "2. Other Income and Deductions", "Other Income Deductions"): "B.",
+    (
+        "operating_revenue",
+        "2. Other Income and Deductions",
+        "Other Income Deductions",
+    ): "B.",
     (
         "operating_revenue",
         "2. Other Income and Deductions",
@@ -73,13 +90,18 @@ GROUP_PREFIXES: dict[tuple[str, str, str], str] = {
     ("om_expenses", "1. Power Production Expenses", "Nuclear Power Generation"): "B.",
     ("om_expenses", "1. Power Production Expenses", "Hydraulic Power Generation"): "C.",
     ("om_expenses", "1. Power Production Expenses", "Other Power Generation"): "D.",
-    ("om_expenses", "1. Power Production Expenses", "Other Power Supply Expenses"): "E.",
+    (
+        "om_expenses",
+        "1. Power Production Expenses",
+        "Other Power Supply Expenses",
+    ): "E.",
 }
 
 
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
 
 def splice_generated(path: Path, content: str) -> None:
     """Replace the content between BEGIN/END markers in a markdown file."""
@@ -115,9 +137,15 @@ def fmt_account_description(record: dict) -> str:
     return desc
 
 
+def fmt_tables(names: list[str]) -> str:
+    """Format a list of table names as backtick-quoted, comma-separated."""
+    return ", ".join(f"`{n}`" for n in names) if names else ""
+
+
 # ---------------------------------------------------------------------------
 # Accounts table generator
 # ---------------------------------------------------------------------------
+
 
 def generate_accounts_tables() -> str:
     """Generate the full account listing from ferc_accounts.json."""
@@ -182,25 +210,34 @@ def generate_accounts_tables() -> str:
 # Schedules table generator
 # ---------------------------------------------------------------------------
 
-def fmt_tables(names: list[str]) -> str:
-    """Format a list of table names as backtick-quoted, comma-separated."""
-    return ", ".join(f"`{n}`" for n in names) if names else ""
 
+def generate_schedules_table(json_path: Path) -> str:
+    """Generate a schedule table from a FERC schedules JSON file.
 
-def generate_schedules_table() -> str:
-    """Generate the full schedule table from ferc1_schedules.json."""
-    with open(ASSETS / "ferc1_schedules.json") as f:
+    Works for any form (ferc1_schedules.json, ferc2_schedules.json, etc.).
+    The DBF column is included only when at least one schedule has dbf_tables data,
+    since some forms (e.g. Form 2) have no DBF-era database yet.
+    """
+    with open(json_path) as f:
         schedules = json.load(f)
 
-    header = (
-        "| Schedule (Page) | Title | Description | FERC Accounts"
-        " | PUDL Integrated Tables (use first)"
-        " | XBRL Raw Tables (2021-present, fallback)"
-        " | DBF Raw Tables (1994-2020, fallback) |"
-    )
-    separator = (
-        "| --- | --- | --- | --- | --- | --- | --- |"
-    )
+    include_dbf = any(s.get("dbf_tables") for s in schedules)
+
+    if include_dbf:
+        header = (
+            "| Schedule (Page) | Title | Description | FERC Accounts"
+            " | PUDL Integrated Tables (use first)"
+            " | XBRL Raw Tables (2021-present, fallback)"
+            " | DBF Raw Tables (1994-2020, fallback) |"
+        )
+        separator = "| --- | --- | --- | --- | --- | --- | --- |"
+    else:
+        header = (
+            "| Schedule (Page) | Title | Description | FERC Accounts"
+            " | PUDL Integrated Tables"
+            " | XBRL Raw Tables (2021-present) |"
+        )
+        separator = "| --- | --- | --- | --- | --- | --- |"
 
     lines = [header, separator]
     for s in schedules:
@@ -209,12 +246,19 @@ def generate_schedules_table() -> str:
         if not pudl:
             pudl = "*(not yet integrated)*"
         xbrl = fmt_tables(s.get("xbrl_tables", []))
-        dbf = fmt_tables(s.get("dbf_tables", []))
         desc = s.get("description", "").replace("|", "\\|")
-        lines.append(
-            f"| {s['schedule']} | {s['title']} | {desc}"
-            f" | {accounts} | {pudl} | {xbrl} | {dbf} |"
-        )
+        if include_dbf:
+            dbf = fmt_tables(s.get("dbf_tables", []))
+            row = (
+                f"| {s['schedule']} | {s['title']} | {desc}"
+                f" | {accounts} | {pudl} | {xbrl} | {dbf} |"
+            )
+        else:
+            row = (
+                f"| {s['schedule']} | {s['title']} | {desc}"
+                f" | {accounts} | {pudl} | {xbrl} |"
+            )
+        lines.append(row)
 
     return "\n".join(lines)
 
@@ -223,16 +267,24 @@ def generate_schedules_table() -> str:
 # Main
 # ---------------------------------------------------------------------------
 
+# Each entry: (json asset filename, markdown reference filename, label for output)
+SCHEDULE_FILES: list[tuple[str, str, str]] = [
+    ("ferc1_schedules.json", "ferc1-schedules.md", "FERC Form 1"),
+    ("ferc2_schedules.json", "ferc2-schedules.md", "FERC Form 2"),
+]
+
+
 def main() -> None:
     print("Generating FERC accounts table...")
     accounts_content = generate_accounts_tables()
     splice_generated(REFS / "ferc-uniform-system-of-accounts.md", accounts_content)
     print("  -> references/ferc-uniform-system-of-accounts.md updated")
 
-    print("Generating FERC Form 1 schedules table...")
-    schedules_content = generate_schedules_table()
-    splice_generated(REFS / "ferc1-schedules.md", schedules_content)
-    print("  -> references/ferc1-schedules.md updated")
+    for json_name, md_name, label in SCHEDULE_FILES:
+        print(f"Generating {label} schedules table...")
+        content = generate_schedules_table(ASSETS / json_name)
+        splice_generated(REFS / md_name, content)
+        print(f"  -> references/{md_name} updated")
 
     print("Done.")
 
