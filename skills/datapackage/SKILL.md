@@ -109,15 +109,34 @@ These skills must be installed. See `skills-lock.json` in the project root.
   queries. Python is only appropriate for loading data (via pandas or polars) after you
   already know which table and columns you need.
 
-## Schema reference and examples
+## Schema reference and version detection
 
-The Frictionless Data Package v2.0 JSON Schema is bundled at
-[`assets/datapackage.schema.json`](./assets/datapackage.schema.json). The canonical
-up-to-date version is always available at:
-<https://datapackage.org/profiles/2.0/datapackage.json>
+Two versions of the Frictionless Data Package standard are in common use. Identify the
+version from the top-level descriptor before parsing:
 
-Read it when you need to understand which fields are valid in a descriptor or validate
-one programmatically.
+| Field present | Version                          | Example value                                             |
+| ------------- | -------------------------------- | --------------------------------------------------------- |
+| `"$schema"`   | v2.0                             | `"https://datapackage.org/profiles/2.0/datapackage.json"` |
+| `"profile"`   | v1.0                             | `"tabular-data-package"` or `"data-package"`              |
+| neither       | ambiguous (treat as v1 baseline) | —                                                         |
+
+Key differences between versions that affect parsing:
+
+- **Contributors** — v1 has `"role": "author"` (singular string); v2 has
+  `"roles": ["author"]` (array). Both may appear in the wild.
+- **Name pattern** — v1 enforces strictly lowercase `[-a-z0-9._/]`; v2 is unrestricted.
+- **`version` field** — present in v2, absent in v1.
+
+Bundled schemas:
+
+- [`assets/datapackage-v1.schema.json`](./assets/datapackage-v1.schema.json) — v1.0
+  (JSON Schema draft-04). Used by FERC XBRL packages and many older datasets.
+- [`assets/datapackage-v2.schema.json`](./assets/datapackage-v2.schema.json) — v2.0
+  (JSON Schema draft-07). The current standard. Canonical version always at:
+  <https://datapackage.org/profiles/2.0/datapackage.json>
+
+Read the appropriate schema when you need to understand which fields are valid in a
+descriptor or validate one programmatically.
 
 Bundled examples live under `assets/examples/`. All four use the same weather-station
 dataset (5 stations, 150 daily readings) so you can test the same queries against
