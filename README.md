@@ -52,38 +52,30 @@ PUDL (the Public Utility Data Liberation Project).
 - [skill-creator](https://github.com/anthropics/claude-plugins-official/tree/main/plugins/skill-creator)
 - [dignified-python](https://github.com/dagster-io/skills/tree/main/plugins/dignified-python)
 
-## Remaining Development Tasks
+## Skill Development Tasks
 
 ### `agent-skills` Repository Setup
 
 - [x] Make markdown linting work for everything!
 - [x] Merge repo setup into `main` to reduce diffs
 - [x] Set up typos exceptions & excluded files to work with actual repo contents.
-- [ ] Add an `AGENTS.md` to make the clankers less annoying
+- [ ] Add an `AGENTS.md` to make the :robot: less annoying
 
 ### Datapackage Skill
 
-- [x] Add in the datapackage v1 spec
+- [x] Add datapackage v1 JSON schema / spec links
 - [x] Add informal v1 "patterns" summary / reference & link
 - [x] Add informal v2 "recipes" summary / reference & link
-- [ ] Generate example data packages using v1 schema for reference
+- [ ] **Also** generate example data packages using v1 schema for reference
 
 ### PUDL Skill
-
-- [x] Ask why not use a hierarchical JSON structure for the system of accounts data? Right
-  now it's just a big list of elements.
-- [x] Add links to PUDL Methodology docs
-- [x] Add PUDL Dataset Citation instructions
-- [x] Note that our table descriptions have 1-line summaries like python docstrings, and
-  that full table descriptions can be quite long (paragraphs). Read the first line
-  to help determine whether the table is relevant before reading the entire table
-  description.
 
 #### Metadata Retrieval
 
 - [x] Given a topical query, return a list of related tables with summaries
 - [x] Explain limitations, caveats, or warnings associated with a table
 - [ ] Provide correct background information about a specific data source (ferceqr, eia923, phmsagas, etc)
+- [ ] Provide table-links to data viewer and data dictionary in responses
 - [ ] Correctly identify the data sources that went into a table
 - [ ] Construct a Mermaid diagram based on ancestor/child nodes in Dagster graph
 - [ ] Construct a Mermaid diagram based on foreign key relationships in the datapackage metadata
@@ -92,7 +84,7 @@ PUDL (the Public Utility Data Liberation Project).
 
 - [x] Link to appropriate Methodology pages
 - [ ] Construct URLs that link to data source documentation pages
-- [ ] Provide ZenodoDOIs of raw source data inputs for a given table
+- [ ] Provide Zenodo DOIs of raw source data inputs for a given table
 - [ ] Tell when the data associated with this datapackage was published by Catalyst
 - [ ] Tell when a given dataset was last updated by its source
 - [ ] Correctly describe licensing of the data
@@ -131,11 +123,36 @@ Providing users with next steps to get help, ask questions, or contribute.
 
 ### Metadata Compilation
 
+With [a good prompt](prompts/compile-ferc-schedule-metadata.md) the clankers can pull
+together FERC metadata from several different sources into a structured JSON file that
+links together the form schedules, DBF/XBRL database tables, relevant FERC Accounts, and
+human-readable descriptions. This is helpful for data discovery since people could be
+approaching the data from any of those directions, and being able to connect to the CFR,
+the blank forms, the XBRL derived metadata, and of course the data itself makes the FERC
+mess a lot more accessible. We're one of the only semi-usable sources for this data so
+even though it's not fully integrated into PUDL it feels important to expose it well.
+
+#### General Improvements
+
+- [ ] **Review and Regenerate** The long prompt resulted in much better human-readable
+  descriptions (for Form 6). I've spot checked to make sure they aren't hallucinations,
+  and so far so good, but we should probably do a more comprehensive review. If they're
+  good then we should try regenerating the FERC 1 and FERC 2 outputs and compare them to
+  the current versions.
+- [ ] **Extract more FERC Accounts** Spot checks also revealed that the clankers didn't
+  extract all of the mentioned FERC Accounts, so we might want to explicitly ask them to
+  be more aggressive about that, and then to validate the account numbers extracted and
+  their local context vs. the account descriptions extracted from the CFR.
+- [ ] **Compile FERC Account Summaries** One thing that I discovered looking through the
+  extracted metadata is that there are **separate** systems of accounts for electricity,
+  natural gas, oil pipelines, and service companies, which are all documented in different
+  parts of the CFR. We should extract the titles and short descriptions for all of them.
+
 #### FERC Form 1
 
 - [x] Rename `ferc_accounts.json` -> `ferc_electricity_accounts.json` since now we
   have multiple systems of accounts for different domains.
-- [x] Rename [ferc-uniform-system-of-accounts.md](skills/pudl/references/ferc-uniform-system-of-accounts.md)
+- [x] Rename `ferc-uniform-system-of-accounts.md` -> `ferc-electricity-accounts.md`
   to `ferc-electricity-accounts.md`
 - [x] Update outdated links / references to `ferc-uniform-system-of-accounts.md` and
   `ferc_electricity_accounts.json`.
@@ -150,8 +167,8 @@ Providing users with next steps to get help, ask questions, or contribute.
 - [x] generate schedule to DBF table mappings
 - [ ] Add reference and link back to the HTML form in PUDL docs
 - [ ] Try regenerating ferc2_schedules.json using [this prompt](prompts/compile-ferc-schedule-metadata.md)
-- [ ] Add separate `ferc_natural_gas_accounts.json`/`ferc-natural-gas-accounts.md` based on
-  [Uniform System of Accounts (18 C.F.R. Part 201)](https://www.ecfr.gov/current/title-18/chapter-I/subchapter-B/part-201)
+- [ ] Compile `ferc_natural_gas_accounts.json`/`ferc-natural-gas-accounts.md` based on
+  [18 C.F.R. Part 201](https://www.ecfr.gov/current/title-18/chapter-I/subchapter-B/part-201)
 
 #### FERC Form 6
 
@@ -159,8 +176,8 @@ Providing users with next steps to get help, ask questions, or contribute.
 - [x] generate schedule to XBRL table mappings
 - [x] generate schedule to DBF table mappings
 - [ ] Add reference and link back to the HTML form in PUDL docs
-- [ ] Add separate `ferc_oil_pipeline_accounts.json`/`ferc-oil-pipeline-accounts.md` based on
-  [Uniform System of Accounts (18 C.F.R. Part 352)](https://www.ecfr.gov/current/title-18/chapter-I/subchapter-Q/part-352)
+- [ ] Compile `ferc_oil_pipeline_accounts.json`/`ferc-oil-pipeline-accounts.md` based on
+  [18 C.F.R. Part 352](https://www.ecfr.gov/current/title-18/chapter-I/subchapter-Q/part-352)
 
 #### FERC Form 60
 
@@ -168,8 +185,8 @@ Providing users with next steps to get help, ask questions, or contribute.
 - [ ] generate schedule to XBRL table mappings
 - [ ] generate schedule to DBF table mappings
 - [ ] Add reference and link back to the HTML form in PUDL docs
-- [ ] Add separate `ferc_service_company_accounts.json`/`ferc-service-company-accounts.md` based on
-  [Uniform System of Accounts (18 C.F.R. Part 367)](https://www.ecfr.gov/current/title-18/chapter-I/subchapter-F/part-367)
+- [ ] Compile `ferc_service_company_accounts.json`/`ferc-service-company-accounts.md` based on
+  [18 C.F.R. Part 367](https://www.ecfr.gov/current/title-18/chapter-I/subchapter-F/part-367)
 
 #### FERC Form 714
 
