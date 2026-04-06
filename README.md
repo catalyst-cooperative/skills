@@ -66,7 +66,7 @@ PUDL (the Public Utility Data Liberation Project).
 - [x] Add in the datapackage v1 spec
 - [x] Add informal v1 "patterns" summary / reference & link
 - [x] Add informal v2 "recipes" summary / reference & link
-- [ ] Generate example data packages using v1 schema
+- [ ] Generate example data packages using v1 schema for reference
 
 ### PUDL Skill
 
@@ -78,10 +78,56 @@ PUDL (the Public Utility Data Liberation Project).
   that full table descriptions can be quite long (paragraphs). Read the first line
   to help determine whether the table is relevant before reading the entire table
   description.
+
+#### Metadata Retrieval
+
+- [x] Given a topical query, return a list of related tables with summaries
+- [x] Explain limitations, caveats, or warnings associated with a table
+- [ ] Provide correct background information about a specific data source (ferceqr, eia923, phmsagas, etc)
+- [ ] Correctly identify the data sources that went into a table
+- [ ] Construct a Mermaid diagram based on ancestor/child nodes in Dagster graph
+- [ ] Construct a Mermaid diagram based on foreign key relationships in the datapackage metadata
+
+#### Data Provenance
+
+- [x] Link to appropriate Methodology pages
+- [ ] Construct URLs that link to data source documentation pages
+- [ ] Provide ZenodoDOIs of raw source data inputs for a given table
+- [ ] Tell when the data associated with this datapackage was published by Catalyst
+- [ ] Tell when a given dataset was last updated by its source
+- [ ] Correctly describe licensing of the data
+- [ ] Provide correct PUDL data citation
+- [ ] Provide link to Zenodo archive of PUDL data release + DOI
+- [ ] Provide link to original data source site (EIA, FERC, etc.)
+
+#### Data Retrieval
+
+- [ ] Given a table, quickly return a readable Parquet data sample from S3
+- [ ] Given a table, quickly return a readable FERC XBRL DuckDB data sample from S3
+- [ ] Given a table, quickly return a readable FERC DBF SQLite data sample from S3
 - [ ] Figure out why it's so slow when returning sample data
 - [ ] Tell it to return rendered markdown, not CSV in chat
-- [ ] Test out sample data retrieval in JupyterLab
-- [ ] Test out sample data retrieval in Marimo
+- [ ] Test sample data retrieval in JupyterLab
+- [ ] Test sample data retrieval in Marimo
+- [ ] Test sample data retrieval in Claude Code
+- [ ] Test sample data retrieval in VS Code / Co-pilot Chat
+- [ ] Test sample data retrieval in Codex
+- [ ] Provide correct size (MB), length (rows) and width (columns) for data
+- [ ] Caution the user against trying to do analysis directly within the LLM
+
+#### Comms Handoff
+
+Providing users with next steps to get help, ask questions, or contribute.
+
+- [ ] Connect user to PUDL Data Viewer to explore data interactively
+- [ ] Construct URLs that link to PUDL Data Viewer for a specific table
+- [ ] Guide user through creating a new GitHub discussion to ask for help
+- [ ] Guide user through opening a new data bug for a specific table on GitHub
+- [ ] Guide user through signing up for PUDL office hours
+- [ ] Guide user through signing up for email newsletter
+- [ ] Provide Catalyst business contact information so user can hire us
+- [ ] Connect user to OpenCollective PUDL project to contribute financially
+- [ ] Connect user to PUDL GitHub repo to contribute code or documentation (good first issues)
 
 ### Metadata Compilation
 
@@ -171,6 +217,13 @@ PUDL (the Public Utility Data Liberation Project).
 - Q: "I'm looking for dta on how the wind and solar power purchase agreement (PPA)
   prices have evolved over time, how they vary by location, and how including battery
   storage impacts those prices. What data does PUDL have that could be relevant to that?"
+- Q: "/pudl tell me what kinds of electricity products are being bought and sold in the
+  transactions reported in the FERC EQR dataset."
+  - Good answer, but it repeatedly used `curl` to download the EQR datapackage descriptor
+    via https and pipe the output into jq, instead of querying the remote JSON using
+    `duckdb-skills:query` or downloading the descriptor once and querying it locally.
+    This suggests that the skill instructions may not be clear enough about how to use
+    `duckdb` for metadata queries, or that the agent is having trouble following them.
 
 ### Skills Environment Ergonomics
 
