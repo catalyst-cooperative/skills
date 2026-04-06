@@ -8,7 +8,7 @@ number, e.g. "Schedule 301" or "Page 400a".
 
 Account numbers referenced in the Description column (e.g. "Account 182.3",
 "Accounts 221–224") correspond to entries in the
-[FERC Uniform System of Accounts](./ferc-uniform-system-of-accounts.md).
+[FERC Electricity Accounts](./ferc-electricity-accounts.md).
 Consult that reference to understand what a given account contains and whether it is
 relevant to a user's query.
 
@@ -63,7 +63,7 @@ WHERE list_contains(ferc_accounts, '182.3');
 SELECT s.schedule, s.title, a.account, a.description AS account_description
 FROM read_json('assets/ferc1_schedules.json') s,
      LATERAL unnest(s.ferc_accounts) AS t(acct)
-JOIN read_json('assets/ferc_accounts.json') a ON a.account = t.acct
+JOIN read_json('assets/ferc_electricity_accounts.json') a ON a.account = t.acct
 WHERE s.schedule = '219';
 ```
 

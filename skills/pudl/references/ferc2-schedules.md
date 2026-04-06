@@ -10,7 +10,7 @@ referred to by their page number, e.g. "Schedule 300" or "Page 508".
 Account numbers referenced in the Description column (e.g. "Account 182.3",
 "Accounts 221–224") correspond to the FERC Uniform System of Accounts for Natural Gas
 Companies. The companion FERC electric accounts reference is at
-[FERC Uniform System of Accounts](./ferc-uniform-system-of-accounts.md).
+[FERC Natural Gas Accounts](./ferc-natural-gas-accounts.md).
 
 > **For agent use, query [`ferc2_schedules.json`](../assets/ferc2_schedules.json)**
 > **with jq or DuckDB rather than reading this file into context.**

@@ -4,7 +4,7 @@
 The JSON assets are the single source of truth for FERC account and schedule data.
 This script reads them and regenerates the human-readable table sections in:
 
-  references/ferc-uniform-system-of-accounts.md
+  references/ferc-electricity-accounts.md
   references/ferc1-schedules.md
   references/ferc2-schedules.md
 
@@ -148,8 +148,8 @@ def fmt_tables(names: list[str]) -> str:
 
 
 def generate_accounts_tables() -> str:
-    """Generate the full account listing from ferc_accounts.json."""
-    with open(ASSETS / "ferc_accounts.json") as f:
+    """Generate the full account listing from ferc_electricity_accounts.json."""
+    with open(ASSETS / "ferc_electricity_accounts.json") as f:
         raw = json.load(f)
 
     # Build an ordered dict keyed by (chart, section, group, operation_type)
@@ -277,8 +277,8 @@ SCHEDULE_FILES: list[tuple[str, str, str]] = [
 def main() -> None:
     print("Generating FERC accounts table...")
     accounts_content = generate_accounts_tables()
-    splice_generated(REFS / "ferc-uniform-system-of-accounts.md", accounts_content)
-    print("  -> references/ferc-uniform-system-of-accounts.md updated")
+    splice_generated(REFS / "ferc-electricity-accounts.md", accounts_content)
+    print("  -> references/ferc-electricity-accounts.md updated")
 
     for json_name, md_name, label in SCHEDULE_FILES:
         print(f"Generating {label} schedules table...")

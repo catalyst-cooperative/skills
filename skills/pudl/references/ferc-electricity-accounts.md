@@ -15,7 +15,7 @@ Accounts marked **(Major only)** apply only to Major utilities; those marked
 
 ______________________________________________________________________
 
-> **For agent use, query [`ferc_accounts.json`](../assets/ferc_accounts.json)**
+> **For agent use, query [`ferc_electricity_accounts.json`](../assets/ferc_electricity_accounts.json)**
 > **with jq or DuckDB rather than reading this file into context.**
 > The full account listing below is for human reference only.
 
@@ -23,7 +23,7 @@ ______________________________________________________________________
 
 ## Querying the machine-readable index
 
-Use [`ferc_accounts.json`](../assets/ferc_accounts.json) for all programmatic lookups.
+Use [`ferc_electricity_accounts.json`](../assets/ferc_electricity_accounts.json) for all programmatic lookups.
 Fields: `account`, `description`, `chart`, `section`, `group`, `operation_type`,
 `major_only`, `nonmajor_only`, `reserved`.
 
@@ -31,18 +31,18 @@ Fields: `account`, `description`, `chart`, `section`, `group`, `operation_type`,
 
 ```bash
 # Look up a specific account
-jq '.[] | select(.account == "182.3")' assets/ferc_accounts.json
+jq '.[] | select(.account == "182.3")' assets/ferc_electricity_accounts.json
 
 # Find all accounts in a numeric range
 jq '[.[] | select(.account | test("^18[0-9]"))] | .[] | {account, description}' \
-	assets/ferc_accounts.json
+	assets/ferc_electricity_accounts.json
 
 # List all O&M transmission expense accounts
 jq '[.[] | select(.chart == "om_expenses" and .section == "2. Transmission Expenses")] |
-    .[] | {account, description, operation_type}' assets/ferc_accounts.json
+    .[] | {account, description, operation_type}' assets/ferc_electricity_accounts.json
 
 # Find all Major-only accounts
-jq '[.[] | select(.major_only)] | .[].account' assets/ferc_accounts.json
+jq '[.[] | select(.major_only)] | .[].account' assets/ferc_electricity_accounts.json
 ```
 
 ### DuckDB examples
@@ -50,18 +50,18 @@ jq '[.[] | select(.major_only)] | .[].account' assets/ferc_accounts.json
 ```sql
 -- Find accounts by keyword
 SELECT account, description, chart, section
-FROM read_json('assets/ferc_accounts.json')
+FROM read_json('assets/ferc_electricity_accounts.json')
 WHERE description ILIKE '%depreciation%';
 
 -- All transmission O&M expense accounts
 SELECT account, description, operation_type
-FROM read_json('assets/ferc_accounts.json')
+FROM read_json('assets/ferc_electricity_accounts.json')
 WHERE chart = 'om_expenses' AND section = '2. Transmission Expenses'
 ORDER BY account;
 
 -- Which Form 1 schedules reference accounts in the 550-557 range
 SELECT a.account, a.description AS account_desc, s.schedule, s.title
-FROM read_json('assets/ferc_accounts.json') a
+FROM read_json('assets/ferc_electricity_accounts.json') a
 JOIN read_json('assets/ferc1_schedules.json') s
   ON list_contains(s.ferc_accounts, a.account)
 WHERE a.account BETWEEN '550' AND '557'

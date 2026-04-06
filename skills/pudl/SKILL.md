@@ -103,11 +103,11 @@ user explicitly asks to load or explore data.
   modeling methodology pages (entity resolution, timeseries imputation, ownership
   extraction); read when a user asks *how* PUDL cleans, reconciles, or models data,
   then fetch the specific page URL to get the full description and summarize it
-- [FERC Uniform System of Accounts](./references/ferc-uniform-system-of-accounts.md) —
+- [FERC Electricity Accounts](./references/ferc-electricity-accounts.md) —
   complete hierarchical chart of FERC electric utility accounts (balance sheet, electric
   plant, operating revenue, O&M expenses) with account numbers and descriptions; read
   when interpreting FERC Form 1 financial data or when a user asks what a specific
-  account number means — prefer querying `ferc_accounts.json` over reading this
+  account number means — prefer querying `ferc_electricity_accounts.json` over reading this
   file
 - [FERC Form 1 Schedules](./references/ferc1-schedules.md) — all 75 Form 1 schedules
   with titles, descriptions, and table mappings; read when a user references a schedule
@@ -126,8 +126,8 @@ user explicitly asks to load or explore data.
   FERC Form 2 schedule or table lookup; use jq or DuckDB `read_json()` to find
   schedules by keyword, account number, or XBRL table name without loading the full
   markdown into context
-- [ferc_accounts.json](./assets/ferc_accounts.json) — **query this first** for any
-  FERC account number lookup; use jq or DuckDB `read_json()` to resolve account
+- [ferc_electricity_accounts.json](./assets/ferc_electricity_accounts.json) — **query this first** for any
+  FERC Form 1 (electric utility) account number lookup; use jq or DuckDB `read_json()` to resolve account
   definitions and cross-reference with Form 1 schedules via the `ferc_accounts` array
 
 ## PUDL-specific constraints
@@ -204,7 +204,7 @@ jq '[.[] | select(.ferc_accounts[] == "489.2")] | .[] | {schedule, title}' \
 SCHED="232"
 jq --arg s "$SCHED" '.[] | select(.schedule == $s) | .ferc_accounts[]' \
 	assets/ferc1_schedules.json |
-	xargs -I{} jq --arg a {} '.[] | select(.account == $a)' assets/ferc_accounts.json
+	xargs -I{} jq --arg a {} '.[] | select(.account == $a)' assets/ferc_electricity_accounts.json
 ```
 
 **Combined DuckDB query:**
@@ -215,7 +215,7 @@ SELECT s.schedule, s.title, unnest(s.pudl_tables) AS pudl_table,
        a.account, a.description AS account_description
 FROM read_json('assets/ferc1_schedules.json') s,
      LATERAL unnest(s.ferc_accounts) AS t(acct)
-JOIN read_json('assets/ferc_accounts.json') a ON a.account = t.acct
+JOIN read_json('assets/ferc_electricity_accounts.json') a ON a.account = t.acct
 WHERE s.description ILIKE '%regulatory asset%'
 ORDER BY s.schedule, a.account;
 

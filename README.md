@@ -76,7 +76,10 @@ PUDL (the Public Utility Data Liberation Project).
   - [ ] **FERC Form 1**
     - [x] Rename `ferc_accounts.json` -> `ferc_electricity_accounts.json` since now we
       have multiple systems of accounts for different domains.
-    - [ ] Update outdated links / references to `ferc_accounts.json`.
+    - [x] Rename [ferc-uniform-system-of-accounts.md](skills/pudl/references/ferc-uniform-system-of-accounts.md)
+      to `ferc-electricity-accounts.md`
+    - [x] Update outdated links / references to `ferc-uniform-system-of-accounts.md` and
+      `ferc_electricity_accounts.json`.
     - [ ] Try regenerating ferc1_schedules.json using [this prompt](prompts/compile-ferc-schedule-metadata.md)
       and compare the results to our existing file.
     - [ ] Add reference and link back to the PDF & HTML forms in the PUDL docs
@@ -85,21 +88,21 @@ PUDL (the Public Utility Data Liberation Project).
     - [x] generate schedule to XBRL table mappings
     - [x] generate schedule to DBF table mappings
     - [ ] Add reference and link back to the HTML form in PUDL docs
-    - [ ] Add separate `ferc_natural_gas_accounts.json` based on
+    - [ ] Add separate `ferc_natural_gas_accounts.json`/`ferc-natural-gas-accounts.md` based on
       [Uniform System of Accounts (18 C.F.R. Part 201)](https://www.ecfr.gov/current/title-18/chapter-I/subchapter-B/part-201)
   - [ ] **FERC Form 6**
     - [x] extract schedule titles, descriptions, and FERC Accounts from HTML docs
     - [x] generate schedule to XBRL table mappings
     - [x] generate schedule to DBF table mappings
     - [ ] Add reference and link back to the HTML form in PUDL docs
-    - [ ] Add separate `ferc_oil_pipeline_accounts.json` based on
+    - [ ] Add separate `ferc_oil_pipeline_accounts.json`/`ferc-oil-pipeline-accounts.md` based on
       [Uniform System of Accounts (18 C.F.R. Part 352)](https://www.ecfr.gov/current/title-18/chapter-I/subchapter-Q/part-352)
   - [ ] **FERC Form 60**
     - [ ] extract schedule titles, descriptions, and FERC Accounts from HTML docs
     - [ ] generate schedule to XBRL table mappings
     - [ ] generate schedule to DBF table mappings
     - [ ] Add reference and link back to the HTML form in PUDL docs
-    - [ ] Add separate `ferc_service_company_accounts.json` based on
+    - [ ] Add separate `ferc_service_company_accounts.json`/`ferc-service-company-accounts.md` based on
       [Uniform System of Accounts (18 C.F.R. Part 367)](https://www.ecfr.gov/current/title-18/chapter-I/subchapter-F/part-367)
   - [ ] **FERC Form 714**
     - [ ] extract schedule titles, descriptions, and FERC Accounts from HTML docs
