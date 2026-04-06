@@ -3,6 +3,8 @@ channels = ["conda-forge"]
 platforms = ["osx-arm64", "osx-64", "linux-64"]
 
 [tool.pixi.pypi-dependencies]
+# Waiting on packaging update
+# https://github.com/conda-forge/mdformat-gfm-feedstock/pull/4
 mdformat-gfm = ">=1.0"
 
 [tool.pixi.tasks]
@@ -27,3 +29,5 @@ shellcheck = ">=0.11.0,<0.12"
 taplo = ">=0.10.0,<0.11"
 actionlint = ">=1.7.12,<2"
 typos = ">=1.45.0,<2"
+ty = ">=0.0.29,<0.0.30"
+beautifulsoup4 = ">=4.14.3,<5"

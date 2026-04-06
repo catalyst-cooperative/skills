@@ -1,3 +1,6 @@
+ci:
+  skip: [ty-check]
+
 repos:
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.22.0
@@ -39,6 +42,15 @@ repos:
       - id: ruff-check
         args: [--fix]
       - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: ty-check
+        name: ty
+        entry: pixi run ty check
+        language: system
+        types_or: [python, pyi]
+        pass_filenames: false
 
   - repo: https://github.com/rbubley/mirrors-prettier
     rev: v3.8.1

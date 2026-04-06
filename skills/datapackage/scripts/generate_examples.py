@@ -21,15 +21,48 @@ import hashlib
 import json
 import sqlite3
 from pathlib import Path
+from typing import Any, TypedDict
 
 import duckdb
 import pandas as pd
+from _duckdb import DuckDBPyConnection
+
+
+class Station(TypedDict):
+    station_id: str
+    station_name: str
+    latitude: float
+    longitude: float
+    elevation_m: int
+    active: bool
+    commissioned_date: str
+
+
+class ClimateParams(TypedDict):
+    min: float
+    max: float
+    precip_chance: float
+
+
+class Reading(TypedDict):
+    station_id: str
+    date: str
+    temp_min_c: float
+    temp_max_c: float
+    precipitation_mm: float | None
+    wind_speed_avg_ms: float
+
+
+class FileStats(TypedDict):
+    bytes: int
+    hash: str
+
 
 # ---------------------------------------------------------------------------
 # Sample data
 # ---------------------------------------------------------------------------
 
-STATIONS = [
+STATIONS: list[Station] = [
     {
         "station_id": "WS-0001",
         "station_name": "Portland Airport",
@@ -78,7 +111,7 @@ STATIONS = [
 ]
 
 # Base temps (°C) and precipitation frequency per station (Jan 2024 approximations)
-_STATION_CLIMATE = {
+_STATION_CLIMATE: dict[str, ClimateParams] = {
     "WS-0001": {"min": 1.0, "max": 9.0, "precip_chance": 0.65},
     "WS-0002": {"min": -6.0, "max": 0.0, "precip_chance": 0.70},
     "WS-0003": {"min": -10.0, "max": -2.0, "precip_chance": 0.50},
@@ -92,10 +125,10 @@ random.seed(42)
 
 DATES = pd.date_range("2024-01-01", periods=30).strftime("%Y-%m-%d").tolist()
 
-READINGS = []
+READINGS: list[Reading] = []
 for station in STATIONS:
     sid = station["station_id"]
-    climate = _STATION_CLIMATE[sid]
+    climate: ClimateParams = _STATION_CLIMATE[sid]
     for date in DATES:
         tmin = round(climate["min"] + random.gauss(0, 1.5), 1)
         tmax = round(climate["max"] + random.gauss(0, 1.5), 1)
@@ -257,13 +290,13 @@ READINGS_RESOURCE_BASE = {
 ASSETS = Path(__file__).parent.parent / "assets" / "examples"
 
 
-def file_stats(path: Path) -> dict:
+def file_stats(path: Path) -> FileStats:
     """Return bytes and MD5 hash for a file — useful for integrity checking."""
     data = path.read_bytes()
     return {"bytes": len(data), "hash": "md5:" + hashlib.md5(data).hexdigest()}
 
 
-def write_descriptor(directory: Path, resources: list[dict]) -> None:
+def write_descriptor(directory: Path, resources: list[dict[str, Any]]) -> None:
     descriptor = {**PACKAGE_META, "resources": resources}
     (directory / "datapackage.json").write_text(
         json.dumps(descriptor, indent=2, ensure_ascii=False) + "\n"
@@ -341,7 +374,7 @@ def generate_duckdb(out: Path) -> None:
     out.mkdir(parents=True, exist_ok=True)
     db_path = out / "weather.duckdb"
     db_path.unlink(missing_ok=True)
-    con = duckdb.connect(str(db_path))
+    con: DuckDBPyConnection = duckdb.connect(str(db_path))
     con.execute("CREATE TABLE stations AS SELECT * FROM stations_df")
     con.execute('CREATE TABLE "daily-readings" AS SELECT * FROM readings_df')
     con.close()
@@ -376,7 +409,7 @@ def generate_sqlite(out: Path) -> None:
     out.mkdir(parents=True, exist_ok=True)
     db_path = out / "weather.sqlite"
     db_path.unlink(missing_ok=True)
-    con = sqlite3.connect(str(db_path))
+    con: sqlite3.Connection = sqlite3.connect(str(db_path))
     stations_df.to_sql("stations", con, index=False, if_exists="replace")
     readings_df.to_sql("daily-readings", con, index=False, if_exists="replace")
     con.close()
