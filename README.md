@@ -57,7 +57,9 @@ PUDL (the Public Utility Data Liberation Project).
 ### `agent-skills` Repository Setup
 
 - [x] Make markdown linting work for everything!
-- [ ] Set up typos exceptions & excluded files to work with actual repo contents.
+- [x] Merge repo setup into `main` to reduce diffs
+- [x] Set up typos exceptions & excluded files to work with actual repo contents.
+- [ ] Add an `AGENTS.md` to make the clankers less annoying
 
 ### Datapackage Skill
 
@@ -71,58 +73,65 @@ PUDL (the Public Utility Data Liberation Project).
 - [x] Ask why not use a hierarchical JSON structure for the system of accounts data? Right
   now it's just a big list of elements.
 - [x] Add links to PUDL Methodology docs
-- [x] Add PUDL Dataset Citation
-- Compile FERC schedule, table, and account metadata into the skill assets:
-  - [ ] **FERC Form 1**
-    - [x] Rename `ferc_accounts.json` -> `ferc_electricity_accounts.json` since now we
-      have multiple systems of accounts for different domains.
-    - [x] Rename [ferc-uniform-system-of-accounts.md](skills/pudl/references/ferc-uniform-system-of-accounts.md)
-      to `ferc-electricity-accounts.md`
-    - [x] Update outdated links / references to `ferc-uniform-system-of-accounts.md` and
-      `ferc_electricity_accounts.json`.
-    - [ ] Try regenerating ferc1_schedules.json using [this prompt](prompts/compile-ferc-schedule-metadata.md)
-      and compare the results to our existing file.
-    - [ ] Add reference and link back to the PDF & HTML forms in the PUDL docs
-  - [ ] **FERC Form 2**
-    - [x] extract schedule titles, descriptions, and FERC Accounts from HTML docs
-    - [x] generate schedule to XBRL table mappings
-    - [x] generate schedule to DBF table mappings
-    - [ ] Add reference and link back to the HTML form in PUDL docs
-    - [ ] Add separate `ferc_natural_gas_accounts.json`/`ferc-natural-gas-accounts.md` based on
-      [Uniform System of Accounts (18 C.F.R. Part 201)](https://www.ecfr.gov/current/title-18/chapter-I/subchapter-B/part-201)
-  - [ ] **FERC Form 6**
-    - [x] extract schedule titles, descriptions, and FERC Accounts from HTML docs
-    - [x] generate schedule to XBRL table mappings
-    - [x] generate schedule to DBF table mappings
-    - [ ] Add reference and link back to the HTML form in PUDL docs
-    - [ ] Add separate `ferc_oil_pipeline_accounts.json`/`ferc-oil-pipeline-accounts.md` based on
-      [Uniform System of Accounts (18 C.F.R. Part 352)](https://www.ecfr.gov/current/title-18/chapter-I/subchapter-Q/part-352)
-  - [ ] **FERC Form 60**
-    - [ ] extract schedule titles, descriptions, and FERC Accounts from HTML docs
-    - [ ] generate schedule to XBRL table mappings
-    - [ ] generate schedule to DBF table mappings
-    - [ ] Add reference and link back to the HTML form in PUDL docs
-    - [ ] Add separate `ferc_service_company_accounts.json`/`ferc-service-company-accounts.md` based on
-      [Uniform System of Accounts (18 C.F.R. Part 367)](https://www.ecfr.gov/current/title-18/chapter-I/subchapter-F/part-367)
-  - [ ] **FERC Form 714**
-    - [ ] extract schedule titles, descriptions, and FERC Accounts from HTML docs
-    - [ ] generate schedule to XBRL table mappings
-    - [ ] Add reference and link back to the HTML form in PUDL docs
-
-### Metadata Access Tasks
-
-- [ ] Note that our table descriptions have 1-line summaries like python docstrings, and
+- [x] Add PUDL Dataset Citation instructions
+- [x] Note that our table descriptions have 1-line summaries like python docstrings, and
   that full table descriptions can be quite long (paragraphs). Read the first line
   to help determine whether the table is relevant before reading the entire table
   description.
-
-### Data Access Tasks
-
 - [ ] Figure out why it's so slow when returning sample data
 - [ ] Tell it to return rendered markdown, not CSV in chat
-- [ ] Test it out in a notebook
+- [ ] Test out sample data retrieval in JupyterLab
+- [ ] Test out sample data retrieval in Marimo
 
-## Skill Evaluations
+### Metadata Compilation
+
+#### FERC Form 1
+
+- [x] Rename `ferc_accounts.json` -> `ferc_electricity_accounts.json` since now we
+  have multiple systems of accounts for different domains.
+- [x] Rename [ferc-uniform-system-of-accounts.md](skills/pudl/references/ferc-uniform-system-of-accounts.md)
+  to `ferc-electricity-accounts.md`
+- [x] Update outdated links / references to `ferc-uniform-system-of-accounts.md` and
+  `ferc_electricity_accounts.json`.
+- [ ] Try regenerating ferc1_schedules.json using [this prompt](prompts/compile-ferc-schedule-metadata.md)
+  and compare the results to our existing file.
+- [ ] Add reference and link back to the PDF & HTML forms in the PUDL docs
+
+#### FERC Form 2
+
+- [x] extract schedule titles, descriptions, and FERC Accounts from HTML docs
+- [x] generate schedule to XBRL table mappings
+- [x] generate schedule to DBF table mappings
+- [ ] Add reference and link back to the HTML form in PUDL docs
+- [ ] Try regenerating ferc2_schedules.json using [this prompt](prompts/compile-ferc-schedule-metadata.md)
+- [ ] Add separate `ferc_natural_gas_accounts.json`/`ferc-natural-gas-accounts.md` based on
+  [Uniform System of Accounts (18 C.F.R. Part 201)](https://www.ecfr.gov/current/title-18/chapter-I/subchapter-B/part-201)
+
+#### FERC Form 6
+
+- [x] extract schedule titles, descriptions, and FERC Accounts from HTML docs
+- [x] generate schedule to XBRL table mappings
+- [x] generate schedule to DBF table mappings
+- [ ] Add reference and link back to the HTML form in PUDL docs
+- [ ] Add separate `ferc_oil_pipeline_accounts.json`/`ferc-oil-pipeline-accounts.md` based on
+  [Uniform System of Accounts (18 C.F.R. Part 352)](https://www.ecfr.gov/current/title-18/chapter-I/subchapter-Q/part-352)
+
+#### FERC Form 60
+
+- [ ] extract schedule titles, descriptions, and FERC Accounts from HTML docs
+- [ ] generate schedule to XBRL table mappings
+- [ ] generate schedule to DBF table mappings
+- [ ] Add reference and link back to the HTML form in PUDL docs
+- [ ] Add separate `ferc_service_company_accounts.json`/`ferc-service-company-accounts.md` based on
+  [Uniform System of Accounts (18 C.F.R. Part 367)](https://www.ecfr.gov/current/title-18/chapter-I/subchapter-F/part-367)
+
+#### FERC Form 714
+
+- [ ] extract schedule titles, descriptions, and FERC Accounts from HTML docs
+- [ ] generate schedule to XBRL table mappings
+- [ ] Add reference and link back to the HTML form in PUDL docs
+
+## Evaluate Skill Performance / Ergonomics
 
 ### Eval Mechanics
 
@@ -177,7 +186,7 @@ PUDL (the Public Utility Data Liberation Project).
 
 - Test performance of `jq` vs `duckdb-skills:query` for metadata queries on large
   `datapackage.json` files. If `duckdb-skills:query` is much better, make `jq` the fallback.
-- Experiment with DuckDB natural language queryies through the query skill. How does it work?
+- Experiment with DuckDB natural language queries through the query skill. How does it work?
   Does it work well? Should we explicitly direct agents / users to use it?
 - Should we check the hash and size of files before querying them? Or at some point in
   the process to avoid accidentally using metadata associated with the wrong data?
