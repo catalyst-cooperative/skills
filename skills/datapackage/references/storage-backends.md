@@ -9,14 +9,14 @@
 **Only proceed here if the user has explicitly asked to query or load data.** Metadata
 exploration (descriptor querying) does not require touching data files at all.
 
-______________________________________________________________________
+---
 
 ## How datapackage.json describes data files
 
 Each resource has:
 
 - `path`: relative path **or URL** to the data file. If relative, resolve it against
-  the base directory or base URL of the descriptor (see `metadata-querying.md`).
+    the base directory or base URL of the descriptor (see `metadata-querying.md`).
 - `format`: file format string (e.g. `"parquet"`, `"csv"`, `"sqlite"`, `"duckdb"`)
 - `mediatype`: MIME type (e.g. `"application/parquet"`, `"text/csv"`)
 
@@ -29,7 +29,7 @@ jq -r '.resources[] | "\(.name)\t\(.path)\t\(.format // "unknown")"' datapackage
 Parquet or DuckDB over SQLite or CSV — they are faster, typed, and support remote
 access without downloading. SQLite files **must be local** (see below).
 
-______________________________________________________________________
+---
 
 ## DuckDB (preferred)
 
@@ -132,7 +132,7 @@ import duckdb
 df = duckdb.sql("SELECT * FROM read_parquet('my_table.parquet') LIMIT 100").df()
 ```
 
-______________________________________________________________________
+---
 
 ## Polars (preferred for large Python workflows)
 
@@ -160,7 +160,7 @@ df_polars = lf.select(["id", "date", "value"]).collect()
 df_pandas = df_polars.to_pandas()  # only if needed
 ```
 
-______________________________________________________________________
+---
 
 ## pandas
 
@@ -180,7 +180,7 @@ df = pd.read_parquet("/path/to/data/my_table.parquet", columns=["id", "date", "v
 df = pd.read_csv("/path/to/data/my_table.csv")
 ```
 
-______________________________________________________________________
+---
 
 ## SQLite
 
@@ -214,7 +214,7 @@ df = pd.read_sql("SELECT * FROM my_table LIMIT 100", con)
 con.close()
 ```
 
-______________________________________________________________________
+---
 
 ## Quick reference
 

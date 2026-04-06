@@ -37,7 +37,7 @@ resources. Each resource represents one table (or file) and includes:
 
 - `name`: machine-readable identifier
 - `description`: human-readable description, often including processing notes, primary
-  keys, and usage warnings
+    keys, and usage warnings
 - `path`: filename or URL of the actual data file
 - `schema.fields`: list of columns, each with a `name` and `description`
 
@@ -66,19 +66,19 @@ For data loading and SQL queries, the `attach-db` and `query` skills from
 
 1. **Locate the descriptor** — find or download `datapackage.json` (see below).
 1. **Query metadata selectively** — use jq or DuckDB to extract only what you need.
-   See [Metadata Querying](./references/metadata-querying.md).
+    See [Metadata Querying](./references/metadata-querying.md).
 1. **Surface warnings** — always check for usage warnings before presenting a resource.
 1. **Load the data** *(optional)* — only if the user explicitly wants to query or
-   explore the actual data. Data files can be large and remote access can be slow or
-   costly. Don't initiate data loading as a follow-on to a metadata lookup without
-   confirming the user wants it. See [Storage Backends](./references/storage-backends.md).
+    explore the actual data. Data files can be large and remote access can be slow or
+    costly. Don't initiate data loading as a follow-on to a metadata lookup without
+    confirming the user wants it. See [Storage Backends](./references/storage-backends.md).
 
 ## Reference index
 
 - [Metadata Querying](./references/metadata-querying.md) — locate the descriptor,
-  query it selectively with jq or DuckDB, surface usage warnings
+    query it selectively with jq or DuckDB, surface usage warnings
 - [Storage Backends](./references/storage-backends.md) — load data from Parquet,
-  DuckDB, SQLite, or CSV files referenced by the descriptor
+    DuckDB, SQLite, or CSV files referenced by the descriptor
 
 ## Community patterns and recipes
 
@@ -86,20 +86,20 @@ The datapackage standard is permissive: publishers frequently add non-standard f
 Two conventions are worth knowing immediately:
 
 - **Custom fields** — non-standard keys added by publishers are common and valid.
-  The `_` prefix convention marks system-generated or platform-specific keys (e.g.
-  `_cache`, `_platformVersion`). Some publishers add custom keys without the prefix
-  (e.g. PUDL adds `duckdb_table`, `sqlite_table` on database-backed resources). Treat
-  unknown fields as informational metadata, not errors.
+    The `_` prefix convention marks system-generated or platform-specific keys (e.g.
+    `_cache`, `_platformVersion`). Some publishers add custom keys without the prefix
+    (e.g. PUDL adds `duckdb_table`, `sqlite_table` on database-backed resources). Treat
+    unknown fields as informational metadata, not errors.
 - **Compressed resources** — a resource with a `.gz` or `.zip` path may have an
-  explicit `"compression": "gz"` field. The `bytes` and `hash` fields apply to the
-  compressed file, not the uncompressed original.
+    explicit `"compression": "gz"` field. The `bytes` and `hash` fields apply to the
+    compressed file, not the uncompressed original.
 
 For other patterns (catalogs, versioning, external foreign keys, translation support,
 field relationships, etc.), fetch the relevant page on demand:
 
 - v1 patterns: <https://specs.frictionlessdata.io/patterns/>
 - v2 recipes: <https://datapackage.org/recipes/caching-of-resources/> (navigate via
-  sidebar or next/previous links — no index page exists)
+    sidebar or next/previous links — no index page exists)
 
 Both pages cover largely the same set of community conventions; consult whichever
 matches the descriptor version you're working with.
@@ -109,30 +109,30 @@ matches the descriptor version you're working with.
 This skill delegates actual data querying to:
 
 - **`/duckdb-skills:attach-db`** — attach a `.duckdb` or `.sqlite` database file and
-  set up a persistent session for querying
+    set up a persistent session for querying
 - **`/duckdb-skills:query`** — run SQL or natural language queries against attached
-  databases, ad-hoc files (Parquet, CSV, remote HTTPS/S3), and JSON files including
-  `datapackage.json` itself (via DuckDB's `read_json`)
+    databases, ad-hoc files (Parquet, CSV, remote HTTPS/S3), and JSON files including
+    `datapackage.json` itself (via DuckDB's `read_json`)
 
 These skills must be installed. See `skills-lock.json` in the project root.
 
 ## Key constraints
 
 - **Golden rule: never load the full datapackage.json into context.** It may be
-  megabytes with hundreds of resources. Always query selectively.
+    megabytes with hundreds of resources. Always query selectively.
 - **Read the full description before presenting a resource.** Descriptions often
-  contain important context: processing notes, primary key conventions, data
-  provenance, or caveats about known limitations. Don't skip them.
+    contain important context: processing notes, primary key conventions, data
+    provenance, or caveats about known limitations. Don't skip them.
 - **Use `uv` to install Python packages** — prefer `uv add <package>` over
-  `pip install <package>`. `uv` is faster and installs into a virtual environment
-  rather than globally. Fall back to `pip` only if `uv` is not available
-  (`command -v uv` returns nothing).
+    `pip install <package>`. `uv` is faster and installs into a virtual environment
+    rather than globally. Fall back to `pip` only if `uv` is not available
+    (`command -v uv` returns nothing).
 - **Do not use Python to query descriptor metadata.** Python is not the right tool here
-  — it loads the full JSON into memory (violating the golden rule above), adds
-  unnecessary dependencies, and can't easily handle remote descriptors. Use jq for
-  metadata-only tasks; use DuckDB when you need to combine metadata queries with data
-  queries. Python is only appropriate for loading data (via pandas or polars) after you
-  already know which table and columns you need.
+    — it loads the full JSON into memory (violating the golden rule above), adds
+    unnecessary dependencies, and can't easily handle remote descriptors. Use jq for
+    metadata-only tasks; use DuckDB when you need to combine metadata queries with data
+    queries. Python is only appropriate for loading data (via pandas or polars) after you
+    already know which table and columns you need.
 
 ## Schema reference and version detection
 
@@ -148,17 +148,17 @@ version from the top-level descriptor before parsing:
 Key differences between versions that affect parsing:
 
 - **Contributors** — v1 has `"role": "author"` (singular string); v2 has
-  `"roles": ["author"]` (array). Both may appear in the wild.
+    `"roles": ["author"]` (array). Both may appear in the wild.
 - **Name pattern** — v1 enforces strictly lowercase `[-a-z0-9._/]`; v2 is unrestricted.
 - **`version` field** — present in v2, absent in v1.
 
 Bundled schemas:
 
 - [`assets/datapackage-v1.schema.json`](./assets/datapackage-v1.schema.json) — v1.0
-  (JSON Schema draft-04). Used by FERC XBRL packages and many older datasets.
+    (JSON Schema draft-04). Used by FERC XBRL packages and many older datasets.
 - [`assets/datapackage-v2.schema.json`](./assets/datapackage-v2.schema.json) — v2.0
-  (JSON Schema draft-07). The current standard. Canonical version always at:
-  <https://datapackage.org/profiles/2.0/datapackage.json>
+    (JSON Schema draft-07). The current standard. Canonical version always at:
+    <https://datapackage.org/profiles/2.0/datapackage.json>
 
 Read the appropriate schema when you need to understand which fields are valid in a
 descriptor or validate one programmatically.

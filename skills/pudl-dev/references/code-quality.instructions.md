@@ -36,7 +36,7 @@ pixi run pre-commit-install
 
 - Hook configuration is canonical in `.pre-commit-config.yaml`.
 - Non-ruff hooks include checks such as doc8, typos, actionlint, shellcheck,
-  test naming, merge conflict markers, and YAML/TOML validity.
+    test naming, merge conflict markers, and YAML/TOML validity.
 - Local hooks also include sorting row counts and running unit tests at commit time.
 
 See also: `docs/dev/dev_setup.rst` (linting section)

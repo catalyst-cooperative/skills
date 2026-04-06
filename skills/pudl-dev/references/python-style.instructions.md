@@ -25,7 +25,7 @@ applyTo: src/**/*.py
 
 - Keep Dagster asset dependencies explicit and documented.
 - Prefer data validation in dbt unless there is a clear reason to use Dagster asset
-  checks or Python assertions.
+    checks or Python assertions.
 - Use datastore patterns for raw data access instead of bespoke direct file IO.
 - Reuse existing helpers in `pudl.helpers` when available.
 

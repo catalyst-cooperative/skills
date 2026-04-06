@@ -16,7 +16,7 @@ Companies. The companion FERC electric accounts reference is at
 > **with jq or DuckDB rather than reading this file into context.**
 > The full schedule table below is for human reference only.
 
-______________________________________________________________________
+---
 
 ## Querying the machine-readable index
 
@@ -57,7 +57,7 @@ FROM read_json('assets/ferc2_schedules.json')
 WHERE schedule = '518';
 ```
 
-______________________________________________________________________
+---
 
 ## About FERC Form 2 data
 
@@ -68,9 +68,9 @@ XBRL-derived data (2021–present) is available in `ferc2_xbrl.duckdb` and
 Raw tables come in two formats within the XBRL database:
 
 - **Duration tables** (`_duration` suffix): record values that apply over a time period
-  (e.g. income, expenses, changes in plant balance).
+    (e.g. income, expenses, changes in plant balance).
 - **Instant tables** (`_instant` suffix): record point-in-time balances (e.g. balance
-  sheet accounts, end-of-year plant totals).
+    sheet accounts, end-of-year plant totals).
 
 Many schedules are split across multiple sub-tables in the XBRL database, one per
 section, account type, or monthly period.
@@ -79,7 +79,7 @@ Source (schedule titles and descriptions): FERC Form 2 blank form (2025-07-31 ed
 The blank form HTML can be found at
 `docs/data_sources/ferc2/ferc2_blank_2025-07-31.html` in the PUDL source repository.
 
-______________________________________________________________________
+---
 
 ## Schedule table
 

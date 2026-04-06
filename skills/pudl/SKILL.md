@@ -47,183 +47,183 @@ user explicitly asks to load or explore data.
 
 1. **Locate the metadata** — the primary PUDL descriptor (Parquet outputs) is at:
 
-   - S3: `s3://pudl.catalyst.coop/nightly/pudl_parquet_datapackage.json`
-   - HTTPS: `https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/pudl_parquet_datapackage.json`
+    - S3: `s3://pudl.catalyst.coop/nightly/pudl_parquet_datapackage.json`
+    - HTTPS: `https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/pudl_parquet_datapackage.json`
 
-   FERC XBRL-derived tables have their own descriptors at the same base path:
-   `ferc1_xbrl_datapackage.json`, `ferc2_xbrl_datapackage.json`,
-   `ferc6_xbrl_datapackage.json`, `ferc60_xbrl_datapackage.json`,
-   `ferc714_xbrl_datapackage.json`
+    FERC XBRL-derived tables have their own descriptors at the same base path:
+    `ferc1_xbrl_datapackage.json`, `ferc2_xbrl_datapackage.json`,
+    `ferc6_xbrl_datapackage.json`, `ferc60_xbrl_datapackage.json`,
+    `ferc714_xbrl_datapackage.json`
 
-   The FERC EQR (Electric Quarterly Reports) is distributed separately due to its
-   size, and only one version is publicly available at a time:
+    The FERC EQR (Electric Quarterly Reports) is distributed separately due to its
+    size, and only one version is publicly available at a time:
 
-   - S3: `s3://pudl.catalyst.coop/ferceqr/ferceqr_parquet_datapackage.json`
-   - HTTPS: `https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/ferceqr/ferceqr_parquet_datapackage.json`
+    - S3: `s3://pudl.catalyst.coop/ferceqr/ferceqr_parquet_datapackage.json`
+    - HTTPS: `https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/ferceqr/ferceqr_parquet_datapackage.json`
 
-   For offline or development use, download all descriptors locally with:
+    For offline or development use, download all descriptors locally with:
 
-   ```bash
-   python scripts/fetch_descriptor.py
-   ```
+    ```bash
+    python scripts/fetch_descriptor.py
+    ```
 
-   This populates `assets/cache/` with fresh copies of all descriptors above.
+    This populates `assets/cache/` with fresh copies of all descriptors above.
 
-   Raw input archives (for provenance) live at
-   `s3://pudl.catalyst.coop/zenodo/<dataset>/<doi>/datapackage.json` — see
-   [Data Quality and Context](./references/data-quality-and-context.md) for details.
+    Raw input archives (for provenance) live at
+    `s3://pudl.catalyst.coop/zenodo/<dataset>/<doi>/datapackage.json` — see
+    [Data Quality and Context](./references/data-quality-and-context.md) for details.
 
 1. **Query metadata selectively** — use `/datapackage` skill patterns (jq or DuckDB)
-   to find relevant tables, read descriptions, and surface warnings.
+    to find relevant tables, read descriptions, and surface warnings.
 
 1. **Check table tier** — see [Data Quality and Context](./references/data-quality-and-context.md).
-   Prefer `out_*` tables; warn users about `_core_*` tables.
+    Prefer `out_*` tables; warn users about `_core_*` tables.
 
 1. *(Only if the user explicitly asks to load data)* **Load the data** — Parquet from
-   S3 or local. See [Data Access](./references/data-access.md).
+    S3 or local. See [Data Access](./references/data-access.md).
 
 1. *(Only if the user explicitly asks for interactive exploration)* **Delegate EDA to
-   a notebook agent** — hand off to `/marimo-pair` (Marimo) or appropriate Jupyter
-   agent.
+    a notebook agent** — hand off to `/marimo-pair` (Marimo) or appropriate Jupyter
+    agent.
 
 ## Reference index
 
 - [Data Sources](./references/data-sources.md) — exhaustive list of all ~29 dataset
-  short codes, full names, and per-source documentation links; read when a user asks
-  about a specific source dataset (EIA-860, FERC Form 714, EPA CEMS, etc.) or needs
-  documentation links, or when constructing a Zenodo DOI path and you need the short code
+    short codes, full names, and per-source documentation links; read when a user asks
+    about a specific source dataset (EIA-860, FERC Form 714, EPA CEMS, etc.) or needs
+    documentation links, or when constructing a Zenodo DOI path and you need the short code
 - [Data Access](./references/data-access.md) — S3 paths, loading patterns
-  (pandas/DuckDB/polars/pure SQL), FERC historical database locations, and EQR access;
-  read whenever generating data-loading code or explaining how to access any PUDL output
+    (pandas/DuckDB/polars/pure SQL), FERC historical database locations, and EQR access;
+    read whenever generating data-loading code or explaining how to access any PUDL output
 - [Data Quality and Context](./references/data-quality-and-context.md) — table tier
-  naming conventions (`out_*` vs `core_*` vs raw), warning types, and what each tier
-  means for analysis reliability; read when a user asks about data quality, when choosing
-  between table tiers, or when surfacing warnings before providing loading code
+    naming conventions (`out_*` vs `core_*` vs raw), warning types, and what each tier
+    means for analysis reliability; read when a user asks about data quality, when choosing
+    between table tiers, or when surfacing warnings before providing loading code
 - [Methodology](./references/methodology.md) — index of PUDL's data processing and
-  modeling methodology pages (entity resolution, timeseries imputation, ownership
-  extraction); read when a user asks *how* PUDL cleans, reconciles, or models data,
-  then fetch the specific page URL to get the full description and summarize it
+    modeling methodology pages (entity resolution, timeseries imputation, ownership
+    extraction); read when a user asks *how* PUDL cleans, reconciles, or models data,
+    then fetch the specific page URL to get the full description and summarize it
 - [FERC Electricity Accounts](./references/ferc-electricity-accounts.md) —
-  complete hierarchical chart of FERC electric utility accounts (balance sheet, electric
-  plant, operating revenue, O&M expenses) with account numbers and descriptions; read
-  when interpreting FERC Form 1 financial data or when a user asks what a specific
-  account number means — prefer querying `ferc_electricity_accounts.json` over reading this
-  file
+    complete hierarchical chart of FERC electric utility accounts (balance sheet, electric
+    plant, operating revenue, O&M expenses) with account numbers and descriptions; read
+    when interpreting FERC Form 1 financial data or when a user asks what a specific
+    account number means — prefer querying `ferc_electricity_accounts.json` over reading this
+    file
 - [FERC Form 1 Schedules](./references/ferc1-schedules.md) — all 75 Form 1 schedules
-  with titles, descriptions, and table mappings; read when a user references a schedule
-  by number or name (e.g. "Schedule 301", "Page 400a", "plant in service schedule") —
-  prefer querying `ferc1_schedules.json` over reading this file
+    with titles, descriptions, and table mappings; read when a user references a schedule
+    by number or name (e.g. "Schedule 301", "Page 400a", "plant in service schedule") —
+    prefer querying `ferc1_schedules.json` over reading this file
 - [ferc1_schedules.json](./assets/ferc1_schedules.json) — **query this first** for any
-  FERC Form 1 schedule or table lookup; use jq or DuckDB `read_json()` to find
-  schedules by keyword, account number, or PUDL table name without loading the full
-  markdown into context
+    FERC Form 1 schedule or table lookup; use jq or DuckDB `read_json()` to find
+    schedules by keyword, account number, or PUDL table name without loading the full
+    markdown into context
 - [FERC Form 2 Schedules](./references/ferc2-schedules.md) — all 77 Form 2 schedules
-  with titles, descriptions, and XBRL table mappings (Form 2 is not yet integrated into
-  PUDL); read when a user references a Form 2 schedule or asks about natural gas
-  pipeline financial or operational data — prefer querying `ferc2_schedules.json` over
-  reading this file
+    with titles, descriptions, and XBRL table mappings (Form 2 is not yet integrated into
+    PUDL); read when a user references a Form 2 schedule or asks about natural gas
+    pipeline financial or operational data — prefer querying `ferc2_schedules.json` over
+    reading this file
 - [ferc2_schedules.json](./assets/ferc2_schedules.json) — **query this first** for any
-  FERC Form 2 schedule or table lookup; use jq or DuckDB `read_json()` to find
-  schedules by keyword, account number, or XBRL table name without loading the full
-  markdown into context
+    FERC Form 2 schedule or table lookup; use jq or DuckDB `read_json()` to find
+    schedules by keyword, account number, or XBRL table name without loading the full
+    markdown into context
 - [ferc_electricity_accounts.json](./assets/ferc_electricity_accounts.json) — **query this first** for any
-  FERC Form 1 (electric utility) account number lookup; use jq or DuckDB `read_json()` to resolve account
-  definitions and cross-reference with Form 1 schedules via the `ferc_accounts` array
+    FERC Form 1 (electric utility) account number lookup; use jq or DuckDB `read_json()` to resolve account
+    definitions and cross-reference with Form 1 schedules via the `ferc_accounts` array
 
 ## PUDL-specific constraints
 
 - **License**: All PUDL data is published under the
-  [Creative Commons Attribution 4.0 International (CC-BY-4.0)](https://creativecommons.org/licenses/by/4.0/)
-  license. Users may freely use, share, and adapt the data with attribution to
-  Catalyst Cooperative.
+    [Creative Commons Attribution 4.0 International (CC-BY-4.0)](https://creativecommons.org/licenses/by/4.0/)
+    license. Users may freely use, share, and adapt the data with attribution to
+    Catalyst Cooperative.
 
 - **Citation**: When a user asks how to cite PUDL, provide this reference:
 
-  > Selvans, Z., Gosnell, C., Sharpe, A., Schira, Z., Lamb, K., Belfer, E., Xia, D.,
-  > & Mazaitis, K. *The Public Utility Data Liberation (PUDL) Project* [Data set].
-  > Catalyst Cooperative. <https://doi.org/10.5281/zenodo.3653158>
+    > Selvans, Z., Gosnell, C., Sharpe, A., Schira, Z., Lamb, K., Belfer, E., Xia, D.,
+    > & Mazaitis, K. *The Public Utility Data Liberation (PUDL) Project* [Data set].
+    > Catalyst Cooperative. <https://doi.org/10.5281/zenodo.3653158>
 
-  BibTeX:
+    BibTeX:
 
-  ```bibtex
-  @misc{pudl,
-    author       = {Selvans, Zane and Gosnell, Christina and Sharpe, Austen and
-                    Schira, Zachary and Lamb, Katherine and Belfer, Ella and
-                    Xia, Dazhong and Mazaitis, Kathryn},
-    title        = {The Public Utility Data Liberation (PUDL) Project},
-    publisher    = {Catalyst Cooperative},
-    doi          = {10.5281/zenodo.3653158},
-    url          = {https://doi.org/10.5281/zenodo.3653158},
-  }
-  ```
+    ```bibtex
+    @misc{pudl,
+      author       = {Selvans, Zane and Gosnell, Christina and Sharpe, Austen and
+                      Schira, Zachary and Lamb, Katherine and Belfer, Ella and
+                      Xia, Dazhong and Mazaitis, Kathryn},
+      title        = {The Public Utility Data Liberation (PUDL) Project},
+      publisher    = {Catalyst Cooperative},
+      doi          = {10.5281/zenodo.3653158},
+      url          = {https://doi.org/10.5281/zenodo.3653158},
+    }
+    ```
 
 - The S3 bucket `s3://pudl.catalyst.coop` is **free and publicly accessible** — no
-  AWS credentials needed.
+    AWS credentials needed.
 
 - The Parquet path for any table is `s3://pudl.catalyst.coop/nightly/<table_name>.parquet`.
 
 - **Always surface usage warnings** from the descriptor before providing loading code.
 
 - **Prefer `out_*` tables** for analyst work. If a user asks about a topic without
-  specifying a table, search metadata for `out_` tables first.
+    specifying a table, search metadata for `out_` tables first.
 
 - **Use `uv` to install Python packages** — prefer `uv add <package>` over
-  `pip install <package>`. `uv` is faster and installs into a virtual environment
-  rather than globally. Fall back to `pip` only if `uv` is not available
-  (`command -v uv` returns nothing).
+    `pip install <package>`. `uv` is faster and installs into a virtual environment
+    rather than globally. Fall back to `pip` only if `uv` is not available
+    (`command -v uv` returns nothing).
 
 - **Descriptor descriptions are ReStructuredText (RST)**, not plain text or Markdown.
-  When reading `description` fields from the datapackage descriptor, apply these rules:
+    When reading `description` fields from the datapackage descriptor, apply these rules:
 
-  - Sphinx inline roles like `:py:class:`, `:py:func:`, `:py:attr:` — extract the
-    name inside the backticks (e.g. `:py:func:\`pudl.helpers.fix_eia_na\``→`fix_eia_na\`).
-  - `:ref:\`label\`\` cross-references do not resolve to accessible URLs; treat them
-    as internal documentation pointers only — do not attempt to construct a URL.
-  - `.. note::` and `.. warning::` directive blocks should be treated as callouts and
-    surfaced to users when relevant.
+    - Sphinx inline roles like `:py:class:`, `:py:func:`, `:py:attr:` — extract the
+        name inside the backticks (e.g. `:py:func:\`pudl.helpers.fix_eia_na\``→`fix_eia_na\`).
+    - `:ref:\`label\`\` cross-references do not resolve to accessible URLs; treat them
+        as internal documentation pointers only — do not attempt to construct a URL.
+    - `.. note::` and `.. warning::` directive blocks should be treated as callouts and
+        surfaced to users when relevant.
 
 - **Resource descriptions follow a docstring convention**: every PUDL resource
-  description begins with a single-line summary, followed by a blank line, followed by
-  a longer description (identical to the Python docstring convention). Some resource
-  descriptions are hundreds of words long. **To decide whether a table is relevant
-  without loading the full description into context, read only the first line first**
-  — if the summary looks promising, then fetch the full description.
+    description begins with a single-line summary, followed by a blank line, followed by
+    a longer description (identical to the Python docstring convention). Some resource
+    descriptions are hundreds of words long. **To decide whether a table is relevant
+    without loading the full description into context, read only the first line first**
+    — if the summary looks promising, then fetch the full description.
 
-  **With jq (local file):**
+    **With jq (local file):**
 
-  ```bash
-  # List all resource names with just the first line of their description
-  jq -r '.resources[] | "\(.name): \(.description | split("\n")[0])"' "$PKG"
+    ```bash
+    # List all resource names with just the first line of their description
+    jq -r '.resources[] | "\(.name): \(.description | split("\n")[0])"' "$PKG"
 
-  # Scan first-line summaries for a keyword (e.g. "generator")
-  jq -r '.resources[] | select(.description | split("\n")[0] | test("generator"; "i"))
-       | "\(.name): \(.description | split("\n")[0])"' "$PKG"
+    # Scan first-line summaries for a keyword (e.g. "generator")
+    jq -r '.resources[] | select(.description | split("\n")[0] | test("generator"; "i"))
+         | "\(.name): \(.description | split("\n")[0])"' "$PKG"
 
-  # Once a table looks relevant, fetch the full description
-  jq -r '.resources[] | select(.name == "core_eia860__scd_generators") | .description' "$PKG"
-  ```
+    # Once a table looks relevant, fetch the full description
+    jq -r '.resources[] | select(.name == "core_eia860__scd_generators") | .description' "$PKG"
+    ```
 
-  **With DuckDB (local or remote):**
+    **With DuckDB (local or remote):**
 
-  ```sql
-  -- List resource names with just the first-line summary
-  SELECT
-      r->>'$.name' AS name,
-      split_part(r->>'$.description', chr(10), 1) AS summary
-  FROM (SELECT unnest(resources) AS r FROM read_json('pudl_parquet_datapackage.json', format='auto'));
+    ```sql
+    -- List resource names with just the first-line summary
+    SELECT
+        r->>'$.name' AS name,
+        split_part(r->>'$.description', chr(10), 1) AS summary
+    FROM (SELECT unnest(resources) AS r FROM read_json('pudl_parquet_datapackage.json', format='auto'));
 
-  -- Filter by keyword in the first-line summary only
-  SELECT
-      r->>'$.name' AS name,
-      split_part(r->>'$.description', chr(10), 1) AS summary
-  FROM (SELECT unnest(resources) AS r FROM read_json('pudl_parquet_datapackage.json', format='auto'))
-  WHERE summary ILIKE '%generator%';
+    -- Filter by keyword in the first-line summary only
+    SELECT
+        r->>'$.name' AS name,
+        split_part(r->>'$.description', chr(10), 1) AS summary
+    FROM (SELECT unnest(resources) AS r FROM read_json('pudl_parquet_datapackage.json', format='auto'))
+    WHERE summary ILIKE '%generator%';
 
-  -- Once a table looks relevant, fetch its full description
-  SELECT r->>'$.description' AS description
-  FROM (SELECT unnest(resources) AS r FROM read_json('pudl_parquet_datapackage.json', format='auto'))
-  WHERE r->>'$.name' = 'core_eia860__scd_generators';
-  ```
+    -- Once a table looks relevant, fetch its full description
+    SELECT r->>'$.description' AS description
+    FROM (SELECT unnest(resources) AS r FROM read_json('pudl_parquet_datapackage.json', format='auto'))
+    WHERE r->>'$.name' = 'core_eia860__scd_generators';
+    ```
 
 ### Cross-referencing FERC Form 1 and Form 2 schedules and accounts
 

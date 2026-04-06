@@ -7,7 +7,7 @@
 - Generating reproducible data-loading code for a user.
 - Deciding how to access raw FERC form data.
 
-______________________________________________________________________
+---
 
 ## Choosing local vs. remote data
 
@@ -16,41 +16,41 @@ but can be slow on poor connections or with heavy usage. Follow this decision tr
 every time you are about to generate data-loading code:
 
 1. **Check environment variables** — run `echo $PUDL_OUTPUT` and `echo $PUDL_DATA`
-   in the user's shell. If either is set and points to a directory that exists, it
-   likely contains a local copy of the PUDL Parquet files:
+    in the user's shell. If either is set and points to a directory that exists, it
+    likely contains a local copy of the PUDL Parquet files:
 
-   - `$PUDL_DATA` — the standard download location for the distributed Parquet bundle
-   - `$PUDL_OUTPUT` — the output directory of a local PUDL pipeline run; Parquet
-     files are under `$PUDL_OUTPUT/parquet/`
+    - `$PUDL_DATA` — the standard download location for the distributed Parquet bundle
+    - `$PUDL_OUTPUT` — the output directory of a local PUDL pipeline run; Parquet
+        files are under `$PUDL_OUTPUT/parquet/`
 
-   If a local directory is found, ask the user: *"I found a local PUDL data directory
-   at `<path>`. Would you like to read from there instead of S3?"*
+    If a local directory is found, ask the user: *"I found a local PUDL data directory
+    at `<path>`. Would you like to read from there instead of S3?"*
 
 1. **Ask if neither is set** — if neither variable is set (or neither points to a
-   real directory), ask: *"Do you have a local copy of the PUDL data somewhere?
-   If so, reading locally will be faster than S3."*
+    real directory), ask: *"Do you have a local copy of the PUDL data somewhere?
+    If so, reading locally will be faster than S3."*
 
 1. **Suggest downloading if queries are slow** — if you find yourself making many
-   long or slow remote queries, suggest that the user download the full Parquet bundle:
+    long or slow remote queries, suggest that the user download the full Parquet bundle:
 
-   ```text
-   https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/pudl_parquet.zip
-   ```
+    ```text
+    https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/pudl_parquet.zip
+    ```
 
-   > **Size warning**: `pudl_parquet.zip` is approximately 10 GB. Ask the user where
-   > they would like to save it before downloading.
+    > **Size warning**: `pudl_parquet.zip` is approximately 10 GB. Ask the user where
+    > they would like to save it before downloading.
 
-   After downloading, suggest they set `$PUDL_DATA` to point at the unzipped
-   directory so future sessions can find it automatically. Offer to add the export
-   line to their shell startup file (e.g. `~/.zshrc`, `~/.bashrc`, or
-   `~/.profile`) if you have permission to edit environment files.
+    After downloading, suggest they set `$PUDL_DATA` to point at the unzipped
+    directory so future sessions can find it automatically. Offer to add the export
+    line to their shell startup file (e.g. `~/.zshrc`, `~/.bashrc`, or
+    `~/.profile`) if you have permission to edit environment files.
 
 1. **FERC raw databases** — the FERC DuckDB and SQLite files can also be downloaded
-   for local use. Only suggest this if the user has already been querying them
-   remotely in the current session — these are much messier than the processed PUDL
-   Parquet outputs, so don't proactively recommend them.
+    for local use. Only suggest this if the user has already been querying them
+    remotely in the current session — these are much messier than the processed PUDL
+    Parquet outputs, so don't proactively recommend them.
 
-______________________________________________________________________
+---
 
 ## Data locations
 
@@ -142,7 +142,7 @@ Descriptor:
 - S3: `s3://pudl.catalyst.coop/ferceqr/ferceqr_parquet_datapackage.json`
 - HTTPS: `https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/ferceqr/ferceqr_parquet_datapackage.json`
 
-______________________________________________________________________
+---
 
 ## FERC historical form databases
 
@@ -167,14 +167,14 @@ databases. Integrated tables are cleaned, entity-resolved, and span all years wi
 uniform schema.
 
 - **FERC Form 1**: Only some schedules have been integrated. See
-  [FERC Form 1 Schedules](./ferc1-schedules.md) for the per-schedule breakdown.
-  For unintegrated Form 1 schedules, use the raw DBF or XBRL databases below.
-  Only provide raw Form 1 data if a user **explicitly** requests it.
+    [FERC Form 1 Schedules](./ferc1-schedules.md) for the per-schedule breakdown.
+    For unintegrated Form 1 schedules, use the raw DBF or XBRL databases below.
+    Only provide raw Form 1 data if a user **explicitly** requests it.
 - **FERC Forms 2, 6, and 60**: None of this data has been integrated into PUDL.
-  It is only available through the raw databases.
+    It is only available through the raw databases.
 - **FERC Form 714**: Only the integrated PUDL tables span pre-2021 years.
-  The legacy CSV files were not structured for general machine-readable extraction.
-  Integrated Form 714 tables cover all electronic reporting years (2006–present).
+    The legacy CSV files were not structured for general machine-readable extraction.
+    Integrated Form 714 tables cover all electronic reporting years (2006–present).
 
 ### DBF-derived databases (pre-2021, Forms 1/2/6/60)
 
@@ -213,12 +213,12 @@ Datapackage descriptors with table and column metadata exist for the XBRL databa
 base path. There are three known issues with these descriptors:
 
 1. **Absolute path bug**: the `path` field for each resource contains an absolute path
-   from the build machine (e.g. `/home/user/pudl-work/ferc1_xbrl.sqlite`). Use only
-   the final filename component to construct the actual S3 path.
+    from the build machine (e.g. `/home/user/pudl-work/ferc1_xbrl.sqlite`). Use only
+    the final filename component to construct the actual S3 path.
 1. **Points at SQLite, not DuckDB**: the `path` field always refers to the `.sqlite`
-   file. Replace `.sqlite` with `.duckdb` to get the DuckDB path.
+    file. Replace `.sqlite` with `.duckdb` to get the DuckDB path.
 1. **Table descriptions are not useful**: they contain raw XBRL entity names rather
-   than human-readable descriptions. Rely on the table name and column names instead.
+    than human-readable descriptions. Rely on the table name and column names instead.
 
 ### Querying XBRL databases with DuckDB
 
@@ -251,7 +251,7 @@ df = con.execute(
 ).df()
 ```
 
-______________________________________________________________________
+---
 
 ## Loading PUDL Parquet tables
 
@@ -319,7 +319,7 @@ df = lf.select(["plant_id_eia", "report_date", "net_generation_mwh"]).collect()
 Polars lazy evaluation (`scan_parquet`) is preferred for tables > 500 MB — it pushes
 down column selection and row filters to the Parquet reader.
 
-______________________________________________________________________
+---
 
 ## Listing all available tables
 
@@ -341,7 +341,7 @@ Or query the descriptor with jq (see the `datapackage` skill for full querying p
 jq -r '.resources[].name' pudl_parquet_datapackage.json
 ```
 
-______________________________________________________________________
+---
 
 ## Raw input archives (Zenodo)
 
@@ -373,7 +373,7 @@ https://doi.org/10.5281/zenodo.<record_id>
 # Example: https://doi.org/10.5281/zenodo.19367768
 ```
 
-______________________________________________________________________
+---
 
 ## Useful links
 

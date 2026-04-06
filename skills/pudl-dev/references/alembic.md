@@ -23,7 +23,7 @@ database schema.
 ## Prerequisites
 
 - Run commands in the pixi environment (`pixi run ...`) unless already in
-  `pixi shell`.
+    `pixi shell`.
 
 ## Common commands
 
@@ -54,10 +54,10 @@ pixi run alembic upgrade head
 
 - These migrations are a development tool, and are not used in production.
 - PUDL does not strictly need a continuous database migration history. We primarily use
-  the database schema as a data quality assurance check.
+    the database schema as a data quality assurance check.
 - When there are complex conflicts between the alembic migrations on branches that need
-  to be merged together, it is acceptable to remove existing migrations and start over
-  from scratch, taking the current schema as a new base.
+    to be merged together, it is acceptable to remove existing migrations and start over
+    from scratch, taking the current schema as a new base.
 
 ## References
 

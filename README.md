@@ -4,7 +4,7 @@ This repository contains experimental [agent skills](https://agentskills.io) rel
 PUDL (the Public Utility Data Liberation Project).
 
 - `datapackage` is for exploring metadata annotations stored in
-  [Frictionless Data Packages](https://specs.frictionlessdata.io/data-package/) generally.
+    [Frictionless Data Packages](https://specs.frictionlessdata.io/data-package/) generally.
 - `pudl` is for exploring and working with [PUDL open energy data and metadata](https://data.catalyst.coop)
 - `pudl-dev` is for maintaining and contributing to the [PUDL open source project](https://github.com/catalyst-cooperative/pudl)
 
@@ -23,23 +23,23 @@ PUDL (the Public Utility Data Liberation Project).
 - [The Agent Skills Standard](https://agentskills.io)
 - [Skill Authoring Best Practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices) (Anthropic)
 - [Equipping Agents for the Real World With Agent
-  Skills](https://claude.com/blog/equipping-agents-for-the-real-world-with-agent-skills)
-  (Anthropic)
+    Skills](https://claude.com/blog/equipping-agents-for-the-real-world-with-agent-skills)
+    (Anthropic)
 - [Claude Developer Guide Agent Skills
-  Overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
-  (Anthropic)
+    Overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
+    (Anthropic)
 - [Create a Claude Plugin Marketplace](https://code.claude.com/docs/en/plugin-marketplaces) (Anthropic)
 
 ## Agentic (Data) Engineering
 
 - [Agentic Engineering Patterns](https://simonwillison.net/guides/agentic-engineering-patterns/) (Simon Willison)
 - [Zero Degree-of-Freedom LLM Coding using Executable
-  Oracles](https://john.regehr.org/writing/zero_dof_programming.html) (John Regehr)
+    Oracles](https://john.regehr.org/writing/zero_dof_programming.html) (John Regehr)
 - [Dagster University AI Driven Data Engineering](https://courses.dagster.io/courses/take/ai-driven-data-engineering) (Dagster)
 - [Best practices for LLM Dagster Development](https://www.youtube.com/watch?v=nmuQPU9bzQ4) (Dagster)
 - [What Is Code Review For](https://blog.glyph.im/2026/03/what-is-code-review-for.html) (Glyph)
 - [Your job is to deliver code you have proven to
-  work](https://simonwillison.net/2025/Dec/18/code-proven-to-work/) (Simon Willison)
+    work](https://simonwillison.net/2025/Dec/18/code-proven-to-work/) (Simon Willison)
 
 ## Agentic (Meta)Data Exploration
 
@@ -135,29 +135,29 @@ even though it's not fully integrated into PUDL it feels important to expose it 
 #### General Improvements
 
 - [ ] **Review and Regenerate** The long prompt resulted in much better human-readable
-  descriptions (for Form 6). I've spot checked to make sure they aren't hallucinations,
-  and so far so good, but we should probably do a more comprehensive review. If they're
-  good then we should try regenerating the FERC 1 and FERC 2 outputs and compare them to
-  the current versions.
+    descriptions (for Form 6). I've spot checked to make sure they aren't hallucinations,
+    and so far so good, but we should probably do a more comprehensive review. If they're
+    good then we should try regenerating the FERC 1 and FERC 2 outputs and compare them to
+    the current versions.
 - [ ] **Extract more FERC Accounts** Spot checks also revealed that the clankers didn't
-  extract all of the mentioned FERC Accounts, so we might want to explicitly ask them to
-  be more aggressive about that, and then to validate the account numbers extracted and
-  their local context vs. the account descriptions extracted from the CFR.
+    extract all of the mentioned FERC Accounts, so we might want to explicitly ask them to
+    be more aggressive about that, and then to validate the account numbers extracted and
+    their local context vs. the account descriptions extracted from the CFR.
 - [ ] **Compile FERC Account Summaries** One thing that I discovered looking through the
-  extracted metadata is that there are **separate** systems of accounts for electricity,
-  natural gas, oil pipelines, and service companies, which are all documented in different
-  parts of the CFR. We should extract the titles and short descriptions for all of them.
+    extracted metadata is that there are **separate** systems of accounts for electricity,
+    natural gas, oil pipelines, and service companies, which are all documented in different
+    parts of the CFR. We should extract the titles and short descriptions for all of them.
 
 #### FERC Form 1
 
 - [x] Rename `ferc_accounts.json` -> `ferc_electricity_accounts.json` since now we
-  have multiple systems of accounts for different domains.
+    have multiple systems of accounts for different domains.
 - [x] Rename `ferc-uniform-system-of-accounts.md` -> `ferc-electricity-accounts.md`
-  to `ferc-electricity-accounts.md`
+    to `ferc-electricity-accounts.md`
 - [x] Update outdated links / references to `ferc-uniform-system-of-accounts.md` and
-  `ferc_electricity_accounts.json`.
+    `ferc_electricity_accounts.json`.
 - [ ] Try regenerating ferc1_schedules.json using [this prompt](prompts/compile-ferc-schedule-metadata.md)
-  and compare the results to our existing file.
+    and compare the results to our existing file.
 - [ ] Add reference and link back to the PDF & HTML forms in the PUDL docs
 
 #### FERC Form 2
@@ -168,7 +168,7 @@ even though it's not fully integrated into PUDL it feels important to expose it 
 - [ ] Add reference and link back to the HTML form in PUDL docs
 - [ ] Try regenerating ferc2_schedules.json using [this prompt](prompts/compile-ferc-schedule-metadata.md)
 - [ ] Compile `ferc_natural_gas_accounts.json`/`ferc-natural-gas-accounts.md` based on
-  [18 C.F.R. Part 201](https://www.ecfr.gov/current/title-18/chapter-I/subchapter-B/part-201)
+    [18 C.F.R. Part 201](https://www.ecfr.gov/current/title-18/chapter-I/subchapter-B/part-201)
 
 #### FERC Form 6
 
@@ -177,7 +177,7 @@ even though it's not fully integrated into PUDL it feels important to expose it 
 - [x] generate schedule to DBF table mappings
 - [ ] Add reference and link back to the HTML form in PUDL docs
 - [ ] Compile `ferc_oil_pipeline_accounts.json`/`ferc-oil-pipeline-accounts.md` based on
-  [18 C.F.R. Part 352](https://www.ecfr.gov/current/title-18/chapter-I/subchapter-Q/part-352)
+    [18 C.F.R. Part 352](https://www.ecfr.gov/current/title-18/chapter-I/subchapter-Q/part-352)
 
 #### FERC Form 60
 
@@ -186,7 +186,7 @@ even though it's not fully integrated into PUDL it feels important to expose it 
 - [ ] generate schedule to DBF table mappings
 - [ ] Add reference and link back to the HTML form in PUDL docs
 - [ ] Compile `ferc_service_company_accounts.json`/`ferc-service-company-accounts.md` based on
-  [18 C.F.R. Part 367](https://www.ecfr.gov/current/title-18/chapter-I/subchapter-F/part-367)
+    [18 C.F.R. Part 367](https://www.ecfr.gov/current/title-18/chapter-I/subchapter-F/part-367)
 
 #### FERC Form 714
 
@@ -200,130 +200,130 @@ even though it's not fully integrated into PUDL it feels important to expose it 
 
 - Understand the eval JSON format so we can write our own.
 - Figure out how to run one eval at a time and look at the results, without having to
-  run the whole suite. Otherwise the token burn is too high.
+    run the whole suite. Otherwise the token burn is too high.
 
 ### Review existing evals
 
 - Created by the clankers. Mostly focused on mechanics of using the skill, whether
-  instructions are followed, etc.
+    instructions are followed, etc.
 
 ### Create domain-specific evals
 
 - Q: "Does PUDL have any data related to electric utility political spending?"
-  - A: Should surface FERC Form 1, Schedule 114, and FERC Account 426.4.
+    - A: Should surface FERC Form 1, Schedule 114, and FERC Account 426.4.
 - Q: "I'm working on a report about the rising cost of electricity. What data does PUDL
-  have that could be relevant?"
+    have that could be relevant?"
 - Q: "I want to understand how the heat rate of coal and natural gas generators
-  varies seasonally. What data does PUDL have that could help me with that?"
+    varies seasonally. What data does PUDL have that could help me with that?"
 - Q: "I want to understand how the heat rate of coal and natural gas fired generators
-  varies with the level of power output. What data does PUDL have that could help me with
-  that?"
+    varies with the level of power output. What data does PUDL have that could help me with
+    that?"
 - Q: "I'm working on a project about how utilities overestimate future electricity
-  demand in order to justify building new power plants, which increases costs for
-  customers and leads to overbuilding. What data does PUDL have that could be relevant
-  to that?"
+    demand in order to justify building new power plants, which increases costs for
+    customers and leads to overbuilding. What data does PUDL have that could be relevant
+    to that?"
 - Q: "I want to understand where battery storage is being deployed on the grid, and how
-  it's being used. What data does PUDL have that could help me with that?"
+    it's being used. What data does PUDL have that could help me with that?"
 - Q: "I want to understand how increasing electricity demand from datacenters is driving
-  new fossil fuel power plant construction, or resulting in keeping fossil power plants
-  open that would otherwise be retired. What data does PUDL have that could help me with
-  that?"
+    new fossil fuel power plant construction, or resulting in keeping fossil power plants
+    open that would otherwise be retired. What data does PUDL have that could help me with
+    that?"
 - Q: "I want to understand how weather impacts renewable energy generation and what that
-  means in terms of the need for fossil fuel backup generation. What data does PUDL have
-  that could help me with that?"
+    means in terms of the need for fossil fuel backup generation. What data does PUDL have
+    that could help me with that?"
 - Q: "I'm looking for dta on how the wind and solar power purchase agreement (PPA)
-  prices have evolved over time, how they vary by location, and how including battery
-  storage impacts those prices. What data does PUDL have that could be relevant to that?"
+    prices have evolved over time, how they vary by location, and how including battery
+    storage impacts those prices. What data does PUDL have that could be relevant to that?"
 - Q: "/pudl tell me what kinds of electricity products are being bought and sold in the
-  transactions reported in the FERC EQR dataset."
-  - Good answer, but it repeatedly used `curl` to download the EQR datapackage descriptor
-    via https and pipe the output into jq, instead of querying the remote JSON using
-    `duckdb-skills:query` or downloading the descriptor once and querying it locally.
-    This suggests that the skill instructions may not be clear enough about how to use
-    `duckdb` for metadata queries, or that the agent is having trouble following them.
+    transactions reported in the FERC EQR dataset."
+    - Good answer, but it repeatedly used `curl` to download the EQR datapackage descriptor
+        via https and pipe the output into jq, instead of querying the remote JSON using
+        `duckdb-skills:query` or downloading the descriptor once and querying it locally.
+        This suggests that the skill instructions may not be clear enough about how to use
+        `duckdb` for metadata queries, or that the agent is having trouble following them.
 
 ### Skills Environment Ergonomics
 
 - How hard is it to get `duckdb` installed on the user's machine if they don't have it
-  already?
+    already?
 - How hard is it for agents to run python code if we encourage `uv` for dependency
-  management? Use `pip` as a fallback only?
+    management? Use `pip` as a fallback only?
 - How much does behavior / performance vary across agents and environments?
 - How can we prevent the clankers from cheating and looking at the PUDL repo if I have
-  it checked out locally?
+    it checked out locally?
 
 ### Metadata Queries
 
 - Test performance of `jq` vs `duckdb-skills:query` for metadata queries on large
-  `datapackage.json` files. If `duckdb-skills:query` is much better, make `jq` the fallback.
+    `datapackage.json` files. If `duckdb-skills:query` is much better, make `jq` the fallback.
 - Experiment with DuckDB natural language queries through the query skill. How does it work?
-  Does it work well? Should we explicitly direct agents / users to use it?
+    Does it work well? Should we explicitly direct agents / users to use it?
 - Should we check the hash and size of files before querying them? Or at some point in
-  the process to avoid accidentally using metadata associated with the wrong data?
+    the process to avoid accidentally using metadata associated with the wrong data?
 
 ### Data Querying
 
 - While experimenting locally, queries seemed **very** slow, which is surprising. Need to
-  investigate.
+    investigate.
 - Figure out what the best output format is for chat-based results. DuckDB and pandas can both
-  produce markedown tables. What about polars? Should experiment and see what instructions
-  result in best outputs, assuming user is not in Jupyter/Marimo.
+    produce markedown tables. What about polars? Should experiment and see what instructions
+    result in best outputs, assuming user is not in Jupyter/Marimo.
 - Needs to be able to sample data, not just download the whole thing, or the first 10 rows.
 - Create some heuristics for when to use `duckdb` vs. `pandas` vs. `polars`. `duckdb`
-  seems more likely to be installable, works for both JSON and tabular data. Known to be
-  very robust.
+    seems more likely to be installable, works for both JSON and tabular data. Known to be
+    very robust.
 
 ## PUDL Improvements
 
 - **High Priority:** Convert RST to Markdown at export time — the biggest single
-  improvement. Descriptions are authored in RST for Sphinx, but the descriptor's
-  primary consumers are now agents, data scientists, and tools that all expect Markdown
-  or plain text. Converting at export (using docutils + a Markdown writer, or rst2md)
-  eliminates the parsing burden we just documented, and makes descriptions immediately
-  readable in any JSON viewer, notebook, or agent context.
+    improvement. Descriptions are authored in RST for Sphinx, but the descriptor's
+    primary consumers are now agents, data scientists, and tools that all expect Markdown
+    or plain text. Converting at export (using docutils + a Markdown writer, or rst2md)
+    eliminates the parsing burden we just documented, and makes descriptions immediately
+    readable in any JSON viewer, notebook, or agent context.
 - **High Priority:** Structured warnings field — currently warnings are embedded as ..
-  `warning::` blocks inside RST description text, which means agents must parse prose
-  to find them. A dedicated "warnings": ["..."] array on each resource (using a
-  Frictionless custom property) would let agents trivially surface them before
-  providing loading code, without any text parsing.
+    `warning::` blocks inside RST description text, which means agents must parse prose
+    to find them. A dedicated "warnings": ["..."] array on each resource (using a
+    Frictionless custom property) would let agents trivially surface them before
+    providing loading code, without any text parsing.
 - **High Priority:** Explicit tier field — the `out_*` / `core_*` / `_core_*` / `raw_*`
-  naming convention encodes a lot of semantics that agents and humans currently infer
-  from the name. An explicit "tier": "output" (or "core", "raw") field makes it
-  queryable directly and removes dependence on parsing the table name.
+    naming convention encodes a lot of semantics that agents and humans currently infer
+    from the name. An explicit "tier": "output" (or "core", "raw") field makes it
+    queryable directly and removes dependence on parsing the table name.
 - **Medium Priority:** Per-field example values — the Frictionless spec supports an
-  example property on fields. Adding representative values (e.g., "2023-01-01" for a
-  date column, "DUKE ENERGY CAROLINAS" for a utility name) would give agents and users
-  immediate intuition about what each column contains without loading data.
+    example property on fields. Adding representative values (e.g., "2023-01-01" for a
+    date column, "DUKE ENERGY CAROLINAS" for a utility name) would give agents and users
+    immediate intuition about what each column contains without loading data.
 - **Enhancement:** Source linkage per table — the Frictionless sources property can be
-  attached at the resource level, not just the package level. Populating it with the
-  originating EIA/FERC/EPA form name, URL, and Zenodo DOI per table would let agents
-  answer provenance questions directly from the descriptor.
+    attached at the resource level, not just the package level. Populating it with the
+    originating EIA/FERC/EPA form name, URL, and Zenodo DOI per table would let agents
+    answer provenance questions directly from the descriptor.
 - **Enhancement:** Many warnings actually pertain to a single column rather than a
-  whole table. Providing column-level structured warnings would give users and agents
-  more precise information about potential issues in the data and how to handle them.
+    whole table. Providing column-level structured warnings would give users and agents
+    more precise information about potential issues in the data and how to handle them.
 - We should explicitly describe any non-standard metadata fields we add to our
-  datapackages. They could be documented with an extended PUDL datapackage JSON schema.
+    datapackages. They could be documented with an extended PUDL datapackage JSON schema.
 - Add foreign key constraints to our datapackage metadata. We already generate them
-  programmatically and the standard supports them. Including them in the metadata would
-  allow agents to understand the relationships between tables and generate more
-  accurate queries/join code.
+    programmatically and the standard supports them. Including them in the metadata would
+    allow agents to understand the relationships between tables and generate more
+    accurate queries/join code.
 - Add field content constraints that we have already defined, like regexes or min/max
-  values, to help users and agents understand the expected format and range of values in
-  each column. (goes well with "example values" above)
+    values, to help users and agents understand the expected format and range of values in
+    each column. (goes well with "example values" above)
 - Calculate the hash and file size fields for our Parquet datapackage outputs so that
-  agents can check that the user has the right file before trying to load it.
+    agents can check that the user has the right file before trying to load it.
 - Embed unique IDs (UUID, DOI) and versions (e.g. tags `nightly-2026-04-03` or
-  `v2026.4.0`) in our datapackages so they don't get used alongside the wrong data.
+    `v2026.4.0`) in our datapackages so they don't get used alongside the wrong data.
 - The paths we use in the XBRL datapackages are incorrect. They're absolute paths on
-  the build machine, which need to be fixed.
+    the build machine, which need to be fixed.
 - We need separate SQLite and DuckDB data packages to use separate paths, or (better)
-  we need to migrate fully to DuckDB alone for the published DBs.
+    we need to migrate fully to DuckDB alone for the published DBs.
 - The table/resource descriptions in the FERC XBRL datapackages are not informative.
-  They're just an ID string. We need to figure out how to programmatically extract real
-  descriptions and use them.
+    They're just an ID string. We need to figure out how to programmatically extract real
+    descriptions and use them.
 - We don't currently distribute any structured source-level metadata (e.g. about EIA-860)
-  despite the fact that we have compiled a lot of it. Having that in a structured, queryable
-  format would be helpful.
+    despite the fact that we have compiled a lot of it. Having that in a structured, queryable
+    format would be helpful.
 - Figure out how we are **really** supposed to be using `path` in the datapackages that
-  annotate SQLite and DuckDB files, and how we are supposed to reference the tables within
-  them. Update the datapackages to follow the spec and update the skill instructions accordingly.
+    annotate SQLite and DuckDB files, and how we are supposed to reference the tables within
+    them. Update the datapackages to follow the spec and update the skill instructions accordingly.

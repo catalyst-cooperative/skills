@@ -12,7 +12,7 @@ the user to the full page for details.
 
 Index: <https://docs.catalyst.coop/pudl/en/nightly/methodology/index.html>
 
-______________________________________________________________________
+---
 
 ## Current methodology pages
 
@@ -32,7 +32,7 @@ resolution harvests the most reliable values from all available sources and atta
 them to a stable PUDL identifier. This affects `plant_id_pudl`, `utility_id_pudl`,
 and related entity tables.
 
-______________________________________________________________________
+---
 
 ### Timeseries Imputation
 
@@ -50,7 +50,7 @@ impute replacements using correlated timeseries with known seasonality and perio
 Flagged values are marked in the output tables so users can distinguish imputed from
 reported values.
 
-______________________________________________________________________
+---
 
 ### SEC 10-K Ownership Data Extraction
 
@@ -67,7 +67,7 @@ utilities and their parent/subsidiary companies. The output tables include
 `out_sec10k__quarterly_filings` (filing metadata) and related ownership tables derived
 from the extracted text.
 
-______________________________________________________________________
+---
 
 ## Keeping this index current
 

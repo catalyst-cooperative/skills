@@ -9,7 +9,7 @@ applyTo: test/**/*.py
 - Run tests in the pixi environment.
 - Prefer `pixi run pytest ...` unless already in `pixi shell`.
 - For targeted local runs, disable coverage to avoid noisy warnings and failures from
-  partial test selection.
+    partial test selection.
 
 ## Common commands
 
@@ -39,7 +39,7 @@ pixi run pytest --no-cov test/unit/path/to/test_file.py::TestClass::test_name
 
 - Integration tests can trigger ETL work and may take 45+ minutes.
 - If testing behavior against existing outputs that are already built, use
-  `--live-dbs` where appropriate.
+    `--live-dbs` where appropriate.
 - If testing datastore behavior, `--tmp-data` can isolate from local cache.
 
 See also: `docs/dev/testing.rst`

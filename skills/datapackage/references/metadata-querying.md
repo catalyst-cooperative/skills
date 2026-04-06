@@ -7,7 +7,7 @@
 - Reading descriptions to understand data provenance, processing notes, and caveats.
 - Searching for a column by name or topic across all resources.
 
-______________________________________________________________________
+---
 
 ## Spec reference
 
@@ -43,7 +43,7 @@ md5 stations.csv
 md5sum stations.csv
 ```
 
-______________________________________________________________________
+---
 
 ## Golden rule: never load the full datapackage.json into context
 
@@ -56,22 +56,22 @@ golden rule, and can't handle remote descriptors at all. Use jq or DuckDB instea
 they are purpose-built for selective extraction. jq works on local files; DuckDB can
 query both local files and remote URLs directly.
 
-______________________________________________________________________
+---
 
 ## Workflow
 
 1. **Locate the descriptor** — find or download `datapackage.json` and note its base
-   URL if remote (needed to resolve relative resource paths).
+    URL if remote (needed to resolve relative resource paths).
 1. **Identify candidate resources** — search by name or description keyword.
 1. **Read the resource description** — it contains source notes, primary key
-   conventions, caveats, and processing history. Read it fully before presenting.
+    conventions, caveats, and processing history. Read it fully before presenting.
 1. **Read column descriptions** for the specific columns the user needs.
 1. **Confirm the data file path** — the `path` field is either a relative path
-   (resolve against the descriptor's base directory or base URL) or an absolute URL.
+    (resolve against the descriptor's base directory or base URL) or an absolute URL.
 1. **Load the data** *(only if the user asks)* — see
-   [`storage-backends.md`](storage-backends.md).
+    [`storage-backends.md`](storage-backends.md).
 
-______________________________________________________________________
+---
 
 ## Step 1: Locate the descriptor
 
@@ -79,9 +79,9 @@ Check in this order:
 
 1. **User-provided path** — the user may have a local file or know the URL.
 1. **Alongside the data files** — `datapackage.json` is conventionally placed in the
-   same directory as the data files it describes.
+    same directory as the data files it describes.
 1. **Published URL** — dataset publishers often host the descriptor at a stable HTTPS
-   URL. Check the dataset's README or documentation.
+    URL. Check the dataset's README or documentation.
 
 **Multiple descriptor files**: the spec requires the filename `datapackage.json`, but
 in practice a directory may contain several descriptors (e.g.
@@ -115,7 +115,7 @@ jq '.resources[] | {name, hash, bytes}' "$PKG"
 
 Store the local path in `PKG` for reuse in queries below.
 
-______________________________________________________________________
+---
 
 ## Steps 2–5: Query the descriptor
 
@@ -123,7 +123,7 @@ Use **jq** for local files (see below) or **DuckDB** for local or remote files (
 the DuckDB section). Both tools work on the same descriptor — pick the one that fits
 your setup.
 
-______________________________________________________________________
+---
 
 ## Steps 2–5: jq (local files only)
 
@@ -217,7 +217,7 @@ jq -r '.resources[] | "\(.name)\t\(.path)"' "$PKG"
 If the path is relative, prepend `$BASE_URL/` (recorded in Step 1). Then load —
 see [`storage-backends.md`](storage-backends.md).
 
-______________________________________________________________________
+---
 
 ## Steps 2–5: DuckDB (local and remote)
 

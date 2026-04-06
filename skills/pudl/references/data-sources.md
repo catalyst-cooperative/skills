@@ -6,7 +6,7 @@
 - Finding the documentation page for a specific data source.
 - Understanding what raw datasets PUDL ingests and processes.
 
-______________________________________________________________________
+---
 
 ## Source catalog
 
@@ -52,7 +52,7 @@ Sources with `—` in the docs column have no dedicated documentation page yet. 
 descriptions above are best-effort — check the raw Zenodo descriptor for authoritative
 metadata.
 
-______________________________________________________________________
+---
 
 ## Refreshing this list
 
@@ -62,7 +62,7 @@ The authoritative source is the S3 listing. Run this to see current dataset code
 aws s3 ls --no-sign-request s3://pudl.catalyst.coop/zenodo/ | awk '{print $2}' | tr -d '/'
 ```
 
-______________________________________________________________________
+---
 
 ## Reading per-source documentation
 
