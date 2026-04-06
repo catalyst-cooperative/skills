@@ -24,7 +24,7 @@ Each row is one raw input dataset. The **short code** is the identifier used in:
 | `eia191`            | EIA Form 191 – Underground Natural Gas Storage Report                             | —                                                                                      |
 | `eia757a`           | EIA Form 757A – Natural Gas Processing Survey                                     | —                                                                                      |
 | `eia860`            | EIA Form 860 – Annual Electric Generator Report                                   | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia860.html)            |
-| `eia860m`           | EIA Form EIA-860M – Monthly Generator Updates                                     | —                                                                                      |
+| `eia860m`           | EIA Form EIA-860M – Monthly Generator Updates                                     | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia860.html)            |
 | `eia861`            | EIA Form 861 – Annual Electric Power Industry Report                              | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia861.html)            |
 | `eia923`            | EIA Form 923 – Power Plant Operations Report                                      | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia923.html)            |
 | `eia930`            | EIA Form 930 – Hourly and Daily Balancing Authority Operations                    | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia930.html)            |
