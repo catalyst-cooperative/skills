@@ -73,15 +73,7 @@ repos:
     hooks:
       - id: taplo-format
 
-  # Need to customize exceptions / exclusions for typos.
-  # - repo: https://github.com/adhtruong/mirrors-typos
-  #   rev: v1.45.0
-  #   hooks:
-  #     - id: typos
-  #       exclude: |
-  #         (?x)^(
-  #           .*\.yml
-  #           |.*\.toml
-  #           |.*\.csv
-  #           |.*\.html
-  #         )
+  - repo: https://github.com/adhtruong/mirrors-typos
+    rev: v1.45.0
+    hooks:
+      - id: typos

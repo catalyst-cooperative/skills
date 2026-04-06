@@ -88,7 +88,7 @@ You have several sources of information to draw on to compile this metadata.
   suffix "\_instant".
 
 - **`$PUDL_OUTPUT/fercN_dbf.sqlite`** is the database file containing older FERC data
-  derived from the raw DBF data. This data comes from 2020 and ealier. You can attach to
+  derived from the raw DBF data. This data comes from 2020 and earlier. You can attach to
   and query the database to help understand the relationships between tables and
   schedules and the accounts they relate to. The table names in the DBF derived database
   are much shorter and less informative on their own (though they do still sometimes
@@ -138,7 +138,7 @@ Look at $PUDL_REPO/docs/data_sources/ferc2/ferc2_blank_2025-07-31.html for the b
 Near the beginning of the HTML document you will find a table of contents with one
 column entitled "Reference Page No. (b)" -- this is the schedule / page number. The
 column with the header "Title of Schedule (a)" contains the title of the schedule. The
-Refrence Page No. column contains internal links to each of the listed schedules within
+Reference Page No. column contains internal links to each of the listed schedules within
 the (very long) document. Following the link you should be able to find a instructions
 for how to fill out the form, and other information from which you can summarize a
 longer more informative description of the schedule.

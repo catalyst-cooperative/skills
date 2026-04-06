@@ -31,3 +31,21 @@ actionlint = ">=1.7.12,<2"
 typos = ">=1.45.0,<2"
 ty = ">=0.0.29,<0.0.30"
 beautifulsoup4 = ">=4.14.3,<5"
+
+[tool.typos.files]
+extend-exclude = [
+  # Vendored schemas and machine-generated JSON data files
+  "skills/*/assets/",
+  # Markdown reference tables generated from JSON by scripts/generate_ferc_tables.py
+  "skills/pudl/references/ferc1-schedules.md",
+  "skills/pudl/references/ferc2-schedules.md",
+]
+
+[tool.typos.default.extend-words]
+# FERC XBRL table/column names with upstream typos — these are canonical identifiers
+# published by FERC and cannot be corrected without breaking data compatibility
+acitivities = "acitivities"
+recieved = "recieved"
+Recieved = "Recieved"
+transporation = "transporation"
+Transporation = "Transporation"
