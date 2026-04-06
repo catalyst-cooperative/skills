@@ -132,7 +132,6 @@ only available to people with the source repository.
 | Usage warnings reference           | <https://docs.catalyst.coop/pudl/en/nightly/data_dictionaries/usage_warnings.html> |
 | Methodology docs                   | <https://docs.catalyst.coop/pudl/en/nightly/methodology/>                          |
 | **Data sources index**             | <https://docs.catalyst.coop/pudl/en/nightly/data_sources/>                         |
-| Data catalog (browse tables)       | <https://data.catalyst.coop>                                                       |
 | Web data viewer (preview tables)   | <https://data.catalyst.coop>                                                       |
 | GitHub issues / discussions        | <https://github.com/catalyst-cooperative/pudl>                                     |
 
@@ -190,4 +189,6 @@ If a value looks suspicious, guide the user through this sequence:
 1. Look up the source form at the agency's website to compare raw values.
 1. Search open PUDL GitHub issues for the symptom.
 1. For methodology questions (imputation, entity resolution), see
-   <https://docs.catalyst.coop/methodology/>.
+   <https://docs.catalyst.coop/pudl/en/nightly/methodology/>
+1. If you think you've found a data bug, report it at
+   <https://github.com/catalyst-cooperative/pudl/issues/new?template=data_bug_report.yml>
