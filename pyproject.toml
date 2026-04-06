@@ -3,6 +3,11 @@ channels = ["conda-forge"]
 platforms = ["osx-arm64", "osx-64", "linux-64"]
 
 [tool.pixi.pypi-dependencies]
+mdformat-mkdocs = ">=5.1.4,<6"
+mdformat-gfm-alerts = ">=2.0.0,<3"
+mdformat_simple_breaks = ">=0.1.0,<1"
+mdformat-web = ">=0.2.0,<1"
+mdformat-wikilink = ">=0.3.0,<1"
 
 [tool.pixi.tasks]
 
@@ -11,24 +16,28 @@ duckdb = ">=1.5.1,<2"
 jq = ">=1.8.1,<2"
 prek = ">=0.3.8,<0.4"
 mdformat = ">=1.0.0,<2"
-mdformat-frontmatter = ">=2.0.10,<3"
+mdformat-beautysh = ">=1.0.0,<2"
+mdformat-config = ">=0.2.1,<1"
+mdformat-footnote = ">=0.1.3,<1"
+mdformat-front-matters = ">=2.0.0,<3"
+mdformat-gfm = ">=1.0"
+mdformat-ruff = ">=0.1.3,<0.2"
+mdformat-shfmt = ">=0.2.0,<0.3"
 pandas = ">=3.0.2,<4"
 pyarrow = ">=23.0.1,<24"
 polars = ">=1.39.3,<2"
 awscli = ">=2.34.23,<3"
 s3fs = ">=2026.3.0,<2027"
 fsspec = ">=2026.3.0,<2027"
-mdformat-gfm = ">=1.0"
-mdformat-ruff = ">=0.1.3,<0.2"
-mdformat-shfmt = ">=0.2.0,<0.3"
 ruff = ">=0.15.9,<0.16"
 prettier = ">=3.8.1,<4"
 shellcheck = ">=0.11.0,<0.12"
-taplo = ">=0.10.0,<0.11"
+taplo = "==0.9.3"
 actionlint = ">=1.7.12,<2"
 typos = ">=1.45.0,<2"
 ty = ">=0.0.29,<0.0.30"
 beautifulsoup4 = ">=4.14.3,<5"
+zensical = ">=0.0.31,<0.0.32"
 
 [tool.typos.files]
 extend-exclude = [

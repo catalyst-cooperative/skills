@@ -22,3 +22,18 @@ MD010:
 # MD060/table-column-style: generated tables use consistent pipes but may have
 # varying column widths; disable to avoid spurious alignment warnings.
 MD060: false
+
+# MD040: fenced code blocks should have a language specified for syntax highlighting.
+MD040: false
+
+# MD033: allow raw HTML <script> tags in markdown files, which are used for embedding
+# interactive content (e.g. Vega-Lite charts) that can't be easily represented in pure markdown.
+MD033:
+  allowed_elements:
+    - script
+
+# MD046: code block style. Disabled because Zensical content tabs (=== "Tab") require
+# their content to be indented 4 spaces, which CommonMark also uses to denote indented
+# code blocks. Markdownlint cannot distinguish the two, so no consistent style setting
+# can satisfy both the tab syntax and the rule.
+MD046: false

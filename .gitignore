@@ -16,3 +16,6 @@
 
 # user settings
 .vscode/
+
+# built documentation
+site/
