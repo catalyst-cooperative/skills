@@ -182,6 +182,49 @@ user explicitly asks to load or explore data.
   - `.. note::` and `.. warning::` directive blocks should be treated as callouts and
     surfaced to users when relevant.
 
+- **Resource descriptions follow a docstring convention**: every PUDL resource
+  description begins with a single-line summary, followed by a blank line, followed by
+  a longer description (identical to the Python docstring convention). Some resource
+  descriptions are hundreds of words long. **To decide whether a table is relevant
+  without loading the full description into context, read only the first line first**
+  — if the summary looks promising, then fetch the full description.
+
+  **With jq (local file):**
+
+  ```bash
+  # List all resource names with just the first line of their description
+  jq -r '.resources[] | "\(.name): \(.description | split("\n")[0])"' "$PKG"
+
+  # Scan first-line summaries for a keyword (e.g. "generator")
+  jq -r '.resources[] | select(.description | split("\n")[0] | test("generator"; "i"))
+       | "\(.name): \(.description | split("\n")[0])"' "$PKG"
+
+  # Once a table looks relevant, fetch the full description
+  jq -r '.resources[] | select(.name == "core_eia860__scd_generators") | .description' "$PKG"
+  ```
+
+  **With DuckDB (local or remote):**
+
+  ```sql
+  -- List resource names with just the first-line summary
+  SELECT
+      r->>'$.name' AS name,
+      split_part(r->>'$.description', chr(10), 1) AS summary
+  FROM (SELECT unnest(resources) AS r FROM read_json('pudl_parquet_datapackage.json', format='auto'));
+
+  -- Filter by keyword in the first-line summary only
+  SELECT
+      r->>'$.name' AS name,
+      split_part(r->>'$.description', chr(10), 1) AS summary
+  FROM (SELECT unnest(resources) AS r FROM read_json('pudl_parquet_datapackage.json', format='auto'))
+  WHERE summary ILIKE '%generator%';
+
+  -- Once a table looks relevant, fetch its full description
+  SELECT r->>'$.description' AS description
+  FROM (SELECT unnest(resources) AS r FROM read_json('pudl_parquet_datapackage.json', format='auto'))
+  WHERE r->>'$.name' = 'core_eia860__scd_generators';
+  ```
+
 ### Cross-referencing FERC Form 1 and Form 2 schedules and accounts
 
 Both `ferc1_schedules.json` and `ferc2_schedules.json` share the same schema. Each
