@@ -13,13 +13,13 @@ for Public Utilities and Licensees Subject to the Provisions of the Federal Powe
 Accounts marked **(Major only)** apply only to Major utilities; those marked
 **(Nonmajor only)** apply only to non-Major utilities; unmarked accounts apply to both.
 
-______________________________________________________________________
+---
 
 > **For agent use, query [`ferc_electricity_accounts.json`](../assets/ferc_electricity_accounts.json)**
 > **with jq or DuckDB rather than reading this file into context.**
 > The full account listing below is for human reference only.
 
-______________________________________________________________________
+---
 
 ## Querying the machine-readable index
 
@@ -35,7 +35,7 @@ jq '.[] | select(.account == "182.3")' assets/ferc_electricity_accounts.json
 
 # Find all accounts in a numeric range
 jq '[.[] | select(.account | test("^18[0-9]"))] | .[] | {account, description}' \
-	assets/ferc_electricity_accounts.json
+    assets/ferc_electricity_accounts.json
 
 # List all O&M transmission expense accounts
 jq '[.[] | select(.chart == "om_expenses" and .section == "2. Transmission Expenses")] |
@@ -68,7 +68,7 @@ WHERE a.account BETWEEN '550' AND '557'
 ORDER BY a.account;
 ```
 
-______________________________________________________________________
+---
 
 ## Full account listing
 

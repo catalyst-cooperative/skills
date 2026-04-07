@@ -1,22 +1,102 @@
 # PUDL Data Sources
 
-## Use this when
+Use this reference when looking up the short code for a raw input dataset, finding the
+documentation page for a specific source, or resolving which datasets PUDL ingests.
 
-- Looking up the short code for a data source (needed for Zenodo S3 paths).
-- Finding the documentation page for a specific data source.
-- Understanding what raw datasets PUDL ingests and processes.
+> **For agent use, query [`data_sources.json`](../assets/data_sources.json)**
+> **with jq or DuckDB rather than reading this file into context.**
+> The full source table below is for human reference only.
 
 ---
 
-## Source catalog
+## Querying the machine-readable index
 
-Each row is one raw input dataset. The **short code** is the identifier used in:
+Use [`data_sources.json`](../assets/data_sources.json) for all programmatic lookups.
+Fields: `short_code`, `full_name`, `docs_url`.
+
+The **short code** is the identifier used in:
 
 - Zenodo S3 paths: `s3://pudl.catalyst.coop/zenodo/<short_code>/<doi>/`
 - Table name prefixes (second component): e.g. `out_eia923__generation`
 - FERC XBRL descriptor filenames: e.g. `ferc1_xbrl_datapackage.json`
 
-| Short code          | Full name                                                                         | Docs page                                                                              |
+### jq examples
+
+```bash
+# Find a source by keyword in the full name
+jq '[.[] | select(.full_name | test("balancing authority"; "i"))]' assets/data_sources.json
+
+# Get the short code for a specific source
+jq '.[] | select(.full_name | test("CEMS"; "i")) | .short_code' assets/data_sources.json
+
+# Get the docs URL for a known short code
+jq '.[] | select(.short_code == "ferc1") | .docs_url' assets/data_sources.json
+
+# List all sources with no docs page yet
+jq '[.[] | select(.docs_url == null) | .short_code]' assets/data_sources.json
+```
+
+### DuckDB examples
+
+```sql
+-- Find a source by topic keyword
+SELECT short_code, full_name
+FROM read_json('assets/data_sources.json')
+WHERE full_name ILIKE '%balancing authority%';
+
+-- List all sources that do not yet have docs pages
+SELECT short_code, full_name
+FROM read_json('assets/data_sources.json')
+WHERE docs_url IS NULL
+ORDER BY short_code;
+```
+
+---
+
+## Refreshing this list
+
+The authoritative source of available datasets is the S3 listing. Run this to see the
+current dataset codes:
+
+```bash
+aws s3 ls --no-sign-request s3://pudl.catalyst.coop/zenodo/ | awk '{print $2}' | tr -d '/'
+```
+
+When a new short code appears there that isn't in `data_sources.json`, add a record to
+the JSON asset and regenerate the table below using `python scripts/generate_data_sources_table.py`.
+
+---
+
+## Reading per-source documentation
+
+Each source with a docs URL has a page describing:
+
+- What the form collects and who files it
+- Years and frequency of coverage
+- Known data quality issues and gaps
+- How PUDL processes and integrates it
+
+The docs index is at:
+<https://docs.catalyst.coop/pudl/en/nightly/data_sources/index.html>
+
+Fetch a source page when the user asks about a specific data source and the JSON sidecar
+does not provide enough context:
+
+```bash
+curl -s "$(jq -r '.[] | select(.short_code == "eia923") | .docs_url' assets/data_sources.json)"
+```
+
+Or use the `WebFetch` tool if available in your environment.
+
+---
+
+## Full source reference
+
+> *Human reference — agents should use the JSON sidecar above.*
+
+<!-- Generated from assets/data_sources.json — do not edit by hand -->
+
+| Short code          | Full name                                                                         | Docs                                                                                   |
 | ------------------- | --------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
 | `censusdp1tract`    | Census DP1 – Profile of General Demographic Characteristics                       | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/censusdp1tract.html)    |
 | `censuspep`         | Census Population Estimates Program (PEP) FIPS Codes                              | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/censuspep.html)         |
@@ -48,43 +128,6 @@ Each row is one raw input dataset. The **short code** is the identifier used in:
 | `sec10k`            | U.S. SEC Form 10-K Annual Reports                                                 | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/sec10k.html)            |
 | `vcerare`           | Vibrant Clean Energy RARE Power Dataset                                           | [docs](https://docs.catalyst.coop/pudl/en/nightly/data_sources/vcerare.html)           |
 
-Sources with `—` in the docs column have no dedicated documentation page yet. Brief
-descriptions above are best-effort — check the raw Zenodo descriptor for authoritative
-metadata.
+<!-- end generated table -->
 
----
-
-## Refreshing this list
-
-The authoritative source is the S3 listing. Run this to see current dataset codes:
-
-```bash
-aws s3 ls --no-sign-request s3://pudl.catalyst.coop/zenodo/ | awk '{print $2}' | tr -d '/'
-```
-
----
-
-## Reading per-source documentation
-
-Each source with a docs link above has a page describing:
-
-- What the form collects and who files it
-- Years and frequency of coverage
-- Known data quality issues and gaps
-- How PUDL processes and integrates it
-
-The docs index is at:
-<https://docs.catalyst.coop/pudl/en/nightly/data_sources/index.html>
-
-Individual pages follow the pattern:
-`https://docs.catalyst.coop/pudl/en/nightly/data_sources/<short_code>.html`
-
-Fetch a source page when the user asks about a specific data source and the table
-descriptions in the descriptor don't provide enough context:
-
-```bash
-curl -s https://docs.catalyst.coop/pudl/en/nightly/data_sources/eia923.html |
-	python3 -c "import sys, html.parser; ..."
-```
-
-Or use the `WebFetch` tool if available in your environment.
+Sources with `—` in the Docs column have no dedicated documentation page yet.
