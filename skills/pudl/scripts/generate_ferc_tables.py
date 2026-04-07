@@ -14,9 +14,13 @@ Usage (from skill root or anywhere):
   python skills/pudl/scripts/generate_ferc_tables.py
 """
 
-import json
-from collections import OrderedDict
 from pathlib import Path
+
+from _reference_table_utils import (
+    load_json_file,
+    render_markdown_table,
+    replace_generated_block,
+)
 
 SKILL_ROOT = Path(__file__).resolve().parent.parent
 ASSETS = SKILL_ROOT / "assets"
@@ -103,21 +107,6 @@ GROUP_PREFIXES: dict[tuple[str, str, str], str] = {
 # ---------------------------------------------------------------------------
 
 
-def splice_generated(path: Path, content: str) -> None:
-    """Replace the content between BEGIN/END markers in a markdown file."""
-    text = path.read_text()
-    begin_idx = text.index(BEGIN_MARKER)
-    end_idx = text.index(END_MARKER)
-    new_text = (
-        text[: begin_idx + len(BEGIN_MARKER)]
-        + "\n\n"
-        + content.strip()
-        + "\n\n"
-        + text[end_idx:]
-    )
-    path.write_text(new_text)
-
-
 def account_sort_key(account: str) -> tuple[int, int]:
     """Sort key for FERC account numbers like '101', '101.1', '561.7'."""
     parts = account.split(".")
@@ -142,6 +131,11 @@ def fmt_tables(names: list[str]) -> str:
     return ", ".join(f"`{n}`" for n in names) if names else ""
 
 
+def escape_markdown_cell(value: str) -> str:
+    """Escape markdown table cell delimiters in plain-text values."""
+    return value.replace("|", "\\|")
+
+
 # ---------------------------------------------------------------------------
 # Accounts table generator
 # ---------------------------------------------------------------------------
@@ -149,13 +143,12 @@ def fmt_tables(names: list[str]) -> str:
 
 def generate_accounts_tables() -> str:
     """Generate the full account listing from ferc_electricity_accounts.json."""
-    with open(ASSETS / "ferc_electricity_accounts.json") as f:
-        raw = json.load(f)
+    raw = load_json_file(ASSETS / "ferc_electricity_accounts.json")
 
     # Build an ordered dict keyed by (chart, section, group, operation_type)
     # preserving the JSON order for the hierarchy while allowing us to sort
     # accounts numerically within each leaf bucket.
-    buckets: OrderedDict[tuple, list[dict]] = OrderedDict()
+    buckets: dict[tuple[str, str, str | None, str | None], list[dict]] = {}
     for record in raw:
         key = (
             record["chart"],
@@ -199,9 +192,8 @@ def generate_accounts_tables() -> str:
             level = "#####" if group is not None else "####"
             lines += ["", f"{level} {op_type}"]
 
-        lines += ["", "| Account | Description |", "|---------|-------------|"]
-        for r in records:
-            lines.append(f"| {r['account']} | {fmt_account_description(r)} |")
+        table_rows = [[r["account"], fmt_account_description(r)] for r in records]
+        lines += ["", render_markdown_table(["Account", "Description"], table_rows)]
 
     return "\n".join(lines)
 
@@ -218,49 +210,45 @@ def generate_schedules_table(json_path: Path) -> str:
     The DBF column is included only when at least one schedule has dbf_tables data,
     since some forms (e.g. Form 2) have no DBF-era database yet.
     """
-    with open(json_path) as f:
-        schedules = json.load(f)
+    schedules = load_json_file(json_path)
 
     include_dbf = any(s.get("dbf_tables") for s in schedules)
 
     if include_dbf:
-        header = (
-            "| Schedule (Page) | Title | Description | FERC Accounts"
-            " | PUDL Integrated Tables (use first)"
-            " | XBRL Raw Tables (2021-present, fallback)"
-            " | DBF Raw Tables (1994-2020, fallback) |"
-        )
-        separator = "| --- | --- | --- | --- | --- | --- | --- |"
+        headers = [
+            "Schedule (Page)",
+            "Title",
+            "Description",
+            "FERC Accounts",
+            "PUDL Integrated Tables (use first)",
+            "XBRL Raw Tables (2021-present, fallback)",
+            "DBF Raw Tables (1994-2020, fallback)",
+        ]
     else:
-        header = (
-            "| Schedule (Page) | Title | Description | FERC Accounts"
-            " | PUDL Integrated Tables"
-            " | XBRL Raw Tables (2021-present) |"
-        )
-        separator = "| --- | --- | --- | --- | --- | --- |"
+        headers = [
+            "Schedule (Page)",
+            "Title",
+            "Description",
+            "FERC Accounts",
+            "PUDL Integrated Tables",
+            "XBRL Raw Tables (2021-present)",
+        ]
 
-    lines = [header, separator]
+    rows: list[list[str]] = []
     for s in schedules:
         accounts = ", ".join(s.get("ferc_accounts", []))
         pudl = fmt_tables(s.get("pudl_tables", []))
         if not pudl:
             pudl = "*(not yet integrated)*"
         xbrl = fmt_tables(s.get("xbrl_tables", []))
-        desc = s.get("description", "").replace("|", "\\|")
+        desc = escape_markdown_cell(s.get("description", ""))
         if include_dbf:
             dbf = fmt_tables(s.get("dbf_tables", []))
-            row = (
-                f"| {s['schedule']} | {s['title']} | {desc}"
-                f" | {accounts} | {pudl} | {xbrl} | {dbf} |"
-            )
+            rows.append([s["schedule"], s["title"], desc, accounts, pudl, xbrl, dbf])
         else:
-            row = (
-                f"| {s['schedule']} | {s['title']} | {desc}"
-                f" | {accounts} | {pudl} | {xbrl} |"
-            )
-        lines.append(row)
+            rows.append([s["schedule"], s["title"], desc, accounts, pudl, xbrl])
 
-    return "\n".join(lines)
+    return render_markdown_table(headers, rows)
 
 
 # ---------------------------------------------------------------------------
@@ -277,13 +265,18 @@ SCHEDULE_FILES: list[tuple[str, str, str]] = [
 def main() -> None:
     print("Generating FERC accounts table...")
     accounts_content = generate_accounts_tables()
-    splice_generated(REFS / "ferc-electricity-accounts.md", accounts_content)
+    replace_generated_block(
+        REFS / "ferc-electricity-accounts.md",
+        BEGIN_MARKER,
+        END_MARKER,
+        accounts_content,
+    )
     print("  -> references/ferc-electricity-accounts.md updated")
 
     for json_name, md_name, label in SCHEDULE_FILES:
         print(f"Generating {label} schedules table...")
         content = generate_schedules_table(ASSETS / json_name)
-        splice_generated(REFS / md_name, content)
+        replace_generated_block(REFS / md_name, BEGIN_MARKER, END_MARKER, content)
         print(f"  -> references/{md_name} updated")
 
     print("Done.")

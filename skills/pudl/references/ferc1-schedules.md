@@ -29,15 +29,15 @@ lookups. It contains the same data as the table below with `pudl_tables`, `xbrl_
 ```bash
 # Find schedules whose description mentions a specific account
 jq '[.[] | select(.description | test("182\.3"))] | .[] | {schedule, title}' \
-	assets/ferc1_schedules.json
+    assets/ferc1_schedules.json
 
 # List all schedules that have PUDL integrated tables
 jq '[.[] | select(.pudl_tables | length > 0)] | .[] | {schedule, title, pudl_tables}' \
-	assets/ferc1_schedules.json
+    assets/ferc1_schedules.json
 
 # Find schedules linked to a specific FERC account number
 jq '[.[] | select(.ferc_accounts[] == "182.3")] | .[] | {schedule, title}' \
-	assets/ferc1_schedules.json
+    assets/ferc1_schedules.json
 
 # Get PUDL table names for a specific schedule
 jq '.[] | select(.schedule == "204") | .pudl_tables[]' assets/ferc1_schedules.json

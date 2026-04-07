@@ -19,3 +19,6 @@
 
 # built documentation
 site/
+
+# Python files
+__pycache__
