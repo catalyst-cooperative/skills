@@ -16,7 +16,7 @@ relevant to a user's query.
 > **with jq or DuckDB rather than reading this file into context.**
 > The full schedule table below is for human reference only.
 
-______________________________________________________________________
+---
 
 ## Querying the machine-readable index
 
@@ -67,7 +67,7 @@ JOIN read_json('assets/ferc_electricity_accounts.json') a ON a.account = t.acct
 WHERE s.schedule = '219';
 ```
 
-______________________________________________________________________
+---
 
 ## Full schedule reference
 
@@ -80,16 +80,16 @@ apply entity resolution, and are the most analysis-ready. Fall back to the raw t
 only when:
 
 - The schedule has not yet been integrated into PUDL (the PUDL column says
-  "*(not yet integrated)*"), or
+    "*(not yet integrated)*"), or
 - The user explicitly asks for the raw data rather than the integrated PUDL data.
 
 Raw tables come in two formats depending on the filing year:
 
 - **XBRL (2021–present):** tables in `ferc1_xbrl.duckdb` / `ferc1_xbrl.sqlite`. Table
-  names embed the schedule/page number just before the `_duration` or `_instant` suffix.
-  Duration tables record changes over a period; instant tables record point-in-time
-  balances. Many schedules have multiple sub-tables (e.g. one per section or account
-  type).
+    names embed the schedule/page number just before the `_duration` or `_instant` suffix.
+    Duration tables record changes over a period; instant tables record point-in-time
+    balances. Many schedules have multiple sub-tables (e.g. one per section or account
+    type).
 - **DBF (1994–2020):** tables in `ferc1_dbf.sqlite`. Table names start with `f1_`.
 
 Source (schedule titles): FERC Form 1 blank form (2025-07-31 edition),
