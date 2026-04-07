@@ -12,6 +12,7 @@ mdformat-wikilink = ">=0.3.0,<1"
 [tool.pixi.tasks]
 
 [tool.pixi.dependencies]
+python = ">=3.14"
 duckdb = ">=1.5.1,<2"
 jq = ">=1.8.1,<2"
 prek = ">=0.3.8,<0.4"
@@ -38,6 +39,8 @@ typos = ">=1.45.0,<2"
 ty = ">=0.0.29,<0.0.30"
 beautifulsoup4 = ">=4.14.3,<5"
 zensical = ">=0.0.31,<0.0.32"
+frictionless = ">=5.18.1,<6"
+fastparquet = ">=2025.12.0,<2026"
 
 [tool.mdformat]
 # Use "no" wrapping so paragraphs stay as single long lines, soft-wrapped in the editor.

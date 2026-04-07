@@ -1,9 +1,8 @@
 {
+    "profile": "data-package",
     "name": "weather-stations",
     "title": "Example Weather Station Dataset",
-    "description": "A demonstration datapackage containing two related tables: station metadata and daily temperature readings. Illustrates standard Frictionless Data Package structure including field types, constraints, foreign keys, and common non-standard extensions (unit, warning).",
-    "version": "1.0.0",
-    "created": "2025-01-01",
+    "description": "A demonstration datapackage containing two related tables: station metadata and daily temperature readings. Illustrates Frictionless Data Package v1 structure including field types, constraints, foreign keys, and common non-standard extensions (unit, warning).",
     "licenses": [
         {
             "name": "CC-BY-4.0",
@@ -86,15 +85,17 @@
                     "station_id"
                 ]
             },
-            "path": "weather.duckdb",
-            "format": "duckdb",
-            "mediatype": "application/octet-stream",
-            "duckdb_table": "stations"
+            "path": "weather.sqlite",
+            "format": "sqlite",
+            "mediatype": "application/vnd.sqlite3",
+            "sqlite_table": "stations",
+            "bytes": 24576,
+            "hash": "md5:eb4fa86a67271895d4343178ab212d5b"
         },
         {
             "name": "daily-readings",
             "title": "Daily Temperature and Precipitation Readings",
-            "description": "Daily summary observations from each station. Note: readings before 2010-01-01 were collected using an older instrument calibration standard and may differ systematically by 0.3\u20130.5 \u00b0C from post-2010 readings. Do not combine pre- and post-2010 data in a single analysis without applying the calibration correction described in the methodology notes.",
+            "description": "Daily summary observations from each station.\n\nNote: readings before 2010-01-01 were collected using an older instrument calibration standard and may differ systematically by 0.3\u20130.5 \u00b0C from post-2010 readings. Do not combine pre- and post-2010 data in a single analysis without applying the calibration correction described in the methodology notes.",
             "schema": {
                 "fields": [
                     {
@@ -157,10 +158,10 @@
                     }
                 ]
             },
-            "path": "weather.duckdb",
-            "format": "duckdb",
-            "mediatype": "application/octet-stream",
-            "duckdb_table": "daily-readings"
+            "path": "weather.sqlite",
+            "format": "sqlite",
+            "mediatype": "application/vnd.sqlite3",
+            "sqlite_table": "daily-readings"
         }
     ]
 }
