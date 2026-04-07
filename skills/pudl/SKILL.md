@@ -237,17 +237,17 @@ pre-extracted for direct lookup. Use `description` for topical keyword search; u
 ```bash
 # Find all Form 1 schedules that reference a specific account number
 jq '[.[] | select(.ferc_accounts[] == "182.3")] | .[] | {schedule, title}' \
-	assets/ferc1_schedules.json
+    assets/ferc1_schedules.json
 
 # Find all Form 2 schedules that reference a specific account number
 jq '[.[] | select(.ferc_accounts[] == "489.2")] | .[] | {schedule, title}' \
-	assets/ferc2_schedules.json
+    assets/ferc2_schedules.json
 
 # Get all account definitions for a specific Form 1 schedule
 SCHED="232"
 jq --arg s "$SCHED" '.[] | select(.schedule == $s) | .ferc_accounts[]' \
-	assets/ferc1_schedules.json |
-	xargs -I{} jq --arg a {} '.[] | select(.account == $a)' assets/ferc_electricity_accounts.json
+    assets/ferc1_schedules.json |
+xargs -I{} jq --arg a {} '.[] | select(.account == $a)' assets/ferc_electricity_accounts.json
 ```
 
 **Combined DuckDB query:**

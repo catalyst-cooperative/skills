@@ -48,7 +48,7 @@ frictionless validate --json datapackage.json
 
 The JSON structure:
 
-```json
+```jsonc
 {
   "valid": true,
   "stats": { "tasks": 2, "errors": 0, "warnings": 0, "seconds": 0.025 },

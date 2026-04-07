@@ -7,7 +7,7 @@
 - Understanding what kinds of warnings appear in metadata and why they matter.
 - Pointing a user to the right public documentation or data catalog.
 
-______________________________________________________________________
+---
 
 ## Table and asset naming conventions
 
@@ -47,7 +47,7 @@ The `asset_type` component describes the data model role of the table:
 In the output layer, `asset_type` often describes reporting frequency and is optional.
 Examples: `out_eia923__monthly_generation`, `out_ferc714__hourly_planning_area_demand`.
 
-______________________________________________________________________
+---
 
 ## Usage warnings — what they mean and why they matter
 
@@ -57,7 +57,7 @@ real analyses.
 
 ### Common warning types
 
-**Unstable IDs:**
+#### Unstable IDs
 
 > "WARNING: This ID is not guaranteed to be static long term as the input data and
 > algorithm may evolve over time."
@@ -65,22 +65,23 @@ real analyses.
 Applies to `unit_id_pudl` and other algorithmically assigned identifiers. Don't use
 these as durable foreign keys across PUDL versions.
 
-**Temporary tables:**
+#### Temporary tables
 
 > "Published only temporarily and may be removed without notice."
 
 Applies to all `_core_*` tables. These are intermediate products that haven't been
 harvested into the main normalized tables yet.
 
-**Not yet harvested / duplicate data:**
+#### Not yet harvested / duplicate data
 
 > "This table has not been harvested with other EIA 923 or 860 data. The same variables
-> present in this table may show up in other \_core tables in other years."
+> present in this table may show up in other `_core_*` tables in other years."
 
 Means the same phenomenon is recorded in multiple tables — joining them naively would
 double-count.
 
-**Methodology caveats:**
+#### Methodology caveats
+
 Some `out_*` tables contain derived or imputed values. The description will say
 "derived from" or reference a methodology doc. Point users to
 <https://docs.catalyst.coop/methodology> for details.
@@ -95,7 +96,7 @@ practical implication in plain language. For example:
 > releases — or building a pipeline that updates over time — you shouldn't use this
 > column as a join key without checking whether it changed.
 
-______________________________________________________________________
+---
 
 ## Data sources overview
 
@@ -116,7 +117,7 @@ The most commonly accessed sources:
 | `ferceqr`  | Electric Quarterly Report — bulk power market contracts                   |
 | `epacems`  | Hourly continuous emissions monitoring — SO₂, NOₓ, CO₂, heat input        |
 
-______________________________________________________________________
+---
 
 ## Public documentation links
 
@@ -135,7 +136,7 @@ only available to people with the source repository.
 | Web data viewer (preview tables)   | <https://data.catalyst.coop>                                                       |
 | GitHub issues / discussions        | <https://github.com/catalyst-cooperative/pudl>                                     |
 
-______________________________________________________________________
+---
 
 ## Raw input archives (Zenodo)
 
@@ -144,9 +145,9 @@ datasets are archived on Zenodo (CERN's research data management platform) and m
 to S3. These archives exist for two reasons:
 
 1. **Reproducibility** — every PUDL release is built from a specific, citable Zenodo
-   archive. The DOI in the release metadata tells you exactly which raw data was used.
+    archive. The DOI in the release metadata tells you exactly which raw data was used.
 1. **Independent fallback** — if a government agency removes or changes data on its
-   public website, the Zenodo archive remains permanently accessible.
+    public website, the Zenodo archive remains permanently accessible.
 
 Most users should work with the processed PUDL outputs rather than the raw archives.
 Raw data is appropriate when:
@@ -177,7 +178,7 @@ S3; the nightly build uses whichever version is referenced in the current `zenod
 config. See [Data Access](./data-access.md#raw-input-archives-zenodo) for shell
 commands to browse and fetch these.
 
-______________________________________________________________________
+---
 
 ## When data seems wrong
 
@@ -188,7 +189,5 @@ If a value looks suspicious, guide the user through this sequence:
 1. Check whether the table is `_core_*` (preliminary, may have known issues).
 1. Look up the source form at the agency's website to compare raw values.
 1. Search open PUDL GitHub issues for the symptom.
-1. For methodology questions (imputation, entity resolution), see
-   <https://docs.catalyst.coop/pudl/en/nightly/methodology/>
-1. If you think you've found a data bug, report it at
-   <https://github.com/catalyst-cooperative/pudl/issues/new?template=data_bug_report.yml>
+1. For methodology questions (imputation, entity resolution), see <https://docs.catalyst.coop/pudl/en/nightly/methodology/>
+1. If you think you've found a data bug, report it at <https://github.com/catalyst-cooperative/pudl/issues/new?template=data_bug_report.yml>
