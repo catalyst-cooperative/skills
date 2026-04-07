@@ -1,10 +1,8 @@
 # [Catalyst Cooperative](http://github.com/catalyst-cooperative) Agent Skills
 
-This repository contains experimental [agent skills](https://agentskills.io) related to
-PUDL (the Public Utility Data Liberation Project).
+This repository contains experimental [agent skills](https://agentskills.io) related to PUDL (the Public Utility Data Liberation Project).
 
-- `datapackage` is for exploring metadata annotations stored in
-    [Frictionless Data Packages](https://specs.frictionlessdata.io/data-package/) generally.
+- `datapackage` is for exploring metadata annotations stored in [Frictionless Data Packages](https://specs.frictionlessdata.io/data-package/) generally.
 - `pudl` is for exploring and working with [PUDL open energy data and metadata](https://data.catalyst.coop)
 - `pudl-dev` is for maintaining and contributing to the [PUDL open source project](https://github.com/catalyst-cooperative/pudl)
 
@@ -22,30 +20,27 @@ PUDL (the Public Utility Data Liberation Project).
 
 - [The Agent Skills Standard](https://agentskills.io)
 - [Skill Authoring Best Practices](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/best-practices) (Anthropic)
-- [Equipping Agents for the Real World With Agent
-    Skills](https://claude.com/blog/equipping-agents-for-the-real-world-with-agent-skills)
-    (Anthropic)
-- [Claude Developer Guide Agent Skills
-    Overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview)
-    (Anthropic)
+- [Equipping Agents for the Real World With Agent Skills](https://claude.com/blog/equipping-agents-for-the-real-world-with-agent-skills) (Anthropic)
+- [Claude Developer Guide Agent Skills Overview](https://platform.claude.com/docs/en/agents-and-tools/agent-skills/overview) (Anthropic)
 - [Create a Claude Plugin Marketplace](https://code.claude.com/docs/en/plugin-marketplaces) (Anthropic)
 
 ## Agentic (Data) Engineering
 
 - [Agentic Engineering Patterns](https://simonwillison.net/guides/agentic-engineering-patterns/) (Simon Willison)
-- [Zero Degree-of-Freedom LLM Coding using Executable
-    Oracles](https://john.regehr.org/writing/zero_dof_programming.html) (John Regehr)
+- [Zero Degree-of-Freedom LLM Coding using Executable Oracles](https://john.regehr.org/writing/zero_dof_programming.html) (John Regehr)
 - [Dagster University AI Driven Data Engineering](https://courses.dagster.io/courses/take/ai-driven-data-engineering) (Dagster)
 - [Best practices for LLM Dagster Development](https://www.youtube.com/watch?v=nmuQPU9bzQ4) (Dagster)
 - [What Is Code Review For](https://blog.glyph.im/2026/03/what-is-code-review-for.html) (Glyph)
-- [Your job is to deliver code you have proven to
-    work](https://simonwillison.net/2025/Dec/18/code-proven-to-work/) (Simon Willison)
+- [Your job is to deliver code you have proven to work](https://simonwillison.net/2025/Dec/18/code-proven-to-work/) (Simon Willison)
 
 ## Agentic (Meta)Data Exploration
 
 - [Coding agents for data analysis](https://simonw.github.io/nicar-2026-coding-agents/) (Simon Willison)
 
 ## Other related skills
+
+Agent skills defined outside of this repo that we either used in creating the Catalyst
+Cooperative agent skills, or that we delegate to within the skill.
 
 - [duckdb-skills](https://github.com/duckdb/duckdb-skills)
 - [marimo-pair](https://github.com/marimo-team/marimo-pair)
@@ -277,10 +272,10 @@ even though it's not fully integrated into PUDL it feels important to expose it 
 
 - **High Priority:** Convert RST to Markdown at export time — the biggest single
     improvement. Descriptions are authored in RST for Sphinx, but the descriptor's
-    primary consumers are now agents, data scientists, and tools that all expect Markdown
-    or plain text. Converting at export (using docutils + a Markdown writer, or rst2md)
-    eliminates the parsing burden we just documented, and makes descriptions immediately
-    readable in any JSON viewer, notebook, or agent context.
+    primary consumers are now agents, data scientists, and tools that all expect
+    Markdown or plain text. Converting at export (using docutils + a Markdown writer, or
+    rst2md) eliminates the parsing burden we just documented, and makes descriptions
+    immediately readable in any JSON viewer, notebook, or agent context.
 - **High Priority:** Structured warnings field — currently warnings are embedded as ..
     `warning::` blocks inside RST description text, which means agents must parse prose
     to find them. A dedicated "warnings": ["..."] array on each resource (using a

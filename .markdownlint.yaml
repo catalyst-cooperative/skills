@@ -1,11 +1,7 @@
-# MD013: line length. Allow up to 120 characters; skip code blocks (which can't
-# be wrapped without changing semantics). Tables are not excluded globally here —
-# ferc1-schedules.md disables MD013 entirely via an inline comment because its
-# generated table rows are unavoidably long.
-MD013:
-  line_length: 120
-  code_blocks: false
-  tables: false
+# MD013: line length. Disabled — mdformat is configured with wrap="no" so paragraphs
+# are single long lines, soft-wrapped in the editor. Hard line-length limits would
+# conflict with that approach and create churn in diffs.
+MD013: false
 
 # MD024: allow headings with the same content as long as they have different parents.
 # Needed in structured reference documents (e.g. FERC accounts) where "Operation"
@@ -31,6 +27,11 @@ MD040: false
 MD033:
   allowed_elements:
     - script
+
+# MD007: unordered list indentation. mdformat normalizes nested list items to 4-space
+# indentation (Python-Markdown / MkDocs convention), so markdownlint must match.
+MD007:
+  indent: 4
 
 # MD046: code block style. Disabled because Zensical content tabs (=== "Tab") require
 # their content to be indented 4 spaces, which CommonMark also uses to denote indented

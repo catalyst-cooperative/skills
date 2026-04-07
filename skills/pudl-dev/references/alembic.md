@@ -1,7 +1,8 @@
 ---
 name: alembic
-description: Run alembic to create database schema migrations when the PUDL metadata
-changes, and to apply those migrations to the PUDL database.
+description: |-
+  Run alembic to create database schema migrations when the PUDL metadata
+  changes, and to apply those migrations to the PUDL database.
 ---
 
 # Alembic workflow
@@ -53,11 +54,8 @@ pixi run alembic upgrade head
 ## PUDL-specific alembic quirks
 
 - These migrations are a development tool, and are not used in production.
-- PUDL does not strictly need a continuous database migration history. We primarily use
-    the database schema as a data quality assurance check.
-- When there are complex conflicts between the alembic migrations on branches that need
-    to be merged together, it is acceptable to remove existing migrations and start over
-    from scratch, taking the current schema as a new base.
+- PUDL does not strictly need a continuous database migration history. We primarily use the database schema as a data quality assurance check.
+- When there are complex conflicts between the alembic migrations on branches that need to be merged together, it is acceptable to remove existing migrations and start over from scratch, taking the current schema as a new base.
 
 ## References
 

@@ -39,6 +39,11 @@ ty = ">=0.0.29,<0.0.30"
 beautifulsoup4 = ">=4.14.3,<5"
 zensical = ">=0.0.31,<0.0.32"
 
+[tool.mdformat]
+# Use "no" wrapping so paragraphs stay as single long lines, soft-wrapped in the editor.
+# This avoids hard line-break churn in diffs and removes the need for a line-length limit.
+wrap = "no"
+
 [tool.typos.files]
 extend-exclude = [
   # Vendored schemas and machine-generated JSON data files
