@@ -31,10 +31,10 @@
 
 - If rendered docs are unavailable, query Frictionless JSON and metadata classes directly.
 - Data dictionary and data-source pages are generated via templates in `docs/templates/`
-  and custom build operations in `docs/conf.py`:
-  - `data_dictionary_metadata_to_rst()`
-  - `data_sources_metadata_to_rst()`
-  - `static_dfs_to_rst()`
+    and custom build operations in `docs/conf.py`:
+    - `data_dictionary_metadata_to_rst()`
+    - `data_sources_metadata_to_rst()`
+    - `static_dfs_to_rst()`
 - Keep generated intermediates while rebuilding docs with:
 
 ```bash

@@ -23,7 +23,7 @@ Use this skill when you need to run or reason about software tests in PUDL.
 ## Prerequisites
 
 - Run commands in the pixi environment (`pixi run ...`) unless already in
-  `pixi shell`.
+    `pixi shell`.
 - Integration tests can be slow and may trigger ETL work.
 
 ## Common commands

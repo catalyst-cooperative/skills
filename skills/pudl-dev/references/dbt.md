@@ -56,7 +56,7 @@ pixi run dbt_helper update-tables --row-counts --clobber out_eia__yearly_generat
 ## When changing metadata resources
 
 - If `src/pudl/metadata/resources/**/*.py` schema fields change, update matching
-  `dbt/models/**/schema.yml`.
+    `dbt/models/**/schema.yml`.
 - Re-run targeted validations and inspect failures before broad test runs.
 
 ## References

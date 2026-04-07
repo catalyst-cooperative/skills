@@ -1,3 +1,6 @@
+ci:
+  skip: [ty-check]
+
 repos:
   - repo: https://github.com/DavidAnson/markdownlint-cli2
     rev: v0.22.0
@@ -10,10 +13,18 @@ repos:
     hooks:
       - id: mdformat
         additional_dependencies:
-          - mdformat-frontmatter
+          - mdformat-beautysh
+          - mdformat-config
+          - mdformat-footnote
+          - mdformat-front-matters
           - mdformat-gfm
+          - mdformat-gfm-alerts
+          - mdformat-mkdocs
           - mdformat-ruff
           - mdformat-shfmt
+          - mdformat_simple_breaks
+          - mdformat-web
+          - mdformat-wikilink
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v6.0.0
@@ -30,8 +41,6 @@ repos:
       - id: end-of-file-fixer
       - id: pretty-format-json
         args: [--autofix, --indent=4, --no-sort-keys]
-      - id: check-json
-        args: [--allow-multiple-top-level, --allow-comments]
 
   - repo: https://github.com/astral-sh/ruff-pre-commit
     rev: v0.15.9
@@ -39,6 +48,15 @@ repos:
       - id: ruff-check
         args: [--fix]
       - id: ruff-format
+
+  - repo: local
+    hooks:
+      - id: ty-check
+        name: ty
+        entry: pixi run ty check
+        language: system
+        types_or: [python, pyi]
+        pass_filenames: false
 
   - repo: https://github.com/rbubley/mirrors-prettier
     rev: v3.8.1
@@ -61,15 +79,7 @@ repos:
     hooks:
       - id: taplo-format
 
-  # Need to customize exceptions / exclusions for typos.
-  # - repo: https://github.com/adhtruong/mirrors-typos
-  #   rev: v1.45.0
-  #   hooks:
-  #     - id: typos
-  #       exclude: |
-  #         (?x)^(
-  #           .*\.yml
-  #           |.*\.toml
-  #           |.*\.csv
-  #           |.*\.html
-  #         )
+  - repo: https://github.com/adhtruong/mirrors-typos
+    rev: v1.45.0
+    hooks:
+      - id: typos

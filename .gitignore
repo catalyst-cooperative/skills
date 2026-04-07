@@ -11,5 +11,11 @@
 # caches
 .ruff_cache/
 
+# tool output logs
+*.log
+
 # user settings
 .vscode/
+
+# built documentation
+site/

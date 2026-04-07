@@ -84,9 +84,9 @@ plant_field_meta = schema.field("plant_id_eia").metadata
 ## If generated docs are missing
 
 - Metadata-driven docs are generated via `docs/conf.py` custom build operations:
-  - `data_dictionary_metadata_to_rst()`
-  - `data_sources_metadata_to_rst()`
-  - `static_dfs_to_rst()`
+    - `data_dictionary_metadata_to_rst()`
+    - `data_sources_metadata_to_rst()`
+    - `static_dfs_to_rst()`
 - Rebuild and retain generated intermediates:
 
 ```bash
@@ -94,9 +94,9 @@ PUDL_DOCS_KEEP_GENERATED_FILES=1 pixi run docs-build
 ```
 
 - Retained files appear under:
-  - `docs/data_sources/**/*.rst`
-  - `docs/data_dictionaries/**/*.rst`
-  - `docs/data_dictionaries/**/*.csv`
+    - `docs/data_sources/**/*.rst`
+    - `docs/data_dictionaries/**/*.rst`
+    - `docs/data_dictionaries/**/*.csv`
 
 ## Templates and schema
 

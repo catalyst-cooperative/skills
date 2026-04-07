@@ -32,9 +32,9 @@ PUDL_DOCS_KEEP_GENERATED_FILES=1 pixi run docs-build
 
 - Retained generated files are written under:
 
-  - `docs/data_sources/**/*.rst`
-  - `docs/data_dictionaries/**/*.rst`
-  - `docs/data_dictionaries/**/*.csv`
+    - `docs/data_sources/**/*.rst`
+    - `docs/data_dictionaries/**/*.rst`
+    - `docs/data_dictionaries/**/*.csv`
 
 - Default behavior removes generated files in `build-finished` hooks in `docs/conf.py`.
 

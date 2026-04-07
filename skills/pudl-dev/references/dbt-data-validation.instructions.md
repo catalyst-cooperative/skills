@@ -33,7 +33,7 @@ pixi run dbt build --exclude "test_name:check_row_counts_per_partition"
 ## Schema + metadata alignment
 
 - If a table schema changes in `pudl.metadata.resources`, update corresponding
-  `dbt/models/<source>/<table>/schema.yml`.
+    `dbt/models/<source>/<table>/schema.yml`.
 - Use `dbt_helper update-tables` where possible for schema and row-count updates.
 
 See also:
