@@ -70,7 +70,10 @@ user explicitly asks to load or explore data.
     This populates `assets/cache/` with fresh copies of all descriptors above.
 
     Raw input archives (for provenance) live at
-    `s3://pudl.catalyst.coop/zenodo/<dataset>/<doi>/datapackage.json` — see
+    `s3://pudl.catalyst.coop/zenodo/<dataset>/<concrete-doi>/datapackage.json`.
+    Prefer the cached S3 archive over the Zenodo website or API for raw metadata and
+    file access. The source docs page usually gives a concept DOI for the whole dataset
+    lineage; the S3 path uses a concrete DOI for one specific archived version. See
     [Data Quality and Context](./references/data-quality-and-context.md) for details.
 
 1. **Query metadata selectively** — use `/datapackage` skill patterns (jq or DuckDB)
@@ -78,6 +81,14 @@ user explicitly asks to load or explore data.
 
 1. **Check table tier** — see [Data Quality and Context](./references/data-quality-and-context.md).
     Prefer `out_*` tables; warn users about `_core_*` tables.
+
+1. **Check methodology before implementation details** — if the user is asking how
+    PUDL cleans, imputes, allocates, reconciles, estimates, or models data, read
+    [Methodology](./references/methodology.md) first and fetch the relevant public
+    methodology page before looking at source code, docstrings, or implementation
+    details. Summarize the public methodology page and point the user to it. Only
+    dive into code-level implementation after the user has seen that write-up or if
+    no methodology page exists for the topic.
 
 1. *(Only if the user explicitly asks to load data)* **Load the data** — Parquet from
     S3 or local. See [Data Access](./references/data-access.md).
@@ -91,7 +102,8 @@ user explicitly asks to load or explore data.
 - [Data Sources](./references/data-sources.md) — exhaustive list of all ~29 dataset
     short codes, full names, and per-source documentation links; read when a user asks
     about a specific source dataset (EIA-860, FERC Form 714, EPA CEMS, etc.) or needs
-    documentation links, or when constructing a Zenodo DOI path and you need the short code
+    documentation links, or when resolving a raw-archive S3 path and you need the short
+    code and have to distinguish between a concept-DOI and a concrete-DOI.
 - [Data Access](./references/data-access.md) — S3 paths, loading patterns
     (pandas/DuckDB/polars/pure SQL), FERC historical database locations, and EQR access;
     read whenever generating data-loading code or explaining how to access any PUDL output
@@ -101,8 +113,10 @@ user explicitly asks to load or explore data.
     between table tiers, or when surfacing warnings before providing loading code
 - [Methodology](./references/methodology.md) — index of PUDL's data processing and
     modeling methodology pages (entity resolution, timeseries imputation, ownership
-    extraction); read when a user asks *how* PUDL cleans, reconciles, or models data,
-    then fetch the specific page URL to get the full description and summarize it
+    extraction); read when a user asks *how* PUDL cleans, reconciles, imputes,
+    allocates, estimates, or models data. Fetch the specific public methodology page,
+    summarize it, and point the user there before diving into implementation details
+    from code or docstrings
 - [FERC Electricity Accounts](./references/ferc-electricity-accounts.md) —
     complete hierarchical chart of FERC electric utility accounts (balance sheet, electric
     plant, operating revenue, O&M expenses) with account numbers and descriptions; read
@@ -164,6 +178,10 @@ user explicitly asks to load or explore data.
 
 - **Always surface usage warnings** from the descriptor before providing loading code.
 
+- **Methodology-first rule**: if a public methodology page exists for the topic the
+    user is asking about, use it before inspecting implementation details. Code-level
+    explanations are a follow-up step, not the default first response.
+
 - **Prefer `out_*` tables** for analyst work. If a user asks about a topic without
     specifying a table, search metadata for `out_` tables first.
 
@@ -179,8 +197,6 @@ user explicitly asks to load or explore data.
         name inside the backticks (e.g. `:py:func:\`pudl.helpers.fix_eia_na\``→`fix_eia_na\`).
     - `:ref:\`label\`\` cross-references do not resolve to accessible URLs; treat them
         as internal documentation pointers only — do not attempt to construct a URL.
-    - `.. note::` and `.. warning::` directive blocks should be treated as callouts and
-        surfaced to users when relevant.
 
 - **Resource descriptions follow a docstring convention**: every PUDL resource
     description begins with a single-line summary, followed by a blank line, followed by

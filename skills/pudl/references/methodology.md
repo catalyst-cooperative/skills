@@ -10,6 +10,12 @@ values filled in?", "how is ownership determined?".
 a web tool to get the full methodology description. Summarize the approach and direct
 the user to the full page for details.
 
+**Default behavior**: If a relevant methodology page exists, point the user to that
+page and summarize it before diving into source code, implementation details, or
+docstrings. Only move on to code-level explanation if the user asks for more detail
+after seeing the methodology write-up, or if there is no methodology page for the
+topic.
+
 Index: <https://docs.catalyst.coop/pudl/en/nightly/methodology/index.html>
 
 ---
@@ -40,8 +46,8 @@ and related entity tables.
 
 **When relevant**: User asks how missing, anomalous, or flagged values are handled in
 hourly or sub-hourly timeseries data (electricity demand, net generation, etc.); asks
-about imputation flags, anomaly detection, or why a value looks unusual in
-`out_ferc714__respondents_hourly` or similar tables.
+about imputation flags, anomaly detection, or why a value looks unusual in an imputed
+timeseries table like `out_ferc714__hourly_planning_area_demand`.
 
 **Summary**: Energy systems timeseries data (especially hourly electricity demand and
 net generation) frequently contains anomalous values due to reporting errors or data

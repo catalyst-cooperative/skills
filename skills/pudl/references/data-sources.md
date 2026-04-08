@@ -16,7 +16,7 @@ Fields: `short_code`, `full_name`, `docs_url`.
 
 The **short code** is the identifier used in:
 
-- Zenodo S3 paths: `s3://pudl.catalyst.coop/zenodo/<short_code>/<doi>/`
+- Cached raw-archive paths: `s3://pudl.catalyst.coop/zenodo/<short_code>/<concrete-doi>/`
 - Table name prefixes (second component): e.g. `out_eia923__generation`
 - FERC XBRL descriptor filenames: e.g. `ferc1_xbrl_datapackage.json`
 
@@ -87,6 +87,28 @@ curl -s "$(jq -r '.[] | select(.short_code == "eia923") | .docs_url' assets/data
 ```
 
 Or use the `WebFetch` tool if available in your environment.
+
+### Zenodo and DOI conventions
+
+When working with raw input archives, distinguish between the two DOI types:
+
+- The docs page usually lists a **concept DOI** for the dataset lineage as a whole.
+- The S3 cache uses the **concrete DOI** for one specific archived version.
+
+Agents should usually use the docs page to understand the source and give users a
+stable public link, then use the cached S3 archive for actual metadata lookup or raw
+file access.
+
+Prefer the cached S3 `datapackage.json` over the Zenodo website or API when you need to:
+
+- inspect source metadata
+- find file names and checksums
+- look up licensing or provenance fields
+- access the raw files themselves
+
+The Zenodo website is mainly useful when a user wants to visit the source archive on the
+web, cite it by DOI, or access a very old version that is no longer present in the S3
+cache.
 
 ---
 

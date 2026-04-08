@@ -53,7 +53,8 @@ Examples: `out_eia923__monthly_generation`, `out_ferc714__hourly_planning_area_d
 
 Many tables carry explicit usage warnings in their metadata descriptions. These are not
 generic disclaimers — they document **known, specific limitations** that affect
-real analyses.
+real analyses. The warning section of a resource description starts with the header
+"Usage Warnings".
 
 ### Common warning types
 
@@ -149,6 +150,10 @@ to S3. These archives exist for two reasons:
 1. **Independent fallback** — if a government agency removes or changes data on its
     public website, the Zenodo archive remains permanently accessible.
 
+For agents, Zenodo is mainly a provenance and permanence layer. It is usually **not**
+the best place to explore raw metadata or access raw files. Prefer the cached S3 copy of
+the same archive and its `datapackage.json`.
+
 Most users should work with the processed PUDL outputs rather than the raw archives.
 Raw data is appropriate when:
 
@@ -156,13 +161,24 @@ Raw data is appropriate when:
 - Verifying that a transformation is correct
 - Accessing years or fields that PUDL has not yet processed
 
+### How to think about Zenodo vs. the S3 cache
+
+- Use the **docs page** for a high-level description of the source and a public DOI link.
+- Use the **cached S3 archive** for actual metadata and file access.
+- Use the **Zenodo website or API** only when a user wants to visit the archive in a
+    browser, cite the archive by DOI, or retrieve a version that has already been purged
+    from the S3 cache.
+
+In practice, agents should rarely fetch data or metadata from `zenodo.org` itself.
+
 ### Archive locations
 
 Zenodo canonical home: <https://zenodo.org/communities/catalyst-cooperative/>
 
-S3 mirror: `s3://pudl.catalyst.coop/zenodo/<dataset>/<doi>/datapackage.json`
+S3 mirror: `s3://pudl.catalyst.coop/zenodo/<dataset>/<concrete-doi>/datapackage.json`
 
-The S3 path uses the Zenodo DOI with the internal `/` replaced by `-`:
+The S3 path uses the **concrete Zenodo record DOI** with the internal `/` replaced by
+`-`:
 
 | Dataset      | Short code | Example path                              |
 | ------------ | ---------- | ----------------------------------------- |
@@ -171,6 +187,12 @@ The S3 path uses the Zenodo DOI with the internal `/` replaced by `-`:
 | EPA CEMS     | `epacems`  | `zenodo/epacems/10.5281-zenodo.XXXXXXX/`  |
 | PHMSA Gas    | `phmsagas` | `zenodo/phmsagas/10.5281-zenodo.XXXXXXX/` |
 | FERC CID     | `ferccid`  | `zenodo/ferccid/10.5281-zenodo.XXXXXXX/`  |
+
+The DOI shown on a dataset's docs page is usually the **concept DOI**, which identifies
+the whole lineage of versions for that dataset. The actual cached S3 path uses a
+**concrete DOI** for one specific version. For example, a docs page might list the
+concept DOI `10.5281/zenodo.18248545`, while the corresponding cached S3 directory uses
+the concrete DOI `10.5281-zenodo.18793102`.
 
 Each directory contains a `datapackage.json` (non-tabular — resources have `bytes` and
 `hash` for integrity checking but no `schema`). Multiple DOI versions may coexist on

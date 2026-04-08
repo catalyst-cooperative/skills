@@ -349,22 +349,37 @@ jq -r '.resources[].name' pudl_parquet_datapackage.json
 want to trace a value to its original source file.** Most users should use the
 processed PUDL outputs instead.
 
+For agent workflows, prefer the cached S3 copy of the archive over the Zenodo website
+or API. The cache has the same `datapackage.json` metadata and raw files, and it is the
+normal place to inspect archive contents.
+
 Raw inputs are cached on S3 as a mirror of PUDL's Zenodo archives:
 
 ```text
-s3://pudl.catalyst.coop/zenodo/<dataset>/<doi-path>/datapackage.json
+s3://pudl.catalyst.coop/zenodo/<dataset>/<concrete-doi-path>/datapackage.json
 ```
 
 Where `<dataset>` is the PUDL short code for the data source (see
-[Data Sources](./data-sources.md) for the full list) and `<doi-path>` is the Zenodo
-DOI with `/` replaced by `-`.
+[Data Sources](./data-sources.md) for the full list) and `<concrete-doi-path>` is the
+Zenodo **record DOI** with `/` replaced by `-`.
 
-For example, for DOI `10.5281/zenodo.17091669`, the `<doi-path>` would be
+This distinction matters:
+
+- The source docs page usually shows the **concept DOI**, which refers to the dataset
+    lineage as a whole.
+- The cached S3 path uses a **concrete DOI**, which refers to one specific archived
+    version.
+
+For example, for DOI `10.5281/zenodo.17091669`, the `<concrete-doi-path>` would be
 `10.5281-zenodo.17091669`, giving:
 
 ```text
 s3://pudl.catalyst.coop/zenodo/ferc1/10.5281-zenodo.17091669/datapackage.json
 ```
+
+If the docs page only gives you a concept DOI, do **not** assume the S3 path uses that
+same DOI. List the dataset prefix in S3 and use the concrete DOI directory that matches
+the cached record you need.
 
 To construct a human-readable DOI URL from a Zenodo record ID (e.g. `19367768`):
 
@@ -372,6 +387,9 @@ To construct a human-readable DOI URL from a Zenodo record ID (e.g. `19367768`):
 https://doi.org/10.5281/zenodo.<record_id>
 # Example: https://doi.org/10.5281/zenodo.19367768
 ```
+
+Use `zenodo.org` itself mainly when a user wants a browser-friendly DOI landing page or
+when a needed historical version is no longer present in the S3 cache.
 
 ---
 
