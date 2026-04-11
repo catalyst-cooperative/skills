@@ -8,6 +8,7 @@ mdformat_simple_breaks = ">=0.1.0,<1"
 mdformat-wikilink = ">=0.3.0,<1"
 
 [tool.pixi.tasks]
+install-skills = "npx skills experimental_install"
 test-datapackage = "pytest skills/datapackage/tests/ -v"
 
 [tool.pixi.dependencies]
@@ -26,6 +27,7 @@ awscli = ">=2.34.23,<3"
 s3fs = ">=2026.3.0,<2027"
 fsspec = ">=2026.3.0,<2027"
 ruff = ">=0.15.9,<0.16"
+nodejs = ">=24,<25"
 prettier = ">=3.8.1,<4"
 shellcheck = ">=0.11.0,<0.12"
 taplo = "==0.9.3"
