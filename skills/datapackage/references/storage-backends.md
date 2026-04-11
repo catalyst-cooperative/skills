@@ -33,11 +33,11 @@ access without downloading. SQLite files **must be local** (see below).
 
 ## DuckDB (preferred)
 
-DuckDB is the preferred tool for data querying. It is a standalone CLI tool — no
-Python environment required. Install with `brew install duckdb`, `conda install duckdb`,
-or download from <https://duckdb.org/>. It handles Parquet, CSV, and DuckDB files with
-a unified SQL interface, reads remote files over HTTPS or S3 without downloading them,
-and can combine descriptor metadata queries with data queries in a single session.
+DuckDB is the preferred tool for data querying. It is a standalone CLI tool — no Python
+environment required. If DuckDB is not installed, use `/duckdb-skills:install-duckdb` to
+install it before proceeding. It handles Parquet, CSV, and DuckDB files with a unified
+SQL interface, reads remote files over HTTPS or S3 without downloading them, and can
+combine descriptor metadata queries with data queries in a single session.
 
 Use `/duckdb-skills:query` to run SQL or natural language queries through it, and
 `/duckdb-skills:attach-db` to register database files.

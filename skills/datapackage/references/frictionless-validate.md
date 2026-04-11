@@ -12,17 +12,19 @@ claims.
 command -v frictionless
 ```
 
-If not found, install via pip or conda:
+If not found, install with uv:
 
-- `pip install frictionless`
-- `conda install -c conda-forge frictionless`
+- `uv tool install frictionless` — installs the CLI into an isolated tool environment
+- `uvx frictionless validate ...` — run once without installing (slower on first run)
 
-Parquet support requires an extra dependency:
+Parquet support requires fastparquet as an extra dependency:
 
-- `pip install fastparquet` (frictionless uses fastparquet, not pyarrow, internally)
+- `uv tool install frictionless --with fastparquet`
 
-Without `fastparquet`, Parquet resources report `"Please install frictionless"` as the
-error message and the run exits non-zero.
+Without `fastparquet`, Parquet resources report an installation error and the run exits
+non-zero. Note that fastparquet has a known limitation with `date32` columns (see
+[Storage backend behavior](#storage-backend-behavior)); the recommended Parquet workflow
+suppresses all row-level artefacts with `--skip-errors byte-count,type-error,primary-key`.
 
 ## Basic usage
 
@@ -162,8 +164,8 @@ frictionless validate --checks "duplicate-row table-dimensions:numRows=150" data
 # Only surface type errors and constraint violations (ignore everything else)
 frictionless validate --pick-errors "type-error,constraint-error" datapackage.json
 
-# Suppress byte-count errors (expected when validating Parquet resources)
-frictionless validate --skip-errors byte-count datapackage.json
+# Descriptor-only validation for Parquet (suppress all fastparquet row-level artefacts)
+frictionless validate --skip-errors byte-count,type-error,primary-key datapackage.json
 ```
 
 Common error type codes:
@@ -219,36 +221,43 @@ frictionless describe --sample-size 500 --json data.csv
 Not all backends are equal. The `type` field in JSON output reveals what frictionless
 actually checked:
 
-| Backend | `type` in output | Row-level validation     | Integrity check (bytes/hash)                                                |
-| ------- | ---------------- | ------------------------ | --------------------------------------------------------------------------- |
-| CSV     | `table`          | Yes — all rows           | Yes                                                                         |
-| Parquet | `table`          | Yes (needs fastparquet)  | **No** — byte-count fails because fastparquet doesn't expose raw file bytes |
-| SQLite  | `file`           | No — file existence only | Yes (file-level)                                                            |
-| DuckDB  | `file`           | No — file existence only | Yes (file-level)                                                            |
+| Backend | Recommended flags                                 | `type` in output | Row-level validation   | Integrity check (bytes/hash) |
+| ------- | ------------------------------------------------- | ---------------- | ---------------------- | ---------------------------- |
+| CSV     | *(none)*                                          | `table`          | Yes — all rows         | Yes                          |
+| Parquet | `--skip-errors byte-count,type-error,primary-key` | `table`          | No — errors suppressed | No (fastparquet limitation)  |
+| SQLite  | *(none)*                                          | `file`           | No — existence only    | Yes (file-level)             |
+| DuckDB  | *(none)*                                          | `file`           | No — existence only    | Yes (file-level)             |
 
 When you see `"type": "file"` in the output, frictionless confirmed the file exists and
 checked file-level integrity, but did **not** read or validate any rows or field types.
 To validate the tabular content of SQLite and DuckDB resources, use DuckDB SQL queries
 directly (see `storage-backends.md`).
 
-For Parquet resources, suppress the byte-count false positive:
+**Parquet: use descriptor-only validation.** fastparquet (frictionless's Parquet backend)
+has two problems that prevent meaningful row-level validation:
 
-```bash
-frictionless validate --skip-errors byte-count datapackage.json
-```
+1. `type-error` / `primary-key` cascade — fastparquet misreads `date32` columns,
+    returning raw nanosecond epoch integers instead of calendar dates. frictionless
+    cannot validate these integers against `"type": "date"` fields, and the resulting
+    null-parse cascade causes every `(id, null)` pair to look like a primary-key
+    violation.
+1. `byte-count` — fastparquet doesn't expose the raw file byte count that frictionless
+    needs for the `bytes` integrity check.
 
-**Date columns in Parquet**: fastparquet reads `date32` Parquet columns as nanosecond epoch integers instead of dates. This triggers a cascade of three error types:
+Note: `--limit-rows 0` does **not** help — fastparquet loads the entire file into memory
+when it opens it, so frictionless receives all rows regardless of the limit.
 
-1. `type-error` — frictionless can't parse the nanosecond integer as `"type": "date"`
-1. `primary-key` — once date values fail to parse, frictionless treats them as null, making every `(id, null)` look like a duplicate
-
-Suppress all three to get a meaningful validation result on files with date columns:
+The correct approach is to run frictionless in descriptor-only mode by suppressing all
+three row-level artefacts:
 
 ```bash
 frictionless validate --skip-errors byte-count,type-error,primary-key datapackage.json
 ```
 
-These errors say nothing about actual data quality — they are artefacts of fastparquet's handling of `date32`. Use DuckDB or polars to validate date column content (see `storage-backends.md`).
+**This is not a Parquet format problem.** The Parquet files correctly encode date columns
+as `INT32` with a `DATE` logical type annotation. Every conforming Parquet reader
+(pyarrow, polars, DuckDB) handles this correctly. To validate Parquet data content, use
+DuckDB or polars directly (see `storage-backends.md`).
 
 ## Diagnosing an unknown descriptor
 

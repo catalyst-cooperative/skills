@@ -11,6 +11,11 @@
             "sourceType": "github",
             "computedHash": "522e3f4f33436966a478f8ce94140439981392a91d661cf90b6035f6ebc1e35a"
         },
+        "install-duckdb": {
+            "source": "duckdb/duckdb-skills",
+            "sourceType": "github",
+            "computedHash": "ce264b48e369a23adbda39804fc65c7e9fdffe182f6dfbc9f4e2fdf88b027b9e"
+        },
         "marimo-pair": {
             "source": "marimo-team/marimo-pair",
             "sourceType": "github",

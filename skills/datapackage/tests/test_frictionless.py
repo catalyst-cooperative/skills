@@ -12,7 +12,6 @@ import subprocess
 from pathlib import Path
 
 import pytest
-
 from conftest import EXAMPLES, READING_COUNT, RESOURCE_NAMES, STATION_COUNT
 
 # ---------------------------------------------------------------------------
@@ -42,22 +41,31 @@ def assert_exit_zero(result: subprocess.CompletedProcess) -> None:
 # ---------------------------------------------------------------------------
 # Basic validation — all 8 packages should validate cleanly
 #
-# Parquet needs three error types skipped due to a fastparquet limitation:
+# Parquet: skip all row-level errors — frictionless is used for descriptor
+#   validation only; row data is validated in test_backends.py via DuckDB/polars.
+#
+#   fastparquet (frictionless's Parquet backend) has two problems that prevent
+#   meaningful row-level validation:
+#
 #   - byte-count: fastparquet doesn't expose raw file bytes, so the file-size
-#     check always fails.
-#   - type-error: fastparquet reads date32 columns as nanosecond epoch integers,
-#     which frictionless can't validate against "type": "date" fields.
-#   - primary-key: once date values fail to parse (type-error), frictionless
-#     treats them as null, making every (station_id, null) pair look like a
-#     duplicate, cascading into spurious primary-key violations.
-# All three errors are artefacts of fastparquet's date32 handling; they say
-# nothing about the actual data quality.  See frictionless-validate.md.
+#     integrity check always fails.
+#   - type-error: fastparquet misreads Parquet date32 columns as nanosecond
+#     epoch integers, which frictionless cannot validate against "type": "date".
+#   - primary-key: once date values fail to parse, frictionless treats them as
+#     null, making every (station_id, null) pair look like a duplicate.
+#
+#   Note: "--limit-rows 0" does NOT help here — fastparquet reads the entire
+#   file into memory when it opens it, so frictionless receives all rows
+#   regardless.  Skipping the error types is the only workable approach.
+#
+#   These errors reflect fastparquet limitations, not actual data quality issues.
+#   The Parquet files correctly encode dates as INT32 with DATE logical type.
 #
 # SQLite and DuckDB validate at file level only (type="file"); they don't read
 # rows, so no row-level flags are needed.
 # ---------------------------------------------------------------------------
 
-_PARQUET_SKIP = ["--skip-errors", "byte-count,type-error,primary-key"]
+_PARQUET_DESCRIPTOR_ONLY = ["--skip-errors", "byte-count,type-error,primary-key"]
 
 
 @pytest.mark.parametrize(
@@ -65,8 +73,8 @@ _PARQUET_SKIP = ["--skip-errors", "byte-count,type-error,primary-key"]
     [
         ("v1", "csv", ["--standards", "v1"]),
         ("v2", "csv", ["--standards", "v2"]),
-        ("v1", "parquet", _PARQUET_SKIP),
-        ("v2", "parquet", _PARQUET_SKIP),
+        ("v1", "parquet", _PARQUET_DESCRIPTOR_ONLY),
+        ("v2", "parquet", _PARQUET_DESCRIPTOR_ONLY),
         ("v1", "sqlite", []),
         ("v2", "sqlite", []),
         ("v1", "duckdb", []),
@@ -247,29 +255,6 @@ def test_db_backends_produce_type_file(version, backend):
             f"expected type='file', got '{task['type']}'. "
             "See 'Storage backend behavior' in frictionless-validate.md."
         )
-
-
-@pytest.mark.parametrize("version", ["v1", "v2"])
-def test_parquet_produces_type_table_with_fastparquet(version):
-    """Parquet resources produce type='table' with correct row counts when fastparquet is installed.
-
-    Skips the three error types that cascade from fastparquet's date32 limitation
-    (see _PARQUET_SKIP comment above).  The key invariant is that fastparquet
-    actually reads the rows — confirmed by type='table' and the correct counts.
-    """
-    pkg = EXAMPLES / version / "parquet" / "datapackage.json"
-    result = frictionless("validate", "--json", *_PARQUET_SKIP, str(pkg))
-    assert_exit_zero(result)
-    report = json.loads(result.stdout)
-    by_name = {t["name"]: t for t in report["tasks"]}
-    for task in report["tasks"]:
-        assert task["type"] == "table", (
-            f"{version}/parquet resource '{task['name']}': "
-            f"expected type='table' (fastparquet reads rows), got '{task['type']}'. "
-            "Is fastparquet installed? See frictionless-validate.md."
-        )
-    assert by_name["stations"]["stats"]["rows"] == STATION_COUNT
-    assert by_name["daily-readings"]["stats"]["rows"] == READING_COUNT
 
 
 # ---------------------------------------------------------------------------
