@@ -1,5 +1,5 @@
 {
-    "profile": "data-package",
+    "$schema": "https://datapackage.org/profiles/2.0/datapackage.json",
     "name": "weather-stations",
     "title": "Example Weather Station Dataset",
     "licenses": [
@@ -14,12 +14,16 @@
             "path": "https://www.weather.gov/"
         }
     ],
-    "description": "A demonstration datapackage containing two related tables: station metadata and daily temperature readings. Illustrates Frictionless Data Package v1 structure including field types, constraints, foreign keys, and common non-standard extensions (unit, warning).",
+    "description": "A demonstration datapackage containing two related tables: station metadata and daily temperature readings. Illustrates Frictionless Data Package v2 structure including field types, constraints, foreign keys, and common non-standard extensions (unit, warning).",
+    "version": "1.0.0",
+    "created": "2025-01-01T00:00:00Z",
     "contributors": [
         {
             "title": "Example Organization",
             "email": "data@example.org",
-            "role": "author"
+            "roles": [
+                "author"
+            ]
         }
     ],
     "resources": [
@@ -85,12 +89,11 @@
                     "station_id"
                 ]
             },
-            "path": "weather.sqlite",
-            "format": "sqlite",
-            "mediatype": "application/vnd.sqlite3",
-            "sqlite_table": "stations",
-            "bytes": 24576,
-            "hash": "md5:b5375dbf2a0457226e36a640716c963d"
+            "path": "weather.duckdb",
+            "format": "duckdb",
+            "mediatype": "application/octet-stream",
+            "bytes": 798720,
+            "hash": "md5:3436ceb2f0e5351744b2d87b0eb7b58e"
         },
         {
             "name": "daily-readings",
@@ -158,10 +161,9 @@
                     }
                 ]
             },
-            "path": "weather.sqlite",
-            "format": "sqlite",
-            "mediatype": "application/vnd.sqlite3",
-            "sqlite_table": "daily-readings"
+            "path": "weather.duckdb",
+            "format": "duckdb",
+            "mediatype": "application/octet-stream"
         }
     ]
 }

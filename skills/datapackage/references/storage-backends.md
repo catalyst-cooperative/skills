@@ -89,8 +89,9 @@ the resource identifier. Try both as-is and with hyphens replaced by underscores
 ```sql
 -- After attaching the file as `db`:
 
--- DuckDB file
-SHOW TABLES;
+-- DuckDB file: SHOW TABLES only lists the in-memory database; use SHOW ALL TABLES
+-- and filter to the attached database name.
+SELECT name FROM (SHOW ALL TABLES) WHERE database = 'db' ORDER BY name;
 
 -- SQLite file
 SELECT name FROM sqlite_master WHERE type = 'table' ORDER BY name;

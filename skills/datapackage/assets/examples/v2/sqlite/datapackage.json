@@ -94,7 +94,7 @@
             "mediatype": "application/vnd.sqlite3",
             "sqlite_table": "stations",
             "bytes": 24576,
-            "hash": "md5:c5bcd94da33d91a4a77a3ff93b6f819a"
+            "hash": "md5:b5375dbf2a0457226e36a640716c963d"
         },
         {
             "name": "daily-readings",

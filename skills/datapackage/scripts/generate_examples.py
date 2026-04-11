@@ -5,18 +5,25 @@ Creates two parallel sets of examples — one for each major revision of the
 Frictionless Data Package specification — each containing the same
 weather-station dataset (5 stations, 30 daily readings) stored as:
 
-  v1/csv/     — tabular-data-package with tabular-data-resource (fully spec-compliant)
-  v1/parquet/ — data-package with community Parquet extension pattern
-  v1/duckdb/  — data-package with community duckdb_table extension pattern
-  v1/sqlite/  — data-package with community sqlite_table extension pattern
+  v1/csv/          — tabular-data-package with tabular-data-resource (fully spec-compliant)
+  v1/parquet/      — data-package with community Parquet extension pattern
+  v1/duckdb/       — data-package with community duckdb_table extension pattern
+  v1/duckdb-no-ext/ — data-package WITHOUT duckdb_table; table names use underscores
+  v1/sqlite/       — data-package with community sqlite_table extension pattern
 
-  v2/csv/     — $schema v2 descriptor with CSV resources
-  v2/parquet/ — $schema v2 descriptor with Parquet resources
-  v2/duckdb/  — $schema v2 descriptor with duckdb_table extension
-  v2/sqlite/  — $schema v2 descriptor with sqlite_table extension
+  v2/csv/          — $schema v2 descriptor with CSV resources
+  v2/parquet/      — $schema v2 descriptor with Parquet resources
+  v2/duckdb/       — $schema v2 descriptor with duckdb_table extension
+  v2/duckdb-no-ext/ — $schema v2 descriptor WITHOUT duckdb_table; table names use underscores
+  v2/sqlite/       — $schema v2 descriptor with sqlite_table extension
 
-The data files are identical across versions; only the descriptor structure and
-content differ, illustrating the key breaking changes between v1 and v2:
+The duckdb-no-ext variants are used exclusively by the table-discovery tests to
+exercise the fallback process documented in storage-backends.md: when no extension
+field is present, an agent must try the resource name directly, then with
+hyphens replaced by underscores, and finally list all tables in the database.
+
+The data files are identical across spec versions; only the descriptor structure
+and content differ, illustrating the key breaking changes between v1 and v2:
 
   - Package-level identifier: v1 uses "profile", v2 uses "$schema"
   - Contributors: v1 uses "role" (string), v2 uses "roles" (array)
@@ -32,11 +39,11 @@ Requires: pandas, pyarrow, duckdb (all available in the agent-skills pixi env).
 SQLite is in the Python stdlib.
 """
 
+import datetime
 import hashlib
 import json
 import random
 import sqlite3
-import datetime
 from functools import cache
 from pathlib import Path
 from typing import Any
@@ -379,6 +386,51 @@ def generate_duckdb(out: Path, package_meta: dict[str, Any]) -> None:
     print(f"DuckDB example written to {out}")
 
 
+def generate_duckdb_no_ext(out: Path, package_meta: dict[str, Any]) -> None:
+    """DuckDB variant without duckdb_table extension fields.
+
+    Table names inside the database use underscores (SQL-safe identifiers):
+      - resource "stations"      → table "stations"       (direct name match)
+      - resource "daily-readings" → table "daily_readings" (hyphen→underscore)
+
+    No duckdb_table field appears in the descriptor, so an agent must infer the
+    correct table name using the fallback process documented in storage-backends.md:
+    try the resource name directly, then replace hyphens with underscores, then
+    list all tables and match by inspection.
+
+    These packages are used exclusively by test_table_discovery.py.
+    """
+    stations_df, readings_df = build_sample_dataframes()
+    out.mkdir(parents=True, exist_ok=True)
+    db_path = out / "weather.duckdb"
+    db_path.unlink(missing_ok=True)
+    con: DuckDBPyConnection = duckdb.connect(str(db_path))
+    con.execute("CREATE TABLE stations AS SELECT * FROM stations_df")
+    con.execute("CREATE TABLE daily_readings AS SELECT * FROM readings_df")
+    con.close()
+    db_stats = file_stats(db_path).model_dump()
+    write_descriptor(
+        out,
+        package_meta,
+        [
+            {
+                **STATIONS_RESOURCE_BASE,
+                "path": "weather.duckdb",
+                "format": "duckdb",
+                "mediatype": "application/octet-stream",
+                **db_stats,
+            },
+            {
+                **READINGS_RESOURCE_BASE,
+                "path": "weather.duckdb",
+                "format": "duckdb",
+                "mediatype": "application/octet-stream",
+            },
+        ],
+    )
+    print(f"DuckDB (no-ext) example written to {out}")
+
+
 def generate_sqlite(out: Path, package_meta: dict[str, Any]) -> None:
     stations_df, readings_df = build_sample_dataframes()
     out.mkdir(parents=True, exist_ok=True)
@@ -429,12 +481,14 @@ if __name__ == "__main__":
     generate_csv(ASSETS / "v1" / "csv", v1_csv_meta, v1_resource_profiles=True)
     generate_parquet(ASSETS / "v1" / "parquet", v1_other_meta)
     generate_duckdb(ASSETS / "v1" / "duckdb", v1_other_meta)
+    generate_duckdb_no_ext(ASSETS / "v1" / "duckdb-no-ext", v1_other_meta)
     generate_sqlite(ASSETS / "v1" / "sqlite", v1_other_meta)
 
     print("\nGenerating v2 examples...")
     generate_csv(ASSETS / "v2" / "csv", V2_PACKAGE_META_BASE)
     generate_parquet(ASSETS / "v2" / "parquet", V2_PACKAGE_META_BASE)
     generate_duckdb(ASSETS / "v2" / "duckdb", V2_PACKAGE_META_BASE)
+    generate_duckdb_no_ext(ASSETS / "v2" / "duckdb-no-ext", V2_PACKAGE_META_BASE)
     generate_sqlite(ASSETS / "v2" / "sqlite", V2_PACKAGE_META_BASE)
 
     print("\nDone.")

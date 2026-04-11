@@ -97,6 +97,28 @@ def test_duckdb_parquet_date_columns(version):
 
 
 # ---------------------------------------------------------------------------
+# DuckDB — .df() shorthand for pandas output
+# Reference: "Getting a pandas DataFrame from DuckDB" section
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.parametrize("version", ["v1", "v2"])
+def test_duckdb_sql_df_stations(version):
+    """duckdb.sql(...).df() returns a pandas DataFrame for a Parquet file."""
+    path = str(EXAMPLES / version / "parquet" / "stations.parquet")
+    df = duckdb.sql(f"SELECT * FROM read_parquet('{path}') LIMIT 100").df()
+    assert isinstance(df, pd.DataFrame), (
+        f"{version}/parquet/stations: expected pandas DataFrame from .df(), "
+        f"got {type(df)}"
+    )
+    assert df.shape == (STATION_COUNT, len(STATION_COLUMNS)), (
+        f"{version}/parquet/stations: expected shape ({STATION_COUNT}, {len(STATION_COLUMNS)}), "
+        f"got {df.shape}"
+    )
+    assert list(df.columns) == STATION_COLUMNS
+
+
+# ---------------------------------------------------------------------------
 # DuckDB — read_csv
 # Reference: "DuckDB" section, "SELECT * FROM read_csv(...)"
 # ---------------------------------------------------------------------------
@@ -231,6 +253,27 @@ def test_polars_read_parquet_readings(version):
         f"{version}/parquet/daily-readings: 'date' column has polars type "
         f"'{df.schema['date']}', expected pl.Date."
     )
+
+
+@pytest.mark.parametrize("version", ["v1", "v2"])
+def test_polars_to_pandas_stations(version):
+    """polars.to_pandas() produces a pandas DataFrame with the correct shape and columns.
+
+    Documents the recommended conversion pattern from the "Polars" section:
+    read with polars (which handles date32 natively), then convert to pandas
+    only when a pandas-idiomatic workflow is required downstream.
+    """
+    path = str(EXAMPLES / version / "parquet" / "stations.parquet")
+    df_pandas = pl.read_parquet(path).to_pandas()
+    assert isinstance(df_pandas, pd.DataFrame), (
+        f"{version}/parquet/stations: expected pandas DataFrame after .to_pandas(), "
+        f"got {type(df_pandas)}"
+    )
+    assert df_pandas.shape == (STATION_COUNT, len(STATION_COLUMNS)), (
+        f"{version}/parquet/stations: expected shape ({STATION_COUNT}, {len(STATION_COLUMNS)}), "
+        f"got {df_pandas.shape}"
+    )
+    assert list(df_pandas.columns) == STATION_COLUMNS
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])

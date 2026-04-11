@@ -85,12 +85,11 @@
                     "station_id"
                 ]
             },
-            "path": "weather.sqlite",
-            "format": "sqlite",
-            "mediatype": "application/vnd.sqlite3",
-            "sqlite_table": "stations",
-            "bytes": 24576,
-            "hash": "md5:b5375dbf2a0457226e36a640716c963d"
+            "path": "weather.duckdb",
+            "format": "duckdb",
+            "mediatype": "application/octet-stream",
+            "bytes": 798720,
+            "hash": "md5:44b9b8e4a7b9a69cf0036fd16996e2af"
         },
         {
             "name": "daily-readings",
@@ -158,10 +157,9 @@
                     }
                 ]
             },
-            "path": "weather.sqlite",
-            "format": "sqlite",
-            "mediatype": "application/vnd.sqlite3",
-            "sqlite_table": "daily-readings"
+            "path": "weather.duckdb",
+            "format": "duckdb",
+            "mediatype": "application/octet-stream"
         }
     ]
 }
