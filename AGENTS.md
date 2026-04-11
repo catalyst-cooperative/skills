@@ -49,7 +49,7 @@ Never use `pip install` or `conda install` directly. Add new dependencies with
 ## Pre-commit Checks
 
 Use `prek` to run pre-commit hooks after editing files. Always run the relevant hooks
-before staging changes.
+before committing.
 
 **Determine which checks to run from `git status`, not from memory.** Linters,
 formatters, and other tools can modify files after you last ran a check, and a file
@@ -62,6 +62,15 @@ git status --short          # all changes: modified, staged, and untracked new f
 ```
 
 Run the appropriate hooks for every file type that appears in the output.
+
+**`--all-files` only processes git-tracked files.** New files listed as `??` in
+`git status` are invisible to the hooks until staged. Stage new files before running
+checks:
+
+```bash
+git add <new-files>
+pixi run prek run <hook> --all-files
+```
 
 ### Python
 
