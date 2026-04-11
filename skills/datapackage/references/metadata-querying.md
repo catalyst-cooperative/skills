@@ -226,7 +226,9 @@ DuckDB is a standalone CLI tool — no Python environment required. Install it w
 Use `/duckdb-skills:query` to run queries through it — that skill handles CLI
 invocation, session state, natural language, and large result warnings.
 
-DuckDB can query the descriptor as a JSON file using SQL:
+DuckDB can query the descriptor as a JSON file using SQL.
+
+**Typed-struct access**: `read_json(file, format='auto')` infers the full structure of `datapackage.json` and materialises `resources` as a typed `STRUCT[]`. Once unnested, each `r` is a typed STRUCT — use **dot-notation** (`r.name`, `r.schema.fields`) for nested access. The JSON path operators (`r->>'$.name'`) also work for scalar fields but return `JSON` for sub-objects and arrays, which `UNNEST` cannot iterate. Dot-notation is both more readable and more reliable for nested fields.
 
 ```sql
 -- Count resources (Step 2)
@@ -234,32 +236,32 @@ SELECT count(*)
 FROM (SELECT unnest(resources) AS r FROM read_json('datapackage.json', format='auto'));
 
 -- List all resource names and paths (Steps 2 and 4)
-SELECT r->>'$.name' AS name, r->>'$.path' AS path
+SELECT r.name, r.path
 FROM (SELECT unnest(resources) AS r FROM read_json('datapackage.json', format='auto'));
 
 -- Get description for a specific resource (Step 3)
-SELECT r->>'$.description' AS description
+SELECT r.description
 FROM (SELECT unnest(resources) AS r FROM read_json('datapackage.json', format='auto'))
-WHERE r->>'$.name' = 'my_table';
+WHERE r.name = 'my_table';
 
 -- List all metadata for every field in a resource (Step 3)
 SELECT f AS field_metadata
 FROM (
-    SELECT unnest(r->'$.schema.fields') AS f
+    SELECT unnest(r.schema.fields) AS f
     FROM (SELECT unnest(resources) AS r FROM read_json('datapackage.json', format='auto'))
-    WHERE r->>'$.name' = 'my_table'
+    WHERE r.name = 'my_table'
 );
 
 -- Select specific known fields plus any extras you discover (Step 3)
 SELECT
-    f->>'$.name' AS name,
-    f->>'$.description' AS description,
-    f->>'$.unit' AS unit,
-    f->>'$.warning' AS warning
+    f.name,
+    f.description,
+    f.unit,
+    f.warning
 FROM (
-    SELECT unnest(r->'$.schema.fields') AS f
+    SELECT unnest(r.schema.fields) AS f
     FROM (SELECT unnest(resources) AS r FROM read_json('datapackage.json', format='auto'))
-    WHERE r->>'$.name' = 'my_table'
+    WHERE r.name = 'my_table'
 );
 
 -- Explore all top-level package fields, excluding resources (Step 3)

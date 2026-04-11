@@ -237,6 +237,19 @@ For Parquet resources, suppress the byte-count false positive:
 frictionless validate --skip-errors byte-count datapackage.json
 ```
 
+**Date columns in Parquet**: fastparquet reads `date32` Parquet columns as nanosecond epoch integers instead of dates. This triggers a cascade of three error types:
+
+1. `type-error` — frictionless can't parse the nanosecond integer as `"type": "date"`
+1. `primary-key` — once date values fail to parse, frictionless treats them as null, making every `(id, null)` look like a duplicate
+
+Suppress all three to get a meaningful validation result on files with date columns:
+
+```bash
+frictionless validate --skip-errors byte-count,type-error,primary-key datapackage.json
+```
+
+These errors say nothing about actual data quality — they are artefacts of fastparquet's handling of `date32`. Use DuckDB or polars to validate date column content (see `storage-backends.md`).
+
 ## Diagnosing an unknown descriptor
 
 When encountering an unfamiliar `datapackage.json` for the first time, this sequence
