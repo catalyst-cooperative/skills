@@ -36,104 +36,72 @@ import hashlib
 import json
 import random
 import sqlite3
+import datetime
 from functools import cache
 from pathlib import Path
-from typing import Any, TypedDict
+from typing import Any
 
 import duckdb
 import pandas as pd
 from duckdb import DuckDBPyConnection
+from pydantic import BaseModel, Field, field_serializer
 
 
-class Station(TypedDict):
+class Station(BaseModel):
     station_id: str
     station_name: str
     latitude: float
     longitude: float
     elevation_m: int
     active: bool
-    commissioned_date: str
+    commissioned_date: datetime.date
 
 
-class ClimateParams(TypedDict):
+class ClimateParams(BaseModel):
     min: float
     max: float
     precip_chance: float
 
 
-class Reading(TypedDict):
+class Reading(BaseModel):
     station_id: str
-    date: str
+    date: datetime.date
     temp_min_c: float
     temp_max_c: float
     precipitation_mm: float | None
     wind_speed_avg_ms: float
 
 
-class FileStats(TypedDict):
+class FileStats(BaseModel):
     bytes: int
-    hash: str
+    hash: str  # raw hex digest
+    hash_algorithm: str = Field(
+        default="md5", exclude=True
+    )  # excluded from model_dump() output
+
+    @field_serializer("hash")
+    def serialize_hash(self, value: str) -> str:
+        return f"{self.hash_algorithm}:{value}"
 
 
 # ---------------------------------------------------------------------------
 # Sample data (identical for both spec versions)
 # ---------------------------------------------------------------------------
 
+# ASSETS is not yet defined at module level here; resolve the path directly.
+_EXAMPLES_DIR = Path(__file__).parent.parent / "assets" / "examples"
 STATIONS: list[Station] = [
-    {
-        "station_id": "WS-0001",
-        "station_name": "Portland Airport",
-        "latitude": 45.587,
-        "longitude": -122.597,
-        "elevation_m": 9,
-        "active": True,
-        "commissioned_date": "1978-01-01",
-    },
-    {
-        "station_id": "WS-0002",
-        "station_name": "Mount Hood Meadows",
-        "latitude": 45.331,
-        "longitude": -121.669,
-        "elevation_m": 1706,
-        "active": True,
-        "commissioned_date": "1958-06-01",
-    },
-    {
-        "station_id": "WS-0003",
-        "station_name": "Crater Lake NPS",
-        "latitude": 42.944,
-        "longitude": -122.109,
-        "elevation_m": 2135,
-        "active": True,
-        "commissioned_date": "1931-07-01",
-    },
-    {
-        "station_id": "WS-0004",
-        "station_name": "Astoria Regional Airport",
-        "latitude": 46.158,
-        "longitude": -123.879,
-        "elevation_m": 3,
-        "active": False,
-        "commissioned_date": "1948-02-01",
-    },
-    {
-        "station_id": "WS-0005",
-        "station_name": "Burns Municipal Airport",
-        "latitude": 43.592,
-        "longitude": -118.955,
-        "elevation_m": 1262,
-        "active": True,
-        "commissioned_date": "1954-09-01",
-    },
+    Station.model_validate(s)
+    for s in json.loads((_EXAMPLES_DIR / "stations_data.json").read_text())
 ]
 
 # Base temps (°C) and precipitation frequency per station (Jan 2024 approximations)
 _STATION_CLIMATE: dict[str, ClimateParams] = {
-    "WS-0001": {"min": 1.0, "max": 9.0, "precip_chance": 0.65},
-    "WS-0002": {"min": -6.0, "max": 0.0, "precip_chance": 0.70},
-    "WS-0003": {"min": -10.0, "max": -2.0, "precip_chance": 0.50},
-    "WS-0004": {"min": 2.0, "max": 8.0, "precip_chance": 0.75},
-    "WS-0005": {"min": -4.0, "max": 5.0, "precip_chance": 0.25},
+    "WS-0001": ClimateParams(min=1.0, max=9.0, precip_chance=0.65),
+    "WS-0002": ClimateParams(min=-6.0, max=0.0, precip_chance=0.70),
+    "WS-0003": ClimateParams(min=-10.0, max=-2.0, precip_chance=0.50),
+    "WS-0004": ClimateParams(min=2.0, max=8.0, precip_chance=0.75),
+    "WS-0005": ClimateParams(min=-4.0, max=5.0, precip_chance=0.25),
 }
 
 SAMPLE_START_DATE = "2024-01-01"
@@ -143,7 +111,7 @@ SAMPLE_PERIODS = 30
 def generate_readings(
     stations: list[Station],
     climate_by_station: dict[str, ClimateParams],
-    dates: list[str],
+    dates: list[datetime.date],
     seed: int = 42,
 ) -> list[Reading]:
     """Generate deterministic daily readings for the example stations."""
@@ -151,28 +119,27 @@ def generate_readings(
     readings: list[Reading] = []
 
     for station in stations:
-        station_id = station["station_id"]
-        climate = climate_by_station[station_id]
+        climate: ClimateParams = climate_by_station[station.station_id]
         for date in dates:
-            temp_min = round(climate["min"] + rng.gauss(0, 1.5), 1)
-            temp_max = round(climate["max"] + rng.gauss(0, 1.5), 1)
+            temp_min = round(climate.min + rng.gauss(0, 1.5), 1)
+            temp_max = round(climate.max + rng.gauss(0, 1.5), 1)
             if temp_max < temp_min:
                 temp_min, temp_max = temp_max, temp_min
 
-            if rng.random() < climate["precip_chance"]:
+            if rng.random() < climate.precip_chance:
                 precipitation_mm: float | None = round(rng.uniform(0.5, 25.0), 1)
             else:
                 precipitation_mm = None  # station did not report
 
             readings.append(
-                {
-                    "station_id": station_id,
-                    "date": date,
-                    "temp_min_c": temp_min,
-                    "temp_max_c": temp_max,
-                    "precipitation_mm": precipitation_mm,
-                    "wind_speed_avg_ms": round(rng.uniform(0.5, 8.0), 1),
-                }
+                Reading(
+                    station_id=station.station_id,
+                    date=date,
+                    temp_min_c=temp_min,
+                    temp_max_c=temp_max,
+                    precipitation_mm=precipitation_mm,
+                    wind_speed_avg_ms=round(rng.uniform(0.5, 8.0), 1),
+                )
             )
 
     return readings
@@ -181,192 +148,68 @@ def generate_readings(
 @cache
 def build_sample_dataframes() -> tuple[pd.DataFrame, pd.DataFrame]:
     """Build the example station and reading tables on first use."""
-    dates = (
-        pd.date_range(SAMPLE_START_DATE, periods=SAMPLE_PERIODS)
-        .strftime("%Y-%m-%d")
-        .tolist()
+    dates: list[datetime.date] = [
+        d.date() for d in pd.date_range(SAMPLE_START_DATE, periods=SAMPLE_PERIODS)
+    ]
+    readings: list[Reading] = generate_readings(STATIONS, _STATION_CLIMATE, dates)
+    return (
+        pd.DataFrame([s.model_dump() for s in STATIONS]),
+        pd.DataFrame([r.model_dump() for r in readings]),
     )
-    readings = generate_readings(STATIONS, _STATION_CLIMATE, dates)
-    return pd.DataFrame(STATIONS), pd.DataFrame(readings)
 
+
+ASSETS: Path = Path(__file__).parent.parent / "assets" / "examples"
 
 # ---------------------------------------------------------------------------
-# Shared field and schema definitions (same logical content for both versions)
+# Resource base definitions — loaded from JSON assets to avoid duplication
 # ---------------------------------------------------------------------------
 
-STATIONS_FIELDS = [
-    {
-        "name": "station_id",
-        "type": "string",
-        "description": "Unique identifier assigned by the network operator. Stable across all dataset versions.",
-        "constraints": {
-            "required": True,
-            "unique": True,
-            "pattern": "^WS-[0-9]{4}$",
-        },
-    },
-    {
-        "name": "station_name",
-        "type": "string",
-        "description": "Human-readable name of the station location (e.g. 'Portland Airport').",
-    },
-    {
-        "name": "latitude",
-        "type": "number",
-        "description": "Geographic latitude of the station in decimal degrees (WGS84 datum). Positive values are north of the equator.",
-        "unit": "degrees",
-        "constraints": {"minimum": -90, "maximum": 90},
-    },
-    {
-        "name": "longitude",
-        "type": "number",
-        "description": "Geographic longitude of the station in decimal degrees (WGS84 datum). Positive values are east of the prime meridian.",
-        "unit": "degrees",
-        "constraints": {"minimum": -180, "maximum": 180},
-    },
-    {
-        "name": "elevation_m",
-        "type": "integer",
-        "description": "Elevation of the station above mean sea level.",
-        "unit": "meters",
-    },
-    {
-        "name": "active",
-        "type": "boolean",
-        "description": "Whether the station is currently operational and reporting data.",
-    },
-    {
-        "name": "commissioned_date",
-        "type": "date",
-        "description": "Date the station began continuous operation.",
-    },
-]
+STATIONS_RESOURCE_BASE: dict[str, Any] = json.loads(
+    (ASSETS / "stations_resource.json").read_text()
+)
+READINGS_RESOURCE_BASE: dict[str, Any] = json.loads(
+    (ASSETS / "readings_resource.json").read_text()
+)
 
-READINGS_FIELDS = [
-    {
-        "name": "station_id",
-        "type": "string",
-        "description": "References stations.station_id. Every reading must belong to a known station.",
-        "constraints": {"required": True},
-    },
-    {
-        "name": "date",
-        "type": "date",
-        "description": "Calendar date of the observation (local time at the station).",
-        "constraints": {"required": True},
-    },
-    {
-        "name": "temp_min_c",
-        "type": "number",
-        "description": "Minimum air temperature recorded during the 24-hour calendar day.",
-        "unit": "degrees Celsius",
-    },
-    {
-        "name": "temp_max_c",
-        "type": "number",
-        "description": "Maximum air temperature recorded during the 24-hour calendar day.",
-        "unit": "degrees Celsius",
-    },
-    {
-        "name": "precipitation_mm",
-        "type": "number",
-        "description": "Total liquid-equivalent precipitation accumulated during the calendar day.",
-        "unit": "millimeters",
-        "warning": (
-            "Null values indicate the station did not report precipitation for that day"
-            " — not zero precipitation. Do not substitute 0 for null in analysis."
-            " A value of 0.0 means the station reported and confirmed trace or no precipitation."
-        ),
-    },
-    {
-        "name": "wind_speed_avg_ms",
-        "type": "number",
-        "description": "Average wind speed over the calendar day.",
-        "unit": "meters per second",
-    },
-]
-
-STATIONS_SCHEMA = {
-    "fields": STATIONS_FIELDS,
-    "primaryKey": ["station_id"],
-}
-
-READINGS_SCHEMA = {
-    "fields": READINGS_FIELDS,
-    "primaryKey": ["station_id", "date"],
-    "foreignKeys": [
-        {
-            "fields": ["station_id"],
-            "reference": {"resource": "stations", "fields": ["station_id"]},
-        }
-    ],
-}
-
-STATIONS_RESOURCE_BASE = {
-    "name": "stations",
-    "title": "Weather Stations",
-    "description": "One row per weather monitoring station. The station_id is the stable join key used in all other tables.",
-    "schema": STATIONS_SCHEMA,
-}
-
-READINGS_RESOURCE_BASE = {
-    "name": "daily-readings",
-    "title": "Daily Temperature and Precipitation Readings",
-    "description": (
-        "Daily summary observations from each station.\n\n"
-        "Note: readings before 2010-01-01 were collected using an older instrument"
-        " calibration standard and may differ systematically by 0.3–0.5 °C from"
-        " post-2010 readings. Do not combine pre- and post-2010 data in a single"
-        " analysis without applying the calibration correction described in the"
-        " methodology notes."
-    ),
-    "schema": READINGS_SCHEMA,
-}
-
-ASSETS = Path(__file__).parent.parent / "assets" / "examples"
+# Fields shared between v1 and v2 package metadata.
+_PACKAGE_META_COMMON: dict[str, Any] = json.loads(
+    (ASSETS / "package_meta_common.json").read_text()
+)
 
 
 # ---------------------------------------------------------------------------
 # Spec-version-specific package metadata
 # ---------------------------------------------------------------------------
-# The two versions differ in:
-#   1. How the spec version is declared (profile vs $schema)
-#   2. How contributors are structured (role string vs roles array)
-#   3. The "version" field (v1 spec doesn't define it; we omit it from v1)
-#   4. The "created" field (v1 spec doesn't define it; we omit it from v1)
+# Both bases are merged with _PACKAGE_META_COMMON (name, title, licenses,
+# sources). Only the fields that actually differ between versions appear here.
+#
+# Key differences:
+#   1. Spec version declaration: v1 uses "profile"; v2 uses "$schema"
+#   2. Contributors: v1 uses "role" (string); v2 uses "roles" (array)
+#   3. "version" and "created": defined by v2 spec, omitted from v1
+#
+# Note: for v1, "profile" is NOT included here because its value depends on
+# the backend (CSV uses "tabular-data-package"; others use "data-package").
+# It is prepended by the caller in __main__.
 
 V1_PACKAGE_META_BASE: dict[str, Any] = {
-    # "profile" is the v1 way to declare the package type.
-    # "tabular-data-package" is the strictest standard-compliant profile for CSV.
-    # Non-CSV backends use "data-package" since their resources are not tabular-CSV.
-    # (profile is set per-backend in the generator functions below)
-    "name": "weather-stations",
-    "title": "Example Weather Station Dataset",
+    **_PACKAGE_META_COMMON,
     "description": (
         "A demonstration datapackage containing two related tables: station metadata"
         " and daily temperature readings. Illustrates Frictionless Data Package v1"
         " structure including field types, constraints, foreign keys, and common"
         " non-standard extensions (unit, warning)."
     ),
-    # v1 spec doesn't define "version" — omitted intentionally
-    # v1 spec doesn't define "created" — omitted intentionally
-    "licenses": [
-        {"name": "CC-BY-4.0", "path": "https://creativecommons.org/licenses/by/4.0/"}
-    ],
     "contributors": [
         # v1: "role" is a singular string (default: "contributor")
         {"title": "Example Organization", "email": "data@example.org", "role": "author"}
     ],
-    "sources": [
-        {"title": "National Weather Service", "path": "https://www.weather.gov/"}
-    ],
 }
 
-V2_PACKAGE_META: dict[str, Any] = {
+V2_PACKAGE_META_BASE: dict[str, Any] = {
     # "$schema" is the v2 way to declare the spec version.
     "$schema": "https://datapackage.org/profiles/2.0/datapackage.json",
-    "name": "weather-stations",
-    "title": "Example Weather Station Dataset",
+    **_PACKAGE_META_COMMON,
     "description": (
         "A demonstration datapackage containing two related tables: station metadata"
         " and daily temperature readings. Illustrates Frictionless Data Package v2"
@@ -375,9 +218,6 @@ V2_PACKAGE_META: dict[str, Any] = {
     ),
     "version": "1.0.0",  # v2 defines a "version" field
     "created": "2025-01-01T00:00:00Z",  # v2 recommends ISO 8601 datetime
-    "licenses": [
-        {"name": "CC-BY-4.0", "path": "https://creativecommons.org/licenses/by/4.0/"}
-    ],
     "contributors": [
         # v2: "roles" is an array (breaking change from v1's singular "role")
         {
@@ -385,9 +225,6 @@ V2_PACKAGE_META: dict[str, Any] = {
             "email": "data@example.org",
             "roles": ["author"],
         }
-    ],
-    "sources": [
-        {"title": "National Weather Service", "path": "https://www.weather.gov/"}
     ],
 }
 
@@ -400,16 +237,14 @@ V2_PACKAGE_META: dict[str, Any] = {
 def file_stats(path: Path) -> FileStats:
     """Return bytes and MD5 hash for a file — useful for integrity checking."""
     data = path.read_bytes()
-    return {"bytes": len(data), "hash": "md5:" + hashlib.md5(data).hexdigest()}
+    return FileStats(bytes=len(data), hash=hashlib.md5(data).hexdigest())
 
 
 def write_descriptor(
     directory: Path, package_meta: dict[str, Any], resources: list[dict[str, Any]]
 ) -> None:
     descriptor = {**package_meta, "resources": resources}
-    (directory / "datapackage.json").write_text(
-        json.dumps(descriptor, indent=2, ensure_ascii=False) + "\n"
-    )
+    (directory / "datapackage.json").write_text(json.dumps(descriptor, indent=4) + "\n")
 
 
 def write_data_files(out: Path) -> None:
@@ -422,71 +257,67 @@ def write_data_files(out: Path) -> None:
 
 
 # ---------------------------------------------------------------------------
-# V1 generators
+# Backend generators
 #
-# Key v1-specific choices:
-#   CSV:     profile="tabular-data-package" at package level;
-#            profile="tabular-data-resource" on each resource.
-#            This is the most standards-compliant form of a v1 package.
-#   Others:  profile="data-package" at package level (non-CSV resources are not
-#            tabular-data-resources by spec). Community extension fields
-#            (duckdb_table, sqlite_table) are used exactly as in v2 — they are
-#            publisher conventions, not spec features, in both versions.
+# Each function writes one backend variant for a single spec version.
+# All spec-version differences are captured in the package_meta argument
+# supplied by the caller — these functions know nothing about v1 vs v2.
+#
+# CSV has one additional v1-specific wrinkle: resources must declare
+# profile="tabular-data-resource". Pass v1_resource_profiles=True for that.
 # ---------------------------------------------------------------------------
 
 
-def generate_v1_csv(out: Path) -> None:
+def generate_csv(
+    out: Path,
+    package_meta: dict[str, Any],
+    *,
+    v1_resource_profiles: bool = False,
+) -> None:
     stations_df, readings_df = build_sample_dataframes()
     out.mkdir(parents=True, exist_ok=True)
     stations_df.to_csv(out / "stations.csv", index=False)
     readings_df.to_csv(out / "daily-readings.csv", index=False)
 
-    package_meta = {
-        "profile": "tabular-data-package",
-        **V1_PACKAGE_META_BASE,
-    }
+    # "tabular-data-resource" is the v1 profile for a CSV resource with a schema.
+    resource_profile = (
+        {"profile": "tabular-data-resource"} if v1_resource_profiles else {}
+    )
     write_descriptor(
         out,
         package_meta,
         [
             {
-                # "tabular-data-resource" is the v1 profile for a CSV resource with a schema.
-                "profile": "tabular-data-resource",
+                **resource_profile,
                 **STATIONS_RESOURCE_BASE,
                 "path": "stations.csv",
                 "format": "csv",
                 "mediatype": "text/csv",
-                **file_stats(out / "stations.csv"),
+                **file_stats(out / "stations.csv").model_dump(),
             },
             {
-                "profile": "tabular-data-resource",
+                **resource_profile,
                 **READINGS_RESOURCE_BASE,
                 "path": "daily-readings.csv",
                 "format": "csv",
                 "mediatype": "text/csv",
-                **file_stats(out / "daily-readings.csv"),
+                **file_stats(out / "daily-readings.csv").model_dump(),
             },
         ],
     )
-    print(f"v1 CSV example written to {out}")
+    print(f"CSV example written to {out}")
 
 
-def generate_v1_parquet(out: Path) -> None:
+def generate_parquet(out: Path, package_meta: dict[str, Any]) -> None:
+    # Community pattern for Parquet resources:
+    # - Declare mediatype "application/parquet" and format "parquet"
+    # - Keep the "schema" field for documentation; it is valid as a custom
+    #   extension in both v1 and v2 even though v1 strictly defines schema
+    #   for CSV only.
     stations_df, readings_df = build_sample_dataframes()
     out.mkdir(parents=True, exist_ok=True)
     stations_df.to_parquet(out / "stations.parquet", index=False)
     readings_df.to_parquet(out / "daily-readings.parquet", index=False)
-
-    # Community pattern for v1 Parquet resources:
-    # - Use "data-package" profile (not "tabular-data-package" — these aren't CSV)
-    # - Declare mediatype "application/parquet" and format "parquet"
-    # - Keep the "schema" field — it documents the logical schema even though
-    #   v1 strictly defines schema for CSV. Publishers commonly include it for
-    #   documentation purposes and it is valid as a custom extension.
-    package_meta = {
-        "profile": "data-package",
-        **V1_PACKAGE_META_BASE,
-    }
     write_descriptor(
         out,
         package_meta,
@@ -496,171 +327,25 @@ def generate_v1_parquet(out: Path) -> None:
                 "path": "stations.parquet",
                 "format": "parquet",
                 "mediatype": "application/parquet",
-                **file_stats(out / "stations.parquet"),
+                **file_stats(out / "stations.parquet").model_dump(),
             },
             {
                 **READINGS_RESOURCE_BASE,
                 "path": "daily-readings.parquet",
                 "format": "parquet",
                 "mediatype": "application/parquet",
-                **file_stats(out / "daily-readings.parquet"),
+                **file_stats(out / "daily-readings.parquet").model_dump(),
             },
         ],
     )
-    print(f"v1 Parquet example written to {out}")
+    print(f"Parquet example written to {out}")
 
 
-def generate_v1_duckdb(out: Path) -> None:
-    stations_df, readings_df = build_sample_dataframes()
-    out.mkdir(parents=True, exist_ok=True)
-    db_path = out / "weather.duckdb"
-    db_path.unlink(missing_ok=True)
-    con: DuckDBPyConnection = duckdb.connect(str(db_path))
-    con.execute("CREATE TABLE stations AS SELECT * FROM stations_df")
-    con.execute('CREATE TABLE "daily-readings" AS SELECT * FROM readings_df')
-    con.close()
-
-    # Community pattern for v1 DuckDB resources:
-    # - Use "data-package" profile
+def generate_duckdb(out: Path, package_meta: dict[str, Any]) -> None:
+    # Community pattern for DuckDB resources:
     # - Both resources share the same "path" (the .duckdb file)
     # - The non-standard "duckdb_table" key identifies which table inside the DB
-    # - No "bytes"/"hash" since both resources share one file; including stats
-    #   on the shared file on the first resource and omitting from the second
-    #   is a common publisher convention.
-    db_stats = file_stats(db_path)
-    package_meta = {
-        "profile": "data-package",
-        **V1_PACKAGE_META_BASE,
-    }
-    write_descriptor(
-        out,
-        package_meta,
-        [
-            {
-                **STATIONS_RESOURCE_BASE,
-                "path": "weather.duckdb",
-                "format": "duckdb",
-                "mediatype": "application/octet-stream",
-                "duckdb_table": "stations",
-                **db_stats,
-            },
-            {
-                **READINGS_RESOURCE_BASE,
-                "path": "weather.duckdb",
-                "format": "duckdb",
-                "mediatype": "application/octet-stream",
-                "duckdb_table": "daily-readings",
-            },
-        ],
-    )
-    print(f"v1 DuckDB example written to {out}")
-
-
-def generate_v1_sqlite(out: Path) -> None:
-    stations_df, readings_df = build_sample_dataframes()
-    out.mkdir(parents=True, exist_ok=True)
-    db_path = out / "weather.sqlite"
-    db_path.unlink(missing_ok=True)
-    con: sqlite3.Connection = sqlite3.connect(str(db_path))
-    stations_df.to_sql("stations", con, index=False, if_exists="replace")
-    readings_df.to_sql("daily-readings", con, index=False, if_exists="replace")
-    con.close()
-
-    db_stats = file_stats(db_path)
-    package_meta = {
-        "profile": "data-package",
-        **V1_PACKAGE_META_BASE,
-    }
-    write_descriptor(
-        out,
-        package_meta,
-        [
-            {
-                **STATIONS_RESOURCE_BASE,
-                "path": "weather.sqlite",
-                "format": "sqlite",
-                "mediatype": "application/vnd.sqlite3",
-                "sqlite_table": "stations",
-                **db_stats,
-            },
-            {
-                **READINGS_RESOURCE_BASE,
-                "path": "weather.sqlite",
-                "format": "sqlite",
-                "mediatype": "application/vnd.sqlite3",
-                "sqlite_table": "daily-readings",
-            },
-        ],
-    )
-    print(f"v1 SQLite example written to {out}")
-
-
-# ---------------------------------------------------------------------------
-# V2 generators
-#
-# V2 uses "$schema" to declare the spec version and "roles" (array) for
-# contributors. Everything else is structurally similar to v1; Parquet/DuckDB/
-# SQLite backends use the same community extension fields in both versions.
-# ---------------------------------------------------------------------------
-
-
-def generate_v2_csv(out: Path) -> None:
-    stations_df, readings_df = build_sample_dataframes()
-    out.mkdir(parents=True, exist_ok=True)
-    stations_df.to_csv(out / "stations.csv", index=False)
-    readings_df.to_csv(out / "daily-readings.csv", index=False)
-    write_descriptor(
-        out,
-        V2_PACKAGE_META,
-        [
-            {
-                **STATIONS_RESOURCE_BASE,
-                "path": "stations.csv",
-                "format": "csv",
-                "mediatype": "text/csv",
-                **file_stats(out / "stations.csv"),
-            },
-            {
-                **READINGS_RESOURCE_BASE,
-                "path": "daily-readings.csv",
-                "format": "csv",
-                "mediatype": "text/csv",
-                **file_stats(out / "daily-readings.csv"),
-            },
-        ],
-    )
-    print(f"v2 CSV example written to {out}")
-
-
-def generate_v2_parquet(out: Path) -> None:
-    stations_df, readings_df = build_sample_dataframes()
-    out.mkdir(parents=True, exist_ok=True)
-    stations_df.to_parquet(out / "stations.parquet", index=False)
-    readings_df.to_parquet(out / "daily-readings.parquet", index=False)
-    write_descriptor(
-        out,
-        V2_PACKAGE_META,
-        [
-            {
-                **STATIONS_RESOURCE_BASE,
-                "path": "stations.parquet",
-                "format": "parquet",
-                "mediatype": "application/parquet",
-                **file_stats(out / "stations.parquet"),
-            },
-            {
-                **READINGS_RESOURCE_BASE,
-                "path": "daily-readings.parquet",
-                "format": "parquet",
-                "mediatype": "application/parquet",
-                **file_stats(out / "daily-readings.parquet"),
-            },
-        ],
-    )
-    print(f"v2 Parquet example written to {out}")
-
-
-def generate_v2_duckdb(out: Path) -> None:
+    # - bytes/hash appear only on the first resource (shared-file convention)
     stations_df, readings_df = build_sample_dataframes()
     out.mkdir(parents=True, exist_ok=True)
     db_path = out / "weather.duckdb"
@@ -669,10 +354,10 @@ def generate_v2_duckdb(out: Path) -> None:
     con.execute("CREATE TABLE stations AS SELECT * FROM stations_df")
     con.execute('CREATE TABLE "daily-readings" AS SELECT * FROM readings_df')
     con.close()
-    db_stats = file_stats(db_path)
+    db_stats = file_stats(db_path).model_dump()
     write_descriptor(
         out,
-        V2_PACKAGE_META,
+        package_meta,
         [
             {
                 **STATIONS_RESOURCE_BASE,
@@ -691,22 +376,22 @@ def generate_v2_duckdb(out: Path) -> None:
             },
         ],
     )
-    print(f"v2 DuckDB example written to {out}")
+    print(f"DuckDB example written to {out}")
 
 
-def generate_v2_sqlite(out: Path) -> None:
+def generate_sqlite(out: Path, package_meta: dict[str, Any]) -> None:
     stations_df, readings_df = build_sample_dataframes()
     out.mkdir(parents=True, exist_ok=True)
-    db_path = out / "weather.sqlite"
+    db_path: Path = out / "weather.sqlite"
     db_path.unlink(missing_ok=True)
     con: sqlite3.Connection = sqlite3.connect(str(db_path))
     stations_df.to_sql("stations", con, index=False, if_exists="replace")
     readings_df.to_sql("daily-readings", con, index=False, if_exists="replace")
     con.close()
-    db_stats = file_stats(db_path)
+    db_stats = file_stats(db_path).model_dump()
     write_descriptor(
         out,
-        V2_PACKAGE_META,
+        package_meta,
         [
             {
                 **STATIONS_RESOURCE_BASE,
@@ -725,7 +410,7 @@ def generate_v2_sqlite(out: Path) -> None:
             },
         ],
     )
-    print(f"v2 SQLite example written to {out}")
+    print(f"SQLite example written to {out}")
 
 
 # ---------------------------------------------------------------------------
@@ -733,16 +418,23 @@ def generate_v2_sqlite(out: Path) -> None:
 # ---------------------------------------------------------------------------
 
 if __name__ == "__main__":
+    # v1 CSV uses "tabular-data-package" at the package level and
+    # "tabular-data-resource" on each resource — the most spec-compliant v1 form.
+    # All other v1 backends use "data-package" (non-CSV resources are not
+    # tabular-data-resources by spec).
+    v1_csv_meta = {"profile": "tabular-data-package", **V1_PACKAGE_META_BASE}
+    v1_other_meta = {"profile": "data-package", **V1_PACKAGE_META_BASE}
+
     print("Generating v1 examples...")
-    generate_v1_csv(ASSETS / "v1" / "csv")
-    generate_v1_parquet(ASSETS / "v1" / "parquet")
-    generate_v1_duckdb(ASSETS / "v1" / "duckdb")
-    generate_v1_sqlite(ASSETS / "v1" / "sqlite")
+    generate_csv(ASSETS / "v1" / "csv", v1_csv_meta, v1_resource_profiles=True)
+    generate_parquet(ASSETS / "v1" / "parquet", v1_other_meta)
+    generate_duckdb(ASSETS / "v1" / "duckdb", v1_other_meta)
+    generate_sqlite(ASSETS / "v1" / "sqlite", v1_other_meta)
 
     print("\nGenerating v2 examples...")
-    generate_v2_csv(ASSETS / "v2" / "csv")
-    generate_v2_parquet(ASSETS / "v2" / "parquet")
-    generate_v2_duckdb(ASSETS / "v2" / "duckdb")
-    generate_v2_sqlite(ASSETS / "v2" / "sqlite")
+    generate_csv(ASSETS / "v2" / "csv", V2_PACKAGE_META_BASE)
+    generate_parquet(ASSETS / "v2" / "parquet", V2_PACKAGE_META_BASE)
+    generate_duckdb(ASSETS / "v2" / "duckdb", V2_PACKAGE_META_BASE)
+    generate_sqlite(ASSETS / "v2" / "sqlite", V2_PACKAGE_META_BASE)
 
     print("\nDone.")

@@ -2,15 +2,21 @@
     "$schema": "https://datapackage.org/profiles/2.0/datapackage.json",
     "name": "weather-stations",
     "title": "Example Weather Station Dataset",
-    "description": "A demonstration datapackage containing two related tables: station metadata and daily temperature readings. Illustrates Frictionless Data Package v2 structure including field types, constraints, foreign keys, and common non-standard extensions (unit, warning).",
-    "version": "1.0.0",
-    "created": "2025-01-01T00:00:00Z",
     "licenses": [
         {
             "name": "CC-BY-4.0",
             "path": "https://creativecommons.org/licenses/by/4.0/"
         }
     ],
+    "sources": [
+        {
+            "title": "National Weather Service",
+            "path": "https://www.weather.gov/"
+        }
+    ],
+    "description": "A demonstration datapackage containing two related tables: station metadata and daily temperature readings. Illustrates Frictionless Data Package v2 structure including field types, constraints, foreign keys, and common non-standard extensions (unit, warning).",
+    "version": "1.0.0",
+    "created": "2025-01-01T00:00:00Z",
     "contributors": [
         {
             "title": "Example Organization",
@@ -18,12 +24,6 @@
             "roles": [
                 "author"
             ]
-        }
-    ],
-    "sources": [
-        {
-            "title": "National Weather Service",
-            "path": "https://www.weather.gov/"
         }
     ],
     "resources": [
@@ -92,8 +92,8 @@
             "path": "stations.parquet",
             "format": "parquet",
             "mediatype": "application/parquet",
-            "bytes": 4828,
-            "hash": "md5:165925a987cd36cdd5a0ce1237626286"
+            "bytes": 4809,
+            "hash": "md5:0f4cdadfc7657f9421227d874619d8b4"
         },
         {
             "name": "daily-readings",
@@ -164,8 +164,8 @@
             "path": "daily-readings.parquet",
             "format": "parquet",
             "mediatype": "application/parquet",
-            "bytes": 6312,
-            "hash": "md5:4ce06906645207f1f6fc662322979dce"
+            "bytes": 6262,
+            "hash": "md5:c19093946dd07a5e9fb2ef462c41f802"
         }
     ]
 }

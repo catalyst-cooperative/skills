@@ -2,15 +2,21 @@
     "$schema": "https://datapackage.org/profiles/2.0/datapackage.json",
     "name": "weather-stations",
     "title": "Example Weather Station Dataset",
-    "description": "A demonstration datapackage containing two related tables: station metadata and daily temperature readings. Illustrates Frictionless Data Package v2 structure including field types, constraints, foreign keys, and common non-standard extensions (unit, warning).",
-    "version": "1.0.0",
-    "created": "2025-01-01T00:00:00Z",
     "licenses": [
         {
             "name": "CC-BY-4.0",
             "path": "https://creativecommons.org/licenses/by/4.0/"
         }
     ],
+    "sources": [
+        {
+            "title": "National Weather Service",
+            "path": "https://www.weather.gov/"
+        }
+    ],
+    "description": "A demonstration datapackage containing two related tables: station metadata and daily temperature readings. Illustrates Frictionless Data Package v2 structure including field types, constraints, foreign keys, and common non-standard extensions (unit, warning).",
+    "version": "1.0.0",
+    "created": "2025-01-01T00:00:00Z",
     "contributors": [
         {
             "title": "Example Organization",
@@ -18,12 +24,6 @@
             "roles": [
                 "author"
             ]
-        }
-    ],
-    "sources": [
-        {
-            "title": "National Weather Service",
-            "path": "https://www.weather.gov/"
         }
     ],
     "resources": [
