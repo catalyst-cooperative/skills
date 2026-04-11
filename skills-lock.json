@@ -14,7 +14,7 @@
         "marimo-pair": {
             "source": "marimo-team/marimo-pair",
             "sourceType": "github",
-            "computedHash": "801dfdec3306624eb2aae70cc5eff0636994da5e12374dc9aacf1f47f3953d6a"
+            "computedHash": "6014caa2f358725102297ce30ce724fc8a1e3c201a7f745eb6a7423b30da264e"
         },
         "query": {
             "source": "duckdb/duckdb-skills",

@@ -46,67 +46,53 @@ pixi run install-skills     # install vendored external skills into .agents/
 Never use `pip install` or `conda install` directly. Add new dependencies with
 `pixi add <package>` and commit the updated `pyproject.toml` and `pixi.lock`.
 
-## Pre-commit Checks
+## Linting and Formatting
 
-Use `prek` to run pre-commit hooks after editing files. Always run the relevant hooks
-before committing.
+Call the underlying tools directly — not through `prek`. Pre-commit hooks exist as a
+safety net for humans at commit time; they are slow, require files to be staged, and
+run across the entire repository. Direct invocation is faster, targets only the files
+you changed, and works on new files without staging them first.
 
-**Determine which checks to run from `git status`, not from memory.** Linters,
-formatters, and other tools can modify files after you last ran a check, and a file
-may arrive via merge or tool output rather than a direct edit. Before deciding which
-hooks to run, check what is actually modified — including new untracked files, which
-`git diff` does not show:
-
-```bash
-git status --short          # all changes: modified, staged, and untracked new files
-```
-
-Run the appropriate hooks for every file type that appears in the output.
-
-**`--all-files` only processes git-tracked files.** New files listed as `??` in
-`git status` are invisible to the hooks until staged. Stage new files before running
-checks:
+**Determine which files to check from `git status`, not from memory.** Any file may
+be modified by a formatter, a merge, or another tool after you last ran a check:
 
 ```bash
-git add <new-files>
-pixi run prek run <hook> --all-files
+git status --short   # modified, staged, and new untracked files
 ```
+
+Run the appropriate tool for every file type that appears in the output.
 
 ### Python
 
 ```bash
-pixi run prek run ruff-check --all-files   # lint (auto-fixes in place)
-pixi run prek run ruff-format --all-files  # format (rewrites in place)
-pixi run prek run ty-check --all-files     # type checking
+pixi run ruff check --fix path/to/file.py   # lint and auto-fix
+pixi run ruff format path/to/file.py        # format
+pixi run ty check                           # type checking (always whole project)
 ```
 
 ### JSON
 
 ```bash
-pixi run prek run pretty-format-json --all-files  # 4-space indent, preserve key order
+pixi run prek run pretty-format-json --files path/to/file.json
 ```
 
-The hook reformats files in place. Python code that writes JSON must use `indent=4`
-and the default `ensure_ascii=True` — do **not** pass `ensure_ascii=False`.
+JSON is the exception: the `pretty-format-json` hook uses non-obvious args
+(`--autofix --indent=4 --no-sort-keys`) so routing through prek is simpler than
+replicating them. Python code that writes JSON must use `indent=4` and the default
+`ensure_ascii=True` — do **not** pass `ensure_ascii=False`.
 
 ### YAML
 
 ```bash
-pixi run prek run check-yaml --all-files   # syntax validation
-pixi run prek run prettier --all-files     # formatting (rewrites in place)
-```
-
-For GitHub Actions workflow files, also run:
-
-```bash
-pixi run prek run actionlint --all-files   # Actions-specific lint
+pixi run prettier --write path/to/file.yaml   # format
+pixi run actionlint path/to/workflow.yml      # GitHub Actions files only
 ```
 
 ### Markdown
 
 ```bash
-pixi run prek run markdownlint-cli2 --all-files  # lint
-pixi run prek run mdformat --all-files           # format (rewrites in place)
+pixi run mdformat path/to/file.md          # format
+pixi run markdownlint-cli2 path/to/file.md # lint
 ```
 
 `mdformat` is configured with `wrap = "no"` — it does not add hard line breaks. Do not
@@ -115,7 +101,7 @@ add hard line breaks manually in markdown files.
 ### TOML
 
 ```bash
-pixi run prek run taplo-format --all-files  # format (rewrites in place)
+pixi run taplo format path/to/file.toml
 ```
 
 ## Datapackage Skill Rules
