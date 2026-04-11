@@ -22,14 +22,13 @@ import pandas as pd
 import polars as pl
 import pyarrow.parquet as pq
 import pytest
-
 from conftest import (
+    DATE_COLUMNS,
     EXAMPLES,
     READING_COLUMNS,
     READING_COUNT,
     STATION_COLUMNS,
     STATION_COUNT,
-    DATE_COLUMNS,
 )
 
 # ---------------------------------------------------------------------------
