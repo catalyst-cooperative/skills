@@ -11,6 +11,11 @@
             "sourceType": "github",
             "computedHash": "522e3f4f33436966a478f8ce94140439981392a91d661cf90b6035f6ebc1e35a"
         },
+        "duckdb-docs": {
+            "source": "duckdb/duckdb-skills",
+            "sourceType": "github",
+            "computedHash": "6aa9b9d013487eace5398a0e035cf5ee3efd220b34349a46e7c335cf079f7e66"
+        },
         "install-duckdb": {
             "source": "duckdb/duckdb-skills",
             "sourceType": "github",
@@ -25,6 +30,11 @@
             "source": "duckdb/duckdb-skills",
             "sourceType": "github",
             "computedHash": "4ef826c2a588b8629aef536a797ea67f31f8f5a04f88acadbc5ba84f6778887d"
+        },
+        "read-file": {
+            "source": "duckdb/duckdb-skills",
+            "sourceType": "github",
+            "computedHash": "16607eb0d4dc7e2ff8d92e2bdba6bedb67aedb1189f66249a46ed672ca1782c4"
         },
         "skill-creator": {
             "source": "anthropics/claude-plugins-official",
