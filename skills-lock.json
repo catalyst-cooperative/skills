@@ -11,15 +11,30 @@
             "sourceType": "github",
             "computedHash": "522e3f4f33436966a478f8ce94140439981392a91d661cf90b6035f6ebc1e35a"
         },
+        "duckdb-docs": {
+            "source": "duckdb/duckdb-skills",
+            "sourceType": "github",
+            "computedHash": "6aa9b9d013487eace5398a0e035cf5ee3efd220b34349a46e7c335cf079f7e66"
+        },
+        "install-duckdb": {
+            "source": "duckdb/duckdb-skills",
+            "sourceType": "github",
+            "computedHash": "ce264b48e369a23adbda39804fc65c7e9fdffe182f6dfbc9f4e2fdf88b027b9e"
+        },
         "marimo-pair": {
             "source": "marimo-team/marimo-pair",
             "sourceType": "github",
-            "computedHash": "801dfdec3306624eb2aae70cc5eff0636994da5e12374dc9aacf1f47f3953d6a"
+            "computedHash": "6014caa2f358725102297ce30ce724fc8a1e3c201a7f745eb6a7423b30da264e"
         },
         "query": {
             "source": "duckdb/duckdb-skills",
             "sourceType": "github",
             "computedHash": "4ef826c2a588b8629aef536a797ea67f31f8f5a04f88acadbc5ba84f6778887d"
+        },
+        "read-file": {
+            "source": "duckdb/duckdb-skills",
+            "sourceType": "github",
+            "computedHash": "16607eb0d4dc7e2ff8d92e2bdba6bedb67aedb1189f66249a46ed672ca1782c4"
         },
         "skill-creator": {
             "source": "anthropics/claude-plugins-official",

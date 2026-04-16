@@ -6,24 +6,17 @@ repos:
     rev: v0.22.0
     hooks:
       - id: markdownlint-cli2
-        args: [--fix]
 
   - repo: https://github.com/hukkin/mdformat
     rev: 1.0.0
     hooks:
       - id: mdformat
         additional_dependencies:
-          - mdformat-beautysh
-          - mdformat-config
           - mdformat-footnote
           - mdformat-front-matters
           - mdformat-gfm
-          - mdformat-gfm-alerts
           - mdformat-mkdocs
-          - mdformat-ruff
-          - mdformat-shfmt
           - mdformat_simple_breaks
-          - mdformat-web
           - mdformat-wikilink
 
   - repo: https://github.com/pre-commit/pre-commit-hooks
