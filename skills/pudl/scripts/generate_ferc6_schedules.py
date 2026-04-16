@@ -337,7 +337,7 @@ def main() -> None:
 
     print(f"Writing {len(schedules)} schedules to: {OUTPUT_PATH}")
     with open(OUTPUT_PATH, "w") as f:
-        json.dump(schedules, f, indent=4)
+        json.dump(schedules, f, indent=2)
     print("Done.")
 
     # Summary
