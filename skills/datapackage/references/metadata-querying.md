@@ -221,10 +221,9 @@ see [`storage-backends.md`](storage-backends.md).
 
 ## Steps 2–5: DuckDB (local and remote)
 
-DuckDB is a standalone CLI tool — no Python environment required. Install it with
-`brew install duckdb`, `conda install duckdb`, or download from <https://duckdb.org/>.
-Use `/duckdb-skills:query` to run queries through it — that skill handles CLI
-invocation, session state, natural language, and large result warnings.
+DuckDB is a standalone CLI tool — no Python environment required.
+The `/duckdb-skills:install-duckdb` skill should be used to install it if it is not already installed.
+Use `/duckdb-skills:query` to run queries through it — that skill handles CLI invocation, session state, natural language, and large result warnings.
 
 DuckDB can query the descriptor as a JSON file using SQL.
 
