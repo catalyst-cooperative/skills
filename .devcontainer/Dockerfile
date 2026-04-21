@@ -1,0 +1,20 @@
+FROM ghcr.io/prefix-dev/pixi:v0.67.1
+
+# The pixi base image (Ubuntu) ships a user named "ubuntu" at UID/GID 1000.
+# We reuse it directly, adding passwordless sudo so the user can install
+# additional tooling inside the running container without rebuilding the image.
+#
+# The repository is NOT copied here. It is bind-mounted from the host at
+# container start time via the workspaceMount in devcontainer.json.
+# The pixi environment (.pixi/) lives in a separate named Docker volume so
+# that Linux and macOS environments never overwrite each other.
+# hadolint ignore=DL3008
+RUN apt-get update && apt-get install -y --no-install-recommends sudo git openssh-client \
+    && rm -rf /var/lib/apt/lists/* \
+    && echo "ubuntu ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu \
+    && chmod 0440 /etc/sudoers.d/ubuntu \
+    && mkdir -p /workspace/.pixi \
+    && chown ubuntu:ubuntu /workspace/.pixi
+
+USER ubuntu
+WORKDIR /workspace

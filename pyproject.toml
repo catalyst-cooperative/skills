@@ -1,15 +1,51 @@
 [tool.pixi.workspace]
 channels = ["conda-forge"]
-platforms = ["osx-arm64", "osx-64", "linux-64"]
+platforms = ["osx-arm64", "osx-64", "linux-64", "linux-aarch64"]
 
 [tool.pixi.pypi-dependencies]
 mdformat-mkdocs = ">=5.1.4,<6"
 mdformat_simple_breaks = ">=0.1.0,<1"
 mdformat-wikilink = ">=0.3.0,<1"
 
-[tool.pixi.tasks]
-install-skills = "npx skills experimental_install"
-test-datapackage = "pytest skills/datapackage/tests/ -v"
+[tool.pixi.tasks.install-skills]
+cmd = "npx --yes skills experimental_install"
+description = "Install external skills from skills-lock.json into .agents/skills/"
+
+[tool.pixi.tasks.test-datapackage]
+cmd = "pytest skills/datapackage/tests/ -v"
+description = "Run the datapackage skill test suite"
+
+[tool.pixi.tasks.devcontainer-install]
+cmd = """
+pixi install \
+  && pixi run install-skills \
+  && pixi run npm install -g \
+      @anthropic-ai/claude-code \
+      @google/gemini-cli \
+      @openai/codex \
+      @mariozechner/pi-coding-agent \
+      opencode-ai
+"""
+description = "Set up the dev container: install pixi environment, skills, and agent CLIs (run once after first start)"
+
+[tool.pixi.tasks.devcontainer-rebuild]
+cmd = """
+docker volume rm agent-skills-pixi || true \
+  && docker build --no-cache -f .devcontainer/Dockerfile .
+"""
+description = "Rebuild the dev container image and recreate the pixi volume from scratch"
+
+[tool.pixi.tasks.devcontainer-start]
+cmd = "docker compose -f .devcontainer/compose.yml up -d"
+description = "Start the dev container in the background (for non-VS Code editors)"
+
+[tool.pixi.tasks.devcontainer-exec]
+cmd = "docker compose -f .devcontainer/compose.yml exec sandbox bash"
+description = "Open a bash shell inside the running dev container"
+
+[tool.pixi.tasks.devcontainer-stop]
+cmd = "docker compose -f .devcontainer/compose.yml down"
+description = "Stop and remove the dev container"
 
 [tool.pixi.dependencies]
 python = ">=3.14"
@@ -41,6 +77,11 @@ pytest = ">=9.0,<10"
 frictionless = ">=5.18,<6"
 fastparquet = ">=2025,<2026"
 markdownlint-cli2 = ">=0.22.0,<0.23"
+
+# These dependencies are needed inside the dev container
+gh = ">=2.90.0,<3"
+curl = ">=8.19.0,<9"
+ca-certificates = ">=2026.2.25,<2027"
 
 [tool.ty.environment]
 extra-paths = ["skills/datapackage/scripts"]
