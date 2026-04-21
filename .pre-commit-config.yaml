@@ -1,5 +1,5 @@
 ci:
-  skip: [ty-check]
+  skip: [ty-check, check-reference-traceability]
 
 repos:
   - repo: https://github.com/DavidAnson/markdownlint-cli2

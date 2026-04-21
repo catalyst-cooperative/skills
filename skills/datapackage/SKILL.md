@@ -13,7 +13,7 @@ license: CC-BY-4.0
 compatibility: |
   Required CLI tools: jq >= 1.7
   Optional CLI tools: frictionless >= 5.18 (with fastparquet for Parquet support)
-  Required skills: duckdb-skills (attach-db, query)
+  Required skills: duckdb-skills (install-duckdb, attach-db, query)
   Optional Python packages: marimo, pandas, polars, duckdb (for DataFrame work)
 metadata:
   - author: Catalyst Cooperative
@@ -60,7 +60,7 @@ If not found, tell the user how to install it:
 - Linux (conda): `conda install jq`
 - Windows: `winget install jqlang.jq`
 
-For data loading and SQL queries, the `attach-db` and `query` skills from
+For data loading and SQL queries, the `attach-db`, and `query` skills from
 `duckdb-skills` must be installed. Install them from `duckdb/duckdb-skills`.
 
 ## Workflow overview

@@ -50,9 +50,7 @@ md5sum stations.csv
 A `datapackage.json` can be megabytes with hundreds of resources and thousands of
 fields. Always query it selectively — extract only the slice you need.
 
-**Do not use Python for metadata queries.** A Python one-liner like
-`json.load(open('datapackage.json'))` loads the entire file into memory, violates the
-golden rule, and can't handle remote descriptors at all. Use jq or DuckDB instead —
+**Do not use Python for metadata queries.** Use jq or DuckDB instead —
 they are purpose-built for selective extraction. jq works on local files; DuckDB can
 query both local files and remote URLs directly.
 
