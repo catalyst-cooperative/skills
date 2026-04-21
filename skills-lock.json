@@ -21,6 +21,11 @@
       "sourceType": "github",
       "computedHash": "ce264b48e369a23adbda39804fc65c7e9fdffe182f6dfbc9f4e2fdf88b027b9e"
     },
+    "marimo-notebook": {
+      "source": "marimo-team/skills",
+      "sourceType": "github",
+      "computedHash": "4271f43564b3b8bb41cba36ae4b9ada0164430cc3a1f81267bd5f8cc2d602a9e"
+    },
     "marimo-pair": {
       "source": "marimo-team/marimo-pair",
       "sourceType": "github",
