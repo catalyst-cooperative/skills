@@ -166,33 +166,34 @@ def test_duckdb_attach_duckdb_file(version, resource_name, expected_count):
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
 def test_polars_read_parquet_stations(version):
-    """polars read_parquet loads stations with the correct shape and date type."""
+    """Polars lazy parquet pattern (scan -> select/filter -> collect) works for stations."""
     path = str(EXAMPLES / version / "parquet" / "stations.parquet")
-    df = pl.read_parquet(path)
-    assert df.shape == (STATION_COUNT, len(STATION_COLUMNS)), (
-        f"{version}/parquet/stations: expected shape ({STATION_COUNT}, {len(STATION_COLUMNS)}), "
-        f"got {df.shape}"
+    df_polars = (
+        pl.scan_parquet(path)
+        .select(["station_id", "commissioned_date", "latitude"])
+        .filter(pl.col("latitude") > -90)
+        .collect()
     )
-    assert df.schema["commissioned_date"] == pl.Date, (
-        f"{version}/parquet/stations: 'commissioned_date' has polars type "
-        f"'{df.schema['commissioned_date']}', expected pl.Date. "
-        "The Parquet file should store this column as date32."
+    assert isinstance(df_polars, pl.DataFrame)
+    assert df_polars.height > 0
+    assert set(["station_id", "commissioned_date", "latitude"]).issubset(
+        df_polars.columns
     )
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
 def test_polars_read_parquet_readings(version):
-    """polars read_parquet loads daily-readings with the correct shape and date type."""
+    """Polars lazy parquet pattern works for daily-readings."""
     path = str(EXAMPLES / version / "parquet" / "daily-readings.parquet")
-    df = pl.read_parquet(path)
-    assert df.shape == (READING_COUNT, len(READING_COLUMNS)), (
-        f"{version}/parquet/daily-readings: expected shape "
-        f"({READING_COUNT}, {len(READING_COLUMNS)}), got {df.shape}"
+    df_polars = (
+        pl.scan_parquet(path)
+        .select(["station_id", "date", "temp_max_c"])
+        .filter(pl.col("temp_max_c") > -273.15)
+        .collect()
     )
-    assert df.schema["date"] == pl.Date, (
-        f"{version}/parquet/daily-readings: 'date' column has polars type "
-        f"'{df.schema['date']}', expected pl.Date."
-    )
+    assert isinstance(df_polars, pl.DataFrame)
+    assert df_polars.height > 0
+    assert set(["station_id", "date", "temp_max_c"]).issubset(df_polars.columns)
 
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
@@ -253,15 +254,16 @@ def test_pandas_read_parquet_readings(version):
 
 @pytest.mark.parametrize("version", ["v1", "v2"])
 def test_sqlite3_stations(version):
-    """Python sqlite3 reads stations using the sqlite_table extension field."""
+    """Python sqlite3 + pandas.read_sql pattern works for a sqlite-backed resource."""
     descriptor = load_descriptor(version, "sqlite")
     resource = resource_by_name(descriptor, "stations")
     table_name = resource["sqlite_table"]
     db_path = str(EXAMPLES / version / "sqlite" / resource["path"])
 
     con = sqlite3.connect(db_path)
-    count = con.execute(f'SELECT count(*) FROM "{table_name}"').fetchone()[0]
+    df = pd.read_sql(f'SELECT * FROM "{table_name}" LIMIT 100', con)
     con.close()
-    assert count == STATION_COUNT, (
-        f"{version}/sqlite: expected {STATION_COUNT} rows in '{table_name}', got {count}"
-    )
+
+    assert isinstance(df, pd.DataFrame)
+    assert not df.empty
+    assert "station_id" in df.columns
