@@ -52,6 +52,13 @@ repos:
         types_or: [python, pyi]
         pass_filenames: false
 
+      - id: check-reference-traceability
+        name: check-reference-traceability
+        entry: pixi run check-reference-traceability
+        language: system
+        always_run: true
+        pass_filenames: false
+
   - repo: https://github.com/rbubley/mirrors-prettier
     rev: v3.8.3
     hooks:

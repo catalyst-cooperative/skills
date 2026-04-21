@@ -19,7 +19,6 @@ from conftest import DATE_COLUMNS
 
 
 SCRIPT_PATH = Path(__file__).parent.parent / "scripts" / "generate_examples.py"
-_PARQUET_DESCRIPTOR_ONLY = ["--skip-errors", "byte-count,type-error,primary-key"]
 
 
 def run_generator(output_root: Path) -> subprocess.CompletedProcess[str]:
@@ -197,8 +196,8 @@ def test_parquet_date32_schema(
     [
         ("v1", "csv", ["--standards", "v1"]),
         ("v2", "csv", ["--standards", "v2"]),
-        ("v1", "parquet", _PARQUET_DESCRIPTOR_ONLY),
-        ("v2", "parquet", _PARQUET_DESCRIPTOR_ONLY),
+        ("v1", "parquet", ["--skip-errors", "byte-count,type-error,primary-key"]),
+        ("v2", "parquet", ["--skip-errors", "byte-count,type-error,primary-key"]),
         ("v1", "sqlite", []),
         ("v2", "sqlite", []),
         ("v1", "duckdb", []),

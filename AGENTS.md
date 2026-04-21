@@ -97,6 +97,34 @@ Do not add hard line breaks manually in markdown files.
 pixi run taplo format path/to/file.toml
 ```
 
+## Reference Snippet Traceability
+
+Reference markdown examples are executable specifications for agent behavior.
+To prevent drift between documented patterns and tests, all skills use one
+uniform traceability pattern documented in
+[`REFERENCE_TEST_TRACEABILITY.md`](REFERENCE_TEST_TRACEABILITY.md).
+
+- Store development-only traceability artifacts outside distributed skill
+    content under `dev/`.
+- Per-skill manifest location: `dev/skills/<skill>/reference-snippet-manifest.json`
+- Shared validator: `dev/tools/check_reference_traceability.py`
+- Run the validator whenever you edit reference snippets or mapped tests:
+
+```bash
+pixi run check-reference-traceability
+```
+
+When editing a documented workflow snippet:
+
+1. Update the snippet in `skills/<skill>/references/`.
+1. Update mapped tests in `skills/<skill>/tests/`.
+1. Update the manifest mapping under `dev/skills/<skill>/`.
+1. Run `pixi run check-reference-traceability` and the relevant test suite.
+
+Mapped tests should validate the documented workflow pattern (API shape,
+operation, and result form), not incidental fixture details unless those
+details are explicitly part of the instructions.
+
 ## Datapackage Skill Rules
 
 ### Editing code examples in reference files
@@ -120,6 +148,8 @@ The mapping from reference file to test file is:
 ### Adding new examples to reference files
 
 When you add a new code example to any reference file, add a corresponding test to the appropriate test file that runs the pattern against the example data.
+For all snippets intended to be tested, add or update snippet IDs and mapping entries
+as described in [`REFERENCE_TEST_TRACEABILITY.md`](REFERENCE_TEST_TRACEABILITY.md).
 Check `tests/conftest.py` for shared constants (row counts, column names, path roots) before adding new helpers.
 
 ### Editing `generate_examples.py`

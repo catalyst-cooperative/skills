@@ -205,16 +205,35 @@ def test_polars_to_pandas_stations(version):
     only when a pandas-idiomatic workflow is required downstream.
     """
     path = str(EXAMPLES / version / "parquet" / "stations.parquet")
-    df_pandas = pl.read_parquet(path).to_pandas()
+    df_polars = (
+        pl.scan_parquet(path)
+        .select(["station_id", "commissioned_date", "latitude"])
+        .filter(pl.col("latitude") > -90)
+        .collect()
+    )
+    assert isinstance(df_polars, pl.DataFrame)
+    df_pandas = df_polars.to_pandas()
     assert isinstance(df_pandas, pd.DataFrame), (
         f"{version}/parquet/stations: expected pandas DataFrame after .to_pandas(), "
         f"got {type(df_pandas)}"
     )
-    assert df_pandas.shape == (STATION_COUNT, len(STATION_COLUMNS)), (
-        f"{version}/parquet/stations: expected shape ({STATION_COUNT}, {len(STATION_COLUMNS)}), "
-        f"got {df_pandas.shape}"
+    assert not df_pandas.empty
+    assert set(["station_id", "commissioned_date", "latitude"]).issubset(
+        df_pandas.columns
     )
-    assert list(df_pandas.columns) == STATION_COLUMNS
+
+
+@pytest.mark.parametrize("version", ["v1", "v2"])
+def test_polars_scan_csv_to_pandas(version):
+    """Polars lazy CSV scan pattern can be collected and converted to pandas."""
+    path = str(EXAMPLES / version / "csv" / "stations.csv")
+    df_polars = pl.scan_csv(path).select(["station_id", "latitude"]).collect()
+    assert isinstance(df_polars, pl.DataFrame)
+    df_pandas = df_polars.to_pandas()
+
+    assert isinstance(df_pandas, pd.DataFrame)
+    assert not df_pandas.empty
+    assert set(["station_id", "latitude"]).issubset(df_pandas.columns)
 
 
 # ---------------------------------------------------------------------------
@@ -244,6 +263,17 @@ def test_pandas_read_parquet_readings(version):
         f"{version}/parquet/daily-readings: expected shape "
         f"({READING_COUNT}, {len(READING_COLUMNS)}), got {df.shape}"
     )
+
+
+@pytest.mark.parametrize("version", ["v1", "v2"])
+def test_pandas_read_csv_stations(version):
+    """pandas read_csv loads stations as a DataFrame."""
+    path = str(EXAMPLES / version / "csv" / "stations.csv")
+    df = pd.read_csv(path)
+
+    assert isinstance(df, pd.DataFrame)
+    assert not df.empty
+    assert "station_id" in df.columns
 
 
 # ---------------------------------------------------------------------------

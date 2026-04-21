@@ -3,13 +3,7 @@ name: test-datapackage
 on:
   push:
     branches: [main]
-    paths:
-      - "skills/datapackage/**"
-      - ".github/workflows/test-datapackage.yml"
   pull_request:
-    paths:
-      - "skills/datapackage/**"
-      - ".github/workflows/test-datapackage.yml"
 
 jobs:
   test:
@@ -23,3 +17,15 @@ jobs:
 
       - name: Run datapackage tests
         run: pixi run test-datapackage
+
+  check-reference-traceability:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: prefix-dev/setup-pixi@v0.9.5
+        with:
+          frozen: true
+
+      - name: Run reference traceability check
+        run: pixi run check-reference-traceability
