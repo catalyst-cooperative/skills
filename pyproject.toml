@@ -12,7 +12,7 @@ cmd = "npx --yes skills experimental_install"
 description = "Install external skills from skills-lock.json into .agents/skills/"
 
 [tool.pixi.tasks.test-datapackage]
-cmd = "pytest skills/datapackage/tests/ -v"
+cmd = "pytest dev/skills/datapackage/tests/ -v"
 description = "Run the datapackage skill test suite"
 
 [tool.pixi.tasks.docs-build]
@@ -92,7 +92,7 @@ curl = ">=8.19.0,<9"
 ca-certificates = ">=2026.2.25,<2027"
 
 [tool.ty.environment]
-extra-paths = ["skills/datapackage/scripts"]
+extra-paths = ["dev/skills/datapackage/scripts", "dev/tools"]
 
 [tool.mdformat]
 # Use "no" wrapping so paragraphs stay as single long lines, soft-wrapped in the editor.

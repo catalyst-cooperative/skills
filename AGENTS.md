@@ -1,9 +1,22 @@
 # AGENTS.md
 
+> Canonical source note: `AGENTS.md` is the single source of truth for repository-level agent guidance. `CLAUDE.md` is a symlink to this file (not a separate guidance document).
+
 ## Project Overview
 
 This repository contains shareable agent skills — reusable, installable prompts that give agents specialized knowledge and workflows.
-Skills live under `skills/`, each providing reference documentation, example assets, a test suite, and evaluation cases.
+Skills live under `skills/`, each providing distributed agent-facing guidance and assets.
+Development-only tests, generators, and other validation artifacts live under `dev/skills/`.
+
+## Distribution Boundary
+
+Everything under `skills/<skill_name>/` is shipped with installed skills, including `SKILL.md`, `references/`, `assets/`, and (when present) `scripts/`.
+Do not mention repository-internal dev paths, test suites, or example-generation scripts in distributed skill content (for example, anything under `dev/skills/`).
+If guidance needs those artifacts at runtime, move the required artifacts into the distributed skill first.
+
+Use `ALL_CAPS.md` only for repository standards or canonical interface files such
+as `AGENTS.md`, `README.md`, and `SKILL.md`. Use kebab-case for other markdown
+documents.
 
 ## Repository Layout
 
@@ -12,11 +25,9 @@ agent-skills/
 ├── skills/
 │   ├── datapackage/     # Generic Frictionless Data Package exploration skill
 │   │   ├── SKILL.md           # Skill descriptor (YAML front matter) + usage guide
-│   │   ├── scripts/           # generate_examples.py — builds all example datasets
-│   │   ├── assets/            # JSON schemas + generated example datapackages
-│   │   │   └── examples/      # 8 packages (v1+v2 × csv/parquet/duckdb/sqlite)
+│   │   ├── assets/            # Distributed JSON schemas and skill assets
 │   │   ├── references/        # frictionless-validate.md, metadata-querying.md, storage-backends.md
-│   │   ├── tests/             # pytest suite covering all reference code examples
+│   │   ├── scripts/           # utility scripts (Python or shell) for use at runtime by agents
 │   │   └── evals/             # Skill evaluation cases
 │   ├── pudl/            # PUDL data-user skill (read tables, explore metadata)
 │   └── pudl-dev/        # PUDL developer skill (ETL, schema, CI, dbt, pytest)
@@ -102,7 +113,7 @@ pixi run taplo format path/to/file.toml
 Reference markdown examples are executable specifications for agent behavior.
 To prevent drift between documented patterns and tests, all skills use one
 uniform traceability pattern documented in
-[`REFERENCE_TEST_TRACEABILITY.md`](REFERENCE_TEST_TRACEABILITY.md).
+[`reference-test-traceability.md`](reference-test-traceability.md).
 
 - Store development-only traceability artifacts outside distributed skill
     content under `dev/`.
@@ -117,7 +128,7 @@ pixi run check-reference-traceability
 When editing a documented workflow snippet:
 
 1. Update the snippet in `skills/<skill>/references/`.
-1. Update mapped tests in `skills/<skill>/tests/`.
+1. Update mapped tests in `dev/skills/<skill>/tests/`.
 1. Update the manifest mapping under `dev/skills/<skill>/`.
 1. Run `pixi run check-reference-traceability` and the relevant test suite.
 
@@ -127,9 +138,13 @@ details are explicitly part of the instructions.
 
 ## Datapackage Skill Rules
 
+Datapackage repository-maintainer notes (example corpus layout, regeneration
+workflow, and other dev-only context) are documented in
+`dev/skills/datapackage/datapackage-dev-guide.md`.
+
 ### Editing code examples in reference files
 
-Every code block in `skills/datapackage/references/` is covered by a test in `skills/datapackage/tests/`.
+Every code block in `skills/datapackage/references/` is covered by a test in `dev/skills/datapackage/tests/`.
 After editing any code example in a reference file, run the full test suite to confirm the example still works:
 
 ```bash
@@ -149,15 +164,15 @@ The mapping from reference file to test file is:
 
 When you add a new code example to any reference file, add a corresponding test to the appropriate test file that runs the pattern against the example data.
 For all snippets intended to be tested, add or update snippet IDs and mapping entries
-as described in [`REFERENCE_TEST_TRACEABILITY.md`](REFERENCE_TEST_TRACEABILITY.md).
-Check `tests/conftest.py` for shared constants (row counts, column names, path roots) before adding new helpers.
+as described in [`reference-test-traceability.md`](reference-test-traceability.md).
+Check `dev/skills/datapackage/tests/conftest.py` for shared constants (row counts, column names, path roots) before adding new helpers.
 
 ### Editing `generate_examples.py`
 
-After modifying `skills/datapackage/scripts/generate_examples.py`, regenerate all example datasets and verify nothing regressed:
+After modifying `dev/skills/datapackage/scripts/generate_examples.py`, regenerate all example datasets and verify nothing regressed:
 
 ```bash
-python skills/datapackage/scripts/generate_examples.py
+python dev/skills/datapackage/scripts/generate_examples.py
 pixi run test-datapackage
 pixi run prek run pretty-format-json --all-files  # reformat generated descriptors
 ```
@@ -169,11 +184,15 @@ Each skill directory follows this layout:
 ```
 skills/<name>/
 ├── SKILL.md       # Required: YAML front matter descriptor + usage guide
-├── assets/        # Schemas, cached data, generated example datasets
+├── assets/        # Schemas, cached data, and distributed skill assets
 ├── references/    # Long-form reference docs (markdown)
 ├── scripts/       # Utility scripts (Python or shell)
-├── tests/         # pytest suite verifying reference code examples
 └── evals/         # Evaluation cases for measuring skill quality
+
+dev/skills/<name>/
+├── assets/examples/ # Generated example datasets and fixtures
+├── scripts/         # Dev-only utility scripts (Python or shell)
+└── tests/           # pytest suite verifying reference code examples
 ```
 
 - Reference documents in `references/` are the authoritative source for patterns.

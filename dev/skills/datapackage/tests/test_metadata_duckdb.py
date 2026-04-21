@@ -4,7 +4,7 @@ Mirrors the jq tests but uses the DuckDB Python API, running exactly the SQL
 queries shown in the reference.  Parametrized over all 8 packages to confirm
 every descriptor is queryable via DuckDB.
 
-Run:  pixi run pytest skills/datapackage/tests/test_metadata_duckdb.py -v
+Run:  pixi run pytest dev/skills/datapackage/tests/test_metadata_duckdb.py -v
 """
 
 import json

@@ -60,7 +60,7 @@ Each skill manifest is JSON with this shape:
             "snippet_id": "storage-backends.duckdb-read-csv",
             "reference": "skills/datapackage/references/storage-backends.md",
             "tests": [
-                "skills/datapackage/tests/test_backends.py::test_duckdb_read_csv_stations"
+                "dev/skills/datapackage/tests/test_backends.py::test_duckdb_read_csv_stations"
             ]
         }
     ]

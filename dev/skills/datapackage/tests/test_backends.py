@@ -4,7 +4,7 @@ These tests stay focused on the documented loading patterns themselves. Fresh
 generation and descriptor validation of the example assets are covered
 separately in test_generate_examples.py.
 
-Run:  pixi run pytest skills/datapackage/tests/test_backends.py -v
+Run:  pixi run pytest dev/skills/datapackage/tests/test_backends.py -v
 """
 
 import json

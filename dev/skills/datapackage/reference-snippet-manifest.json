@@ -5,76 +5,76 @@
       "snippet_id": "storage-backends.duckdb-read-csv",
       "reference": "skills/datapackage/references/storage-backends.md",
       "tests": [
-        "skills/datapackage/tests/test_backends.py::test_duckdb_read_csv_stations",
-        "skills/datapackage/tests/test_backends.py::test_duckdb_read_csv_readings"
+        "dev/skills/datapackage/tests/test_backends.py::test_duckdb_read_csv_stations",
+        "dev/skills/datapackage/tests/test_backends.py::test_duckdb_read_csv_readings"
       ]
     },
     {
       "snippet_id": "storage-backends.duckdb-attach-file",
       "reference": "skills/datapackage/references/storage-backends.md",
       "tests": [
-        "skills/datapackage/tests/test_backends.py::test_duckdb_attach_duckdb_file"
+        "dev/skills/datapackage/tests/test_backends.py::test_duckdb_attach_duckdb_file"
       ]
     },
     {
       "snippet_id": "storage-backends.db-table-name-extension-fields",
       "reference": "skills/datapackage/references/storage-backends.md",
       "tests": [
-        "skills/datapackage/tests/test_backends.py::test_duckdb_attach_sqlite",
-        "skills/datapackage/tests/test_backends.py::test_duckdb_attach_duckdb_file",
-        "skills/datapackage/tests/test_backends.py::test_sqlite3_stations"
+        "dev/skills/datapackage/tests/test_backends.py::test_duckdb_attach_sqlite",
+        "dev/skills/datapackage/tests/test_backends.py::test_duckdb_attach_duckdb_file",
+        "dev/skills/datapackage/tests/test_backends.py::test_sqlite3_stations"
       ]
     },
     {
       "snippet_id": "storage-backends.duckdb-to-pandas-df",
       "reference": "skills/datapackage/references/storage-backends.md",
       "tests": [
-        "skills/datapackage/tests/test_backends.py::test_duckdb_sql_df_stations"
+        "dev/skills/datapackage/tests/test_backends.py::test_duckdb_sql_df_stations"
       ]
     },
     {
       "snippet_id": "storage-backends.polars-lazy-parquet",
       "reference": "skills/datapackage/references/storage-backends.md",
       "tests": [
-        "skills/datapackage/tests/test_backends.py::test_polars_read_parquet_stations",
-        "skills/datapackage/tests/test_backends.py::test_polars_read_parquet_readings",
-        "skills/datapackage/tests/test_backends.py::test_polars_to_pandas_stations"
+        "dev/skills/datapackage/tests/test_backends.py::test_polars_read_parquet_stations",
+        "dev/skills/datapackage/tests/test_backends.py::test_polars_read_parquet_readings",
+        "dev/skills/datapackage/tests/test_backends.py::test_polars_to_pandas_stations"
       ]
     },
     {
       "snippet_id": "storage-backends.polars-lazy-csv",
       "reference": "skills/datapackage/references/storage-backends.md",
       "tests": [
-        "skills/datapackage/tests/test_backends.py::test_polars_scan_csv_to_pandas"
+        "dev/skills/datapackage/tests/test_backends.py::test_polars_scan_csv_to_pandas"
       ]
     },
     {
       "snippet_id": "storage-backends.pandas-read-parquet",
       "reference": "skills/datapackage/references/storage-backends.md",
       "tests": [
-        "skills/datapackage/tests/test_backends.py::test_pandas_read_parquet_stations",
-        "skills/datapackage/tests/test_backends.py::test_pandas_read_parquet_readings"
+        "dev/skills/datapackage/tests/test_backends.py::test_pandas_read_parquet_stations",
+        "dev/skills/datapackage/tests/test_backends.py::test_pandas_read_parquet_readings"
       ]
     },
     {
       "snippet_id": "storage-backends.pandas-read-csv",
       "reference": "skills/datapackage/references/storage-backends.md",
       "tests": [
-        "skills/datapackage/tests/test_backends.py::test_pandas_read_csv_stations"
+        "dev/skills/datapackage/tests/test_backends.py::test_pandas_read_csv_stations"
       ]
     },
     {
       "snippet_id": "storage-backends.sqlite-via-duckdb-attach",
       "reference": "skills/datapackage/references/storage-backends.md",
       "tests": [
-        "skills/datapackage/tests/test_backends.py::test_duckdb_attach_sqlite"
+        "dev/skills/datapackage/tests/test_backends.py::test_duckdb_attach_sqlite"
       ]
     },
     {
       "snippet_id": "storage-backends.sqlite-stdlib-pandas-read-sql",
       "reference": "skills/datapackage/references/storage-backends.md",
       "tests": [
-        "skills/datapackage/tests/test_backends.py::test_sqlite3_stations"
+        "dev/skills/datapackage/tests/test_backends.py::test_sqlite3_stations"
       ]
     }
   ]

@@ -4,7 +4,7 @@ Each test exercises a specific CLI pattern from that reference so a failing test
 immediately tells an agent which documented command broke and what the actual
 output was.
 
-Run:  pixi run pytest skills/datapackage/tests/test_frictionless.py -v
+Run:  pixi run pytest dev/skills/datapackage/tests/test_frictionless.py -v
 """
 
 import json

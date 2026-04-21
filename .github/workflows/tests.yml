@@ -1,4 +1,4 @@
-name: test-datapackage
+name: tests
 
 on:
   push:
