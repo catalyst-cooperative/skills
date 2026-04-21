@@ -9,7 +9,7 @@ FROM ghcr.io/prefix-dev/pixi:0.67.1
 # The pixi environment (.pixi/) lives in a separate named Docker volume so
 # that Linux and macOS environments never overwrite each other.
 # hadolint ignore=DL3008
-RUN apt-get update && apt-get install -y --no-install-recommends sudo git openssh-client \
+RUN apt-get update && apt-get install -y --no-install-recommends sudo git openssh-client bubblewrap socat \
     && rm -rf /var/lib/apt/lists/* \
     && echo "ubuntu ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu \
     && chmod 0440 /etc/sudoers.d/ubuntu \
