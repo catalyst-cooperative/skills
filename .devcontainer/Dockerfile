@@ -17,4 +17,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends sudo git openss
     && chown ubuntu:ubuntu /workspace/.pixi
 
 USER ubuntu
+# Activate the pixi environment in every interactive shell.
+# shell-hook is guarded so it fails silently before devcontainer-install has run.
+# hadolint ignore=SC2016
+RUN echo 'eval "$(pixi shell-hook --shell bash 2>/dev/null || true)"' >> ~/.bashrc
 WORKDIR /workspace
