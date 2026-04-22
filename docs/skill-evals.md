@@ -23,7 +23,7 @@ When we're evaluating skill performance we want to be intentional about the stat
 In some cases (e.g. choice of model and harness) we'll want to test a handful of common configurations.
 In others (e.g. context leakage from outside the conversation) we'll want to try and minimize the impact and collect actual user feedback from the real world.
 
-## Environmental Control
+## Context Leakage
 
 - We don't want to accidentally provide the agent with too much context or information from outside of the skill that real world users would not have.
 - For example, an adjacent checkout of the PUDL repo with all of our documentation in it, or the development files that exist in the `agent-skills` repo but which won't be distributed with the skill when it's installed by users.

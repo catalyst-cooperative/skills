@@ -618,6 +618,143 @@
       "validation_note": "Passes frictionless validate in this environment.",
       "language_hint": "it",
       "likely_validation_failure_reasons": []
+    },
+    {
+      "id": "pudl-ferc1-xbrl-nightly-sqlite",
+      "title": "PUDL FERC Form 1 XBRL datapackage (nightly)",
+      "description": "Nightly PUDL datapackage for FERC Form 1 XBRL data with SQLite-backed table resources and explicit schema fields.",
+      "datapackage_url": "https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/ferc1_xbrl_datapackage.json",
+      "source_repository": "catalyst-cooperative/pudl",
+      "spec_version": "v1",
+      "version_inference": "profile=tabular-data-package",
+      "resources_count": 370,
+      "data_formats": [
+        "sqlite"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment (descriptor paths point to local sqlite:/// build-machine locations).",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "high_resource_count_increases_validation_surface",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "pudl-ferc2-xbrl-nightly-sqlite",
+      "title": "PUDL FERC Form 2 XBRL datapackage (nightly)",
+      "description": "Nightly PUDL datapackage for FERC Form 2 XBRL data with SQLite-backed table resources and explicit schema fields.",
+      "datapackage_url": "https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/ferc2_xbrl_datapackage.json",
+      "source_repository": "catalyst-cooperative/pudl",
+      "spec_version": "v1",
+      "version_inference": "profile=tabular-data-package",
+      "resources_count": 434,
+      "data_formats": [
+        "sqlite"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment (descriptor paths point to local sqlite:/// build-machine locations).",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "high_resource_count_increases_validation_surface",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "pudl-ferc6-xbrl-nightly-sqlite",
+      "title": "PUDL FERC Form 6 XBRL datapackage (nightly)",
+      "description": "Nightly PUDL datapackage for FERC Form 6 XBRL data with SQLite-backed table resources and explicit schema fields.",
+      "datapackage_url": "https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/ferc6_xbrl_datapackage.json",
+      "source_repository": "catalyst-cooperative/pudl",
+      "spec_version": "v1",
+      "version_inference": "profile=tabular-data-package",
+      "resources_count": 206,
+      "data_formats": [
+        "sqlite"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment (descriptor paths point to local sqlite:/// build-machine locations).",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "high_resource_count_increases_validation_surface",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "pudl-ferc60-xbrl-nightly-sqlite",
+      "title": "PUDL FERC Form 60 XBRL datapackage (nightly)",
+      "description": "Nightly PUDL datapackage for FERC Form 60 XBRL data with SQLite-backed table resources and explicit schema fields.",
+      "datapackage_url": "https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/ferc60_xbrl_datapackage.json",
+      "source_repository": "catalyst-cooperative/pudl",
+      "spec_version": "v1",
+      "version_inference": "profile=tabular-data-package",
+      "resources_count": 88,
+      "data_formats": [
+        "sqlite"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment (descriptor paths point to local sqlite:/// build-machine locations).",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "high_resource_count_increases_validation_surface",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "pudl-ferc714-xbrl-nightly-sqlite",
+      "title": "PUDL FERC Form 714 XBRL datapackage (nightly)",
+      "description": "Nightly PUDL datapackage for FERC Form 714 XBRL data with SQLite-backed table resources and explicit schema fields.",
+      "datapackage_url": "https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/ferc714_xbrl_datapackage.json",
+      "source_repository": "catalyst-cooperative/pudl",
+      "spec_version": "v1",
+      "version_inference": "profile=tabular-data-package",
+      "resources_count": 26,
+      "data_formats": [
+        "sqlite"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "invalid",
+      "validation_note": "Fails frictionless validate in this environment (descriptor paths point to local sqlite:/// build-machine locations).",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "high_resource_count_increases_validation_surface",
+        "resource_urls_or_schema_constraints_may_not_match_current_validator"
+      ]
+    },
+    {
+      "id": "pudl-parquet-nightly",
+      "title": "PUDL Parquet datapackage (nightly)",
+      "description": "Nightly PUDL datapackage describing tabular Parquet resources with explicit schema fields for each table.",
+      "datapackage_url": "https://s3.us-west-2.amazonaws.com/pudl.catalyst.coop/nightly/pudl_parquet_datapackage.json",
+      "source_repository": "catalyst-cooperative/pudl",
+      "spec_version": "ambiguous",
+      "version_inference": "No $schema and no profile",
+      "resources_count": 359,
+      "data_formats": [
+        "parquet"
+      ],
+      "has_non_tabular_resources": false,
+      "approx_dataset_size_bytes": null,
+      "approx_dataset_size_note": "No bytes declared in descriptor.",
+      "frictionless_validation_status": "timeout",
+      "validation_note": "Validation exceeded a 45s cap in this environment.",
+      "language_hint": "en",
+      "likely_validation_failure_reasons": [
+        "validation_runtime_or_network_timeout"
+      ]
     }
   ]
 }
