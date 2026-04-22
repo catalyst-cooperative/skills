@@ -13,6 +13,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends sudo git openss
     && rm -rf /var/lib/apt/lists/* \
     && echo "ubuntu ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/ubuntu \
     && chmod 0440 /etc/sudoers.d/ubuntu \
+    && chmod u+s /usr/bin/bwrap \
     && mkdir -p /workspace/.pixi \
     && chown ubuntu:ubuntu /workspace/.pixi
 
