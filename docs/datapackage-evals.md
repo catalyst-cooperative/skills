@@ -4,24 +4,11 @@ icon: lucide/check
 
 # Datapackage Skill Evals
 
-## What are we evaluating?
-
-The outcome of evaluations will be a function of multiple inputs, including:
-
-- The underlying model (e.g. Gemma4, Claude Sonnet 4.6, GPT 5.4), which determines the fundamental capabilities and limitations of the agent
-- The agent harness (e.g. Pi, Claude Code, VS Code Co-pilot chat), which determines how the model is able to interact with tools, files, and the environment
-- The skill definition itself, which provides dynamic model context including code snippets and workflow outlines
-- The datapackage being queried, which may contain a variable quality and quantity of metadata.
-- Other contextual factors like the specific prompt given to the agent, the agent's prior interactions in the conversation, and other files or information available to the agent in the environment.
-
 Here we're primarily trying to evaluate the `datapackage` skill definition so we can refine it, while controlling other variables as much as possible.
 
 - We want to see how the skill performs across multiple models and harnesses to ensure it's not overfitted to a particular agent setup.
 - We want to test the skill against a variety of datapackages with different structures and metadata quality to ensure it can handle a range of real-world scenarios.
-- We don't want to accidentally provide the agent with too much context or information from outside of the skill that real world users would not have (e.g. an adjacent checkout of the PUDL repo with all of our documentation in it, or the development files that exist in the `agent-skills` repo but which won't be distributed with the skill when it's installed by users).
-- We both need to evaluate whether the skill is working **well enough** and whether changes we've make to the skill definition result in improved or degraded performance relative to a previous baseline.
-- Whether it works well enough will probably depend strongly on what model is being used.
-- Whether a change we've made has improved or degraded performance might be discernible even with a smaller or less capable model whose absolute performance isn't great.
+- We want to point the skill at the PUDL data packages to get a baseline against which we can evaluate the improvement that comes from layering the `pudl` skill on top of the `datapackage` skill with PUDL-specific context and guidance.
 
 ## Skill Activation
 
