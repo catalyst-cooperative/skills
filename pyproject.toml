@@ -90,6 +90,7 @@ markdownlint-cli2 = ">=0.22.0,<0.23"
 gh = ">=2.90.0,<3"
 curl = ">=8.19.0,<9"
 ca-certificates = ">=2026.2.25,<2027"
+ripgrep = ">=15.1.0,<16"
 
 [tool.ty.environment]
 extra-paths = ["dev/skills/datapackage/scripts", "dev/tools"]
@@ -103,6 +104,8 @@ wrap = "no"
 extend-exclude = [
   # Vendored schemas and machine-generated JSON data files
   "skills/*/assets/",
+  # Development-only fixture and catalog data (may contain multilingual content)
+  "dev/skills/*/assets/",
   # Markdown reference tables generated from JSON by scripts/generate_ferc_tables.py
   "skills/pudl/references/ferc1-schedules.md",
   "skills/pudl/references/ferc2-schedules.md",
