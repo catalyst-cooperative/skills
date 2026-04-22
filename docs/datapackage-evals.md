@@ -19,6 +19,9 @@ Here we're primarily trying to evaluate the `datapackage` skill definition so we
 - We want to see how the skill performs across multiple models and harnesses to ensure it's not overfitted to a particular agent setup.
 - We want to test the skill against a variety of datapackages with different structures and metadata quality to ensure it can handle a range of real-world scenarios.
 - We don't want to accidentally provide the agent with too much context or information from outside of the skill that real world users would not have (e.g. an adjacent checkout of the PUDL repo with all of our documentation in it, or the development files that exist in the `agent-skills` repo but which won't be distributed with the skill when it's installed by users).
+- We both need to evaluate whether the skill is working **well enough** and whether changes we've make to the skill definition result in improved or degraded performance relative to a previous baseline.
+- Whether it works well enough will probably depend strongly on what model is being used.
+- Whether a change we've made has improved or degraded performance might be discernible even with a smaller or less capable model whose absolute performance isn't great.
 
 ## Skill Activation
 
