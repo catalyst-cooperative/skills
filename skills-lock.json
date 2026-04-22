@@ -1,30 +1,50 @@
 {
-    "version": 1,
-    "skills": {
-        "attach-db": {
-            "source": "duckdb/duckdb-skills",
-            "sourceType": "github",
-            "computedHash": "db6a105a312536b75a58616dfd38b46909253c88fcb1ffd58bfc506ffa3065d6"
-        },
-        "dignified-python": {
-            "source": "dagster-io/skills",
-            "sourceType": "github",
-            "computedHash": "522e3f4f33436966a478f8ce94140439981392a91d661cf90b6035f6ebc1e35a"
-        },
-        "marimo-pair": {
-            "source": "marimo-team/marimo-pair",
-            "sourceType": "github",
-            "computedHash": "801dfdec3306624eb2aae70cc5eff0636994da5e12374dc9aacf1f47f3953d6a"
-        },
-        "query": {
-            "source": "duckdb/duckdb-skills",
-            "sourceType": "github",
-            "computedHash": "4ef826c2a588b8629aef536a797ea67f31f8f5a04f88acadbc5ba84f6778887d"
-        },
-        "skill-creator": {
-            "source": "anthropics/claude-plugins-official",
-            "sourceType": "github",
-            "computedHash": "9b03bb78ec5c81c4e0546dbb78cfc970368c72dcae5482e8c59690175abbc8e7"
-        }
+  "version": 1,
+  "skills": {
+    "attach-db": {
+      "source": "duckdb/duckdb-skills",
+      "sourceType": "github",
+      "computedHash": "db6a105a312536b75a58616dfd38b46909253c88fcb1ffd58bfc506ffa3065d6"
+    },
+    "dignified-python": {
+      "source": "dagster-io/skills",
+      "sourceType": "github",
+      "computedHash": "1ef2e92b5496cf01b84df57d6cbe49bceb70d77e9e9d86546788fe1e648f926b"
+    },
+    "duckdb-docs": {
+      "source": "duckdb/duckdb-skills",
+      "sourceType": "github",
+      "computedHash": "6aa9b9d013487eace5398a0e035cf5ee3efd220b34349a46e7c335cf079f7e66"
+    },
+    "install-duckdb": {
+      "source": "duckdb/duckdb-skills",
+      "sourceType": "github",
+      "computedHash": "ce264b48e369a23adbda39804fc65c7e9fdffe182f6dfbc9f4e2fdf88b027b9e"
+    },
+    "marimo-notebook": {
+      "source": "marimo-team/skills",
+      "sourceType": "github",
+      "computedHash": "56c73bca1669181c2e0c970f2276e119960b6c68d7301fd66fe33107142a89e3"
+    },
+    "marimo-pair": {
+      "source": "marimo-team/marimo-pair",
+      "sourceType": "github",
+      "computedHash": "c6d46d7718989c44cb08b6efc6890654d1e7dd5732a98e34ada40954dcba1624"
+    },
+    "query": {
+      "source": "duckdb/duckdb-skills",
+      "sourceType": "github",
+      "computedHash": "4ef826c2a588b8629aef536a797ea67f31f8f5a04f88acadbc5ba84f6778887d"
+    },
+    "read-file": {
+      "source": "duckdb/duckdb-skills",
+      "sourceType": "github",
+      "computedHash": "16607eb0d4dc7e2ff8d92e2bdba6bedb67aedb1189f66249a46ed672ca1782c4"
+    },
+    "skill-creator": {
+      "source": "anthropics/claude-plugins-official",
+      "sourceType": "github",
+      "computedHash": "9b03bb78ec5c81c4e0546dbb78cfc970368c72dcae5482e8c59690175abbc8e7"
     }
+  }
 }
