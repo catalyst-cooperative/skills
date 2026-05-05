@@ -61,14 +61,10 @@ SELECT * FROM read_parquet('/data/part-*.parquet') LIMIT 100;
 SELECT * FROM my_db.my_table LIMIT 100;
 ```
 
-<!-- snippet: storage-backends.duckdb-read-csv -->
-
 ```sql
 SELECT * FROM read_csv('/path/to/my_table.csv') LIMIT 100;
 SELECT * FROM read_csv('https://example.com/data/my_table.csv') LIMIT 100;
 ```
-
-<!-- snippet: storage-backends.duckdb-attach-file -->
 
 ```sql
 ATTACH '/path/to/my_database.duckdb' AS db (READ_ONLY);
@@ -83,8 +79,6 @@ database file itself. Table names are indicated by non-standard extension fields
 practice varies by publisher. Work through these in order:
 
 **1. Check the resource for a table-name extension field.** Common field names:
-
-<!-- snippet: storage-backends.db-table-name-extension-fields -->
 
 ```bash
 jq '.resources[] | select(.name == "my_resource") | {table, duckdb_table, sqlite_table}' datapackage.json
@@ -139,8 +133,6 @@ LIMIT 10;
 
 ### Getting a pandas DataFrame from DuckDB
 
-<!-- snippet: storage-backends.duckdb-to-pandas-df -->
-
 ```python
 import duckdb
 
@@ -155,8 +147,6 @@ Polars is preferred over pandas for large datasets — it is faster, more
 memory-efficient, and supports lazy evaluation. If the user ultimately needs a pandas
 DataFrame, convert at the end:
 
-<!-- snippet: storage-backends.polars-lazy-parquet -->
-
 ```python
 import polars as pl
 
@@ -169,8 +159,6 @@ df_polars = (
 # Convert to pandas only if needed downstream
 df_pandas = df_polars.to_pandas()
 ```
-
-<!-- snippet: storage-backends.polars-lazy-csv -->
 
 ```python
 # CSV — lazy
@@ -185,8 +173,6 @@ df_pandas = df_polars.to_pandas()  # only if needed
 
 Use pandas when the user specifically needs a pandas-idiomatic workflow.
 
-<!-- snippet: storage-backends.pandas-read-parquet -->
-
 ```python
 import pandas as pd
 
@@ -199,8 +185,6 @@ df = pd.read_parquet("/path/to/data/my_table.parquet", columns=["id", "date", "v
 ```
 
 ## CSV
-
-<!-- snippet: storage-backends.pandas-read-csv -->
 
 ```python
 df = pd.read_csv("/path/to/data/my_table.csv")
@@ -221,8 +205,6 @@ curl -O https://example.com/data/my_database.sqlite
 
 Via DuckDB (preferred — use `/duckdb-skills:attach-db`):
 
-<!-- snippet: storage-backends.sqlite-via-duckdb-attach -->
-
 ```sql
 -- attach-db handles this; shown here for reference
 ATTACH '/path/to/my_database.sqlite' AS db (TYPE sqlite, READ_ONLY);
@@ -233,8 +215,6 @@ To find the correct table name, follow the same process as for DuckDB files — 
 **Finding the correct table name in a database file** above.
 
 Via Python stdlib (when DuckDB is unavailable):
-
-<!-- snippet: storage-backends.sqlite-stdlib-pandas-read-sql -->
 
 ```python
 import sqlite3, pandas as pd

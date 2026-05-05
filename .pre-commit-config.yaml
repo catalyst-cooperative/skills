@@ -1,5 +1,5 @@
 ci:
-  skip: [ty-check, check-reference-traceability]
+  skip: [ty-check]
 
 repos:
   - repo: https://github.com/DavidAnson/markdownlint-cli2
@@ -50,13 +50,6 @@ repos:
         entry: pixi run ty check
         language: system
         types_or: [python, pyi]
-        pass_filenames: false
-
-      - id: check-reference-traceability
-        name: check-reference-traceability
-        entry: pixi run check-reference-traceability
-        language: system
-        always_run: true
         pass_filenames: false
 
   - repo: https://github.com/rbubley/mirrors-prettier
