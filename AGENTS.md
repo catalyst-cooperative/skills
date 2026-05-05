@@ -76,6 +76,8 @@ pixi run ruff format path/to/file.py        # format
 pixi run ty check                           # type checking (always whole project)
 ```
 
+This repository targets modern Python only; do not add `from __future__ import annotations`.
+
 ### JSON
 
 ```bash

@@ -7,19 +7,18 @@ Usage:
 Exits non-zero if one or more URLs are unavailable.
 """
 
-from __future__ import annotations
-
 import argparse
 import json
 import sys
-import urllib.error
-import urllib.request
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pathlib import Path
 from typing import Any
 
-DEFAULT_CATALOG_PATH = Path(
-    "dev/skills/datapackage/assets/datapackage-in-the-wild.json"
+import requests
+
+REPO_ROOT = Path(__file__).resolve().parents[2]
+DEFAULT_CATALOG_PATH = (
+    REPO_ROOT / "dev/skills/datapackage/assets/datapackage-in-the-wild.json"
 )
 DEFAULT_TIMEOUT_SECONDS = 12
 DEFAULT_WORKERS = 12
@@ -57,16 +56,17 @@ def load_entries(catalog_path: Path) -> list[dict[str, Any]]:
 
 
 def _request(url: str, method: str, timeout_seconds: int) -> tuple[int, str]:
-    request = urllib.request.Request(
-        url,
+    response = requests.request(
         method=method,
+        url=url,
+        allow_redirects=True,
+        timeout=timeout_seconds,
         headers={
             "User-Agent": "agent-skills-datapackage-catalog-check/1.0",
             "Accept": "application/json,*/*;q=0.8",
         },
     )
-    with urllib.request.urlopen(request, timeout=timeout_seconds) as response:
-        return response.status, response.geturl()
+    return response.status_code, response.url
 
 
 def check_url(url: str, timeout_seconds: int) -> tuple[bool, str]:
@@ -74,13 +74,9 @@ def check_url(url: str, timeout_seconds: int) -> tuple[bool, str]:
         status, final_url = _request(url, "HEAD", timeout_seconds)
         if 200 <= status < 400:
             return True, f"HEAD {status}"
-        return False, f"HEAD {status} ({final_url})"
-    except urllib.error.HTTPError as err:
-        if err.code in {405, 501}:
-            pass
-        else:
-            return False, f"HEAD HTTP {err.code}"
-    except Exception as err:  # noqa: BLE001
+        if status not in {405, 501}:
+            return False, f"HEAD {status} ({final_url})"
+    except requests.RequestException as err:
         # Some hosts reject HEAD or have TLS/proxy quirks; retry with GET.
         head_error = str(err)
         try:
@@ -88,7 +84,7 @@ def check_url(url: str, timeout_seconds: int) -> tuple[bool, str]:
             if 200 <= status < 400:
                 return True, f"GET {status} (HEAD failed: {head_error})"
             return False, f"GET {status} ({final_url})"
-        except Exception as get_err:  # noqa: BLE001
+        except requests.RequestException as get_err:
             return False, f"HEAD/GET failed: {head_error}; {get_err}"
 
     try:
@@ -96,9 +92,7 @@ def check_url(url: str, timeout_seconds: int) -> tuple[bool, str]:
         if 200 <= status < 400:
             return True, f"GET {status}"
         return False, f"GET {status} ({final_url})"
-    except urllib.error.HTTPError as err:
-        return False, f"GET HTTP {err.code}"
-    except Exception as err:  # noqa: BLE001
+    except requests.RequestException as err:
         return False, f"GET failed: {err}"
 
 
